@@ -1,4 +1,5 @@
 <!-- Guarda este código como "index.html" -->
+<!-- Guarda este código como "index.html" -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -24,8 +25,8 @@
         extend: {
           colors: {
             'primary-bg': '#1a1a1a',
-            'secondary-bg': '#2a2a2a',
-            'nav-bg': '#111111',
+            'secondary-bg': '#172525',
+            'nav-bg': '#182828',
             'text-light': '#f0f0f0',
             'text-medium': '#b0b0b0',
             'highlight': '#e4b882',
@@ -56,11 +57,11 @@
         /* Animación de pulso para el botón de WhatsApp */
         @keyframes pulse-green {
             0%, 100% {
-                transform: scale(1);
+                transform: scale(0.80);
                 box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
             }
             50% {
-                transform: scale(1.1);
+                transform: scale(1.05);
                 box-shadow: 0 0 0 10px rgba(37, 211, 102, 0);
             }
         }
@@ -74,13 +75,13 @@
                 transform: scale(1);
                 filter: drop-shadow(0 0 0px rgba(240, 240, 240, 0.7));
             }
-            50% {
-                transform: scale(1.05);
+            60% {
+                transform: scale(1.50);
                 filter: drop-shadow(0 0 15px rgba(240, 240, 240, 0.5));
             }
         }
         .logo-pulse {
-            animation: pulse-white 5s infinite;
+            animation: pulse-white 10s infinite;
         }
     </style>
 
@@ -129,6 +130,7 @@
 
         // --- Datos de Contacto y Redes Sociales (Ahora con URLs de imágenes) ---
         const contactInfo = {
+            address1: {es: "By Artia: Marketing y Publicidad Integral", en: "Made by Artia: Comprehensive Marketing and Advertising"},
             address: {es: "Dirección:", en: "Address:"},
             schedule: {es: "Horario de Atención:", en: "Opening Hours:"},
             phones: {es: "Teléfonos:", en: "Phones:"},
@@ -303,7 +305,7 @@
                         React.createElement('nav', { className: "flex flex-col items-start mobile-nav-links space-y-1" },
                             menuData.map(category => React.createElement(NavLink, { key: category.id, href: `#${category.id}`, activeId, onClick: () => setIsOpen(false), isMobile: true }, t(category.title)))
                         ),
-                         React.createElement('div', { className: "mt-8 pt-6 border-t border-white/10" }, 
+                         React.createElement('div', { className: "mt-2 pt-4 border-t border-white/10" }, 
                             React.createElement('div', { className: "flex justify-center space-x-6 mb-6" },
                                 socialLinks.map(link => {
                                     return React.createElement('a', {
@@ -320,7 +322,10 @@
                                 React.createElement('p', null, React.createElement('strong', {className: "text-text-light font-bold"}, t(info.address)), React.createElement('br'), t(info.address_val)),
                                 React.createElement('p', null, React.createElement('strong', {className: "text-text-light font-bold"}, t(info.schedule)), React.createElement('br'), t(info.schedule_val)),
                                 React.createElement('p', null, React.createElement('strong', {className: "text-text-light font-bold"}, t(info.phones)), React.createElement('br'), React.createElement('a', {href: "tel:+593979404088", className: "text-highlight hover:text-text-light transition"}, "0979404088"), " - ", React.createElement('a', {href: "tel:+593978888670", className: "text-highlight hover:text-text-light transition"}, "0978888670"))
-                            )
+                            ),
+                            React.createElement('div', { className: "mt-2 pt-2 border-t border-white/5" }, // AJUSTE DE MARGEN
+                            React.createElement('p', {className: "text-[10px] text-text-medium opacity-40 text-center mb-1"}, "By Artia: Marketing y Publicidad Integral."),
+                            React.createElement('div', { className: "flex justify-center space-x-1 mb-1" } ) ),
                          )
                     )
                 )
@@ -384,9 +389,10 @@
             const { t } = useLanguage();
 
             return (
-                React.createElement('footer', { className: "bg-nav-bg text-center py-4 px-4 mt-4 text-text-small" },
+                React.createElement('footer', { className:  "mt-7 pt-1 border-t border-white/10 bg-nav-bg text-center py-4 px-4 mt-4 text-text-small" },
+                React.createElement('p', { className: "text-[10px] text-text-medium opacity-40 text-center mb-1" }, React.createElement('light', {className: "text-text-light font-thin"}, t(info.address1))),
                     // Social Media Links
-                    React.createElement('div', { className: "flex justify-center space-x-6 text-text-light mb-6" },
+                    React.createElement('div', { className: "flex justify-center space-x-6 text-text-light mb-3" },
                         socialLinks.map(link => {
                              return React.createElement('a', {
                                  key: link.platform,

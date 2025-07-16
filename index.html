@@ -1,0 +1,503 @@
+<!-- Guarda este código como "index.html" -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menú Cafetto - Menú Gourmet</title>
+
+    <!-- Preconexión a dominios de fuentes e imágenes para una carga más rápida -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://i.ibb.co">
+
+    <!-- Importación de Fuentes de Google -->
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+    <!-- Inclusión de Tailwind CSS a través de CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Configuración personalizada de Tailwind CSS -->
+    <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'primary-bg': '#1a1a1a',
+            'secondary-bg': '#2a2a2a',
+            'nav-bg': '#111111',
+            'text-light': '#f0f0f0',
+            'text-medium': '#b0b0b0',
+            'highlight': '#e4b882',
+            'accent': '#c49a62',
+            'whatsapp': '#25D366',
+            'whatsapp-dark': '#128C7E',
+          },
+          fontFamily: {
+            heading: ['EB Garamond', 'serif'],
+            body: ['Montserrat', 'sans-serif'],
+          },
+           boxShadow: {
+            'lg': '0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.15)',
+            'xl': '0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.1)',
+            '2xl': '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
+          }
+        }
+      }
+    }
+    </script>
+    <style>
+        html { scroll-behavior: smooth; }
+        .text-shadow-lg { text-shadow: 2px 2px 8px rgba(0,0,0,0.8); }
+        .mobile-menu-content { min-height: 100vh; display: flex; flex-direction: column; }
+        .mobile-nav-links .nav-link-item { padding-top: 0.25rem; padding-bottom: 0.25rem; }
+        .mobile-nav-links .nav-link-item.bg-highlight { padding-top: 0.25rem; padding-bottom: 0.25rem; }
+
+        /* Animación de pulso para el botón de WhatsApp */
+        @keyframes pulse-green {
+            0%, 100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
+            }
+            50% {
+                transform: scale(1.1);
+                box-shadow: 0 0 0 10px rgba(37, 211, 102, 0);
+            }
+        }
+        .whatsapp-pulse {
+            animation: pulse-green 3s infinite;
+        }
+
+        /* Animación de pulso para el logo en la portada */
+        @keyframes pulse-white {
+            0%, 100% {
+                transform: scale(1);
+                filter: drop-shadow(0 0 0px rgba(240, 240, 240, 0.7));
+            }
+            50% {
+                transform: scale(1.05);
+                filter: drop-shadow(0 0 15px rgba(240, 240, 240, 0.5));
+            }
+        }
+        .logo-pulse {
+            animation: pulse-white 5s infinite;
+        }
+    </style>
+
+    <!-- Cargar React y ReactDOM como scripts UMD normales -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+
+</head>
+<body class="bg-primary-bg">
+    <!-- Contenedor raíz para la aplicación React -->
+    <div id="root"></div>
+
+    <!-- Script principal de la aplicación React -->
+    <script>
+        const { useState, createContext, useContext, useEffect, useMemo, useCallback } = React;
+
+        // --- INICIO: Componentes de Iconos (SVG para categorías y banderas) ---
+        const SteakIcon = (props) => React.createElement('svg', { xmlns: "http://www.w3.org/2000/svg", className: "h-8 w-8 md:h-8 md:w-8 inline-block align-middle mr-2", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round", ...props }, React.createElement('path', { d: "M13.293 13.293A2 2 0 1 0 10.707 10.707l-2.439 2.439a2 2 0 0 0 0 2.828l2.121 2.121a2 2 0 0 0 2.828 0l2.439-2.439zM15 13.5l-1.5-1.5M10.5 18H18a2 2 0 0 0 2-2v-2.5M12 3v2M18 3v2M6 3v2M9 21v-3.5a2.5 2.5 0 0 1 2.5-2.5h0A2.5 2.5 0 0 1 14 17.5V21" }));
+        const SandwichIcon = (props) => React.createElement('svg', { xmlns: "http://www.w3.org/2000/svg", className: "h-8 w-8 md:h-8 md:w-8 inline-block align-middle mr-2", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round", ...props }, React.createElement('path', { d: "M3 11h18M3 16h18M4 7h16a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2zM8 7V5c0-1.1.9-2 2-2h4a2 2 0 0 1 2 2v2" }));
+        const UtensilsIcon = (props) => React.createElement('svg', { xmlns: "http://www.w3.org/2000/svg", className: "h-8 w-8 md:h-8 md:w-8 inline-block align-middle mr-2", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round", ...props }, React.createElement('path', { d: "M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2M7 2v11M14 2v10a3 3 0 0 0 3 3h0a3 3 0 0 0 3-3V2" }));
+        const PastaIcon = (props) => React.createElement('svg', { xmlns: "http://www.w3.org/2000/svg", className: "h-8 w-8 md:h-8 md:w-8 inline-block align-middle mr-2", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round", ...props }, React.createElement('path', { d: "M5.6 20.3c.1-.1.2-.3.3-.5A2.3 2.3 0 0 0 6 18.8c0-.7-.2-1.3-.6-1.8s-1-.8-1.7-.8c-.7 0-1.3.3-1.8.7s-.8 1-.8 1.7c0 .4.1.8.3 1.1s.4.6.7.8c.3.2.6.4.9.4.3.1.6.1.9.1H4c.4 0 .8-.1 1.2-.2m-1-5.1c.1-.2.2-.4.2-.6 0-.5-.2-1-.5-1.3s-.7-.5-1.2-.5c-.5 0-1 .2-1.3.5s-.5.8-.5 1.3c0 .2.1.4.2.6M14 2v5h3m-3 0v12c0 1.1.9 2 2 2h3m-5-14v12c0 1.1.9 2 2 2h3m-5-14v12c0 1.1.9 2 2 2h3" }));
+        const EggIcon = (props) => React.createElement('svg', { xmlns: "http://www.w3.org/2000/svg", className: "h-8 w-8 md:h-8 md:w-8 inline-block align-middle mr-2", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round", ...props }, React.createElement('path', { d: "M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z" }), React.createElement('path', { d: "M12 8c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5z" }));
+        const CoffeeIcon = (props) => React.createElement('svg', { xmlns: "http://www.w3.org/2000/svg", className: "h-8 w-8 md:h-8 md:w-8 inline-block align-middle mr-2", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round", ...props }, React.createElement('path', { d: "M18 8h1a4 4 0 0 1 0 8h-1M2 8h14v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8zM6 1v3M10 1v3M14 1v3" }));
+        const DessertIcon = (props) => React.createElement('svg', { xmlns: "http://www.w3.org/2000/svg", className: "h-8 w-8 md:h-8 md:w-8 inline-block align-middle mr-2", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round", ...props }, React.createElement('path', { d: "M20 12c0-4.4-3.6-8-8-8s-8 3.6-8 8 3.6 8 8 8 8-3.6 8-8zm-8 4.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm2-2a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0zm2-2a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0z" }), React.createElement('path', { d: "M22 12a2 2 0 0 0-2-2h-2v4h2a2 2 0 0 0 2-2z" }));
+        const CocktailIcon = (props) => React.createElement('svg', { xmlns: "http://www.w3.org/2000/svg", className: "h-8 w-8 md:h-8 md:w-8 inline-block align-middle mr-2", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round", ...props }, React.createElement('path', { d: "M12 22L2 12l10-10 10 10-10 10zM2 12h20M12 2v20M5.45 5.45L12 12l6.55-6.55" }));
+        const PlusCircleIcon = (props) => React.createElement('svg', { xmlns: "http://www.w3.org/2000/svg", className: "h-8 w-8 md:h-8 md:w-8 inline-block align-middle mr-2", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round", ...props }, React.createElement('circle', { cx: "12", cy: "12", r: "10" }), React.createElement('line', { x1: "12", y1: "8", x2: "12", y2: "16" }), React.createElement('line', { x1: "8", y1: "12", x2: "16", y2: "12" }));
+        const SpainFlag = () => React.createElement('svg', { xmlns: "http://www.w3.org/2000/svg", className: "h-6 w-8 rounded-sm", viewBox: "0 0 900 600" }, React.createElement('rect', { width: "900", height: "600", fill: "#c60b1e" }), React.createElement('rect', { width: "900", height: "450", y: "75", fill: "#ffc400" }), React.createElement('rect', { width: "900", height: "150", y: "0", fill: "#c60b1e" }));
+        const UKFlag = () => React.createElement('svg', { xmlns: "http://www.w3.org/2000/svg", className: "h-6 w-8 rounded-sm", viewBox: "0 0 1200 600" }, React.createElement('clipPath', { id: "a" }, React.createElement('path', { d: "M0 0h1200v600H0z" })), React.createElement('clipPath', { id: "b" }, React.createElement('path', { d: "M600 0v300h600V0zm0 300v300h600V300zM0 300v300h600V300zM0 0v300h600V0z" })), React.createElement('g', { clipPath: "url(#a)" }, React.createElement('path', { fill: "#00247d", d: "M0 0h1200v600H0z" }), React.createElement('path', { stroke: "#fff", strokeWidth: "60", d: "M0 0l1200 600m0-600L0 600" }), React.createElement('g', { clipPath: "url(#b)" }, React.createElement('path', { stroke: "#cf142b", strokeWidth: "40", d: "M0 0l1200 600m0-600L0 600" })), React.createElement('path', { stroke: "#fff", strokeWidth: "100", d: "M600 0v600M0 300h1200" }), React.createElement('path', { stroke: "#cf142b", strokeWidth: "60", d: "M600 0v600M0 300h1200" })));
+        const HamburgerIcon = () => React.createElement('svg', { xmlns: "http://www.w3.org/2000/svg", className: "h-10 w-10", fill: "none", viewBox: "0 0 24 24", stroke: "currentColor" }, React.createElement('path', { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M4 6h16M4 12h16M4 18h16" }));
+        const CloseIcon = () => React.createElement('svg', { xmlns: "http://www.w3.org/2000/svg", className: "h-8 w-8", fill: "none", viewBox: "0 0 24 24", stroke: "currentColor" }, React.createElement('path', { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M6 18L18 6M6 6l12 12" }));
+        // --- FIN: Componentes de Iconos ---
+
+        // --- INICIO: Datos del Menú ---
+        const menuData = [
+          {id:'cortes-especiales',title:{es:'Cortes Especiales',en:'Special Cuts'},icon:SteakIcon,imageUrl:'https://i.ibb.co/Nn6q9hkn/Cortes-Especiales.jpg',items:[{name:{es:'Picaña',en:'Picanha'},price:'$12.50',description:{es:'Todos los cortes vienen acompañados con una guarnición de papas cremosas o papas rústicas, vegetales salteados con mantequilla y albahaca y chimichurri argentino.',en:'All cuts are served with a side of creamy potatoes or rustic potatoes, vegetables sautéed in butter and basil, and Argentine chimichurri.'}},{name:{es:'T-Bone Steak',en:'T-Bone Steak'},price:'$10.00',description:{es:'Todos los cortes vienen acompañados con una guarnición de papas cremosas o papas rústicas, vegetales salteados con mantequilla y albahaca y chimichurri argentino.',en:'All cuts are served with a side of creamy potatoes or rustic potatoes, vegetables sautéed in butter and basil, and Argentine chimichurri.'}},{name:{es:'Rib Eye',en:'Rib Eye'},price:'$9.00',description:{es:'Todos los cortes vienen acompañados con una guarnición de papas cremosas o papas rústicas, vegetales salteados con mantequilla y albahaca y chimichurri argentino.',en:'All cuts are served with a side of creamy potatoes or rustic potatoes, vegetables sautéed in butter and basil, and Argentine chimichurri.'}},{name:{es:'Lomo Fino de Res al Vino Tinto y Champiñones',en:'Beef Tenderloin in Red Wine and Mushroom Sauce'},price:'$9.00',description:{es:'200gr. de lomo fino de res, base de salsa madre, hongos salteados al vino tinto, papas cremosas, ensalada fresca y vegetales.',en:'200g of beef tenderloin, mother sauce base, mushrooms sautéed in red wine, creamy potatoes, fresh salad, and vegetables.'}},{name:{es:'Lomo Fino de Res a las 3 Pimientas',en:'3-Pepper Beef Tenderloin'},price:'$9.00',description:{es:'200gr. de lomo fino de res salpimentado, papas cremosas, ensalada fresca y salsa aromatizada con tres pimientas.',en:'200g of seasoned beef tenderloin, creamy potatoes, fresh salad, and a three-pepper aromatic sauce.'}},]},
+          {id:'sanduches',title:{es:'Sánduches',en:'Sandwiches'},icon:SandwichIcon,imageUrl:'https://i.ibb.co/d4Z2cCDG/Sanduches.png',items:[{name:{es:'Sánduche Americano',en:'American Sandwich'},price:'$3.50',description:{es:'Pan especial de casa, triple jamón York, doble queso cheddar, lechuga y tomate.',en:'Special house bread, triple York ham, double cheddar cheese, lettuce, and tomato.'}},{name:{es:'Sánduche Croque Monsieur',en:'Croque Monsieur Sandwich'},price:'$3.50',description:{es:'Pan de molde sanduchero, doble jamón York, doble queso mozarella, queso parmesano y salsa bechamel.',en:'Sandwich bread, double York ham, double mozzarella cheese, parmesan cheese, and béchamel sauce.'}},{name:{es:'Sánduche de Filete de Pollo en Salsa de Champiñones',en:'Chicken Fillet Sandwich in Mushroom Sauce'},price:'$3.75',description:{es:'150gr. de filete de pollo en salsa de champiñones, queso cheddar, lechuga, tomate y mayonesa de la casa.',en:'150g chicken fillet in mushroom sauce, cheddar cheese, lettuce, tomato, and house mayonnaise.'}},{name:{es:'Sánduche Chicken Crispy',en:'Crispy Chicken Sandwich'},price:'$4.50',description:{es:'170gr. de filete de pollo apanado con queso cheddar, lechuga, tomate aderezado con mayonesa, salsa pomodoro y papas rústicas.',en:'170g breaded chicken fillet with cheddar cheese, lettuce, tomato, dressed with mayonnaise, pomodoro sauce, and rustic potatoes.'}},{name:{es:'Sánduche Hawaiano del Chef',en:"Chef's Hawaiian Sandwich"},price:'$4.50',description:{es:'Pan de casa tostado y untado con almíbar de piña, doble jamón York, lechuga, tomate, salsa hawaiana de la casa, papas rústicas.',en:"Toasted house bread with pineapple syrup, double York ham, lettuce, tomato, house Hawaiian sauce, and rustic potatoes."}},{name:{es:'Pulled Pork',en:'Pulled Pork'},price:'$4.75',description:{es:'180 g de lomo de cerdo mechado, aderezado con salsa BBQ de la casa, acompañado con vegetales frescos y papas rústicas.',en:'180 g of shredded pork loin, seasoned with house-made BBQ sauce, served with fresh vegetables and rustic potatoes.'}},{name:{es:'Sánduche de Lomo Fino',en:'Tenderloin Sandwich'},price:'$5.75',description:{es:'180gr. de lomo fino, aderezado con chimichurri especial al estilo argentino, lechuga, tomate, mayonesa y papas rústicas.',en:'180g of tenderloin, seasoned with special Argentine-style chimichurri, lettuce, tomato, mayonnaise, and rustic potatoes.'}},{name:{es:'Sánduche de Lomo al Vino Tinto',en:'Tenderloin Sandwich in Red Wine Sauce'},price:'$5.75',description:{es:'180gr. de lomo fino, en salsa de vino con champiñones, hongos secos, lechuga, tomate y papas rústicas.',en:'180g of tenderloin in wine sauce with mushrooms, dried fungi, lettuce, tomato, and rustic potatoes.'}},]},
+          {id:'especialidades',title:{es:'Especialidades',en:'Specialties'},icon:UtensilsIcon,imageUrl:'https://i.ibb.co/xqwb2NyM/especialidades.jpg',items:[{name:{es:'Tigrillo Cafetto 1918',en:'Tigrillo Cafetto 1918'},price:'$5.00',description:{es:'500gr. de mezcla al estilo Cafetto acompañado de huevo frito y queso rallado.',en:'500g of Cafetto-style mix served with a fried egg and grated cheese.'}},{name:{es:'Alitas House (6 Unidades)',en:'House Wings (6 Units)'},price:'$6.50',description:{es:'Alas de pollo crujientes con salsa a elegir (BBQ/Picante, Maracuyá, Miel y Mostaza, Thai Dulce-Picante), acompañadas de papas rústicas.',en:'Crispy chicken wings with choice of sauce (BBQ/Spicy, Passion Fruit, Honey Mustard, Sweet-Spicy Thai), served with rustic potatoes.'}},{name:{es:'Alitas House (12 Unidades)',en:'House Wings (12 Units)'},price:'$12.00',description:{es:'Alas de pollo crujientes con salsa a elegir (BBQ/Picante, Maracuyá, Miel y Mostaza, Thai Dulce-Picante), acompañadas de papas rústicas.',en:'Crispy chicken wings with choice of sauce (BBQ/Spicy, Passion Fruit, Honey Mustard, Sweet-Spicy Thai), served with rustic potatoes.'}},{name:{es:'Quesadilla',en:'Quesadilla'},price:'$4.75',description:{es:'180gr. de lomo de cerdo mechado, aderezado con BBQ de la casa, vegetales y acompañado con papas rústicas.',en:'180g of shredded pork loin, seasoned with house BBQ sauce, vegetables, and served with rustic potatoes.'}},{name:{es:'Quesadilla Especial del Huerto(ensalada)',en:'Special Garden Quesadilla(salad)'},price:'$5.00',description:{es:'200 g de pollo o lomo fino a la plancha, reposado sobre una cama de lechuga, con cebollas caramelizadas, queso cheddar y tomate. Acompañado de salsa pomodoro.',en:'200 g of grilled chicken or beef tenderloin served on a bed of lettuce, with caramelized onions, cheddar cheese, and tomato. Accompanied by pomodoro sauce.'}},{name:{es:'Bolón de Verde Manaba',en:'Manaba-style Plantain Bolon'},price:'$4.50',description:{es:'400gr. de verde, chicharrón, queso fresco, carne punzada, huevo frito y salprieta.',en:'400g of green plantain, pork cracklings, fresh cheese, shredded meat, fried egg, and salprieta.'}},{name:{es:'Tortilla Española',en:'Spanish Omelette'},price:'$4.50',description:{es:'Papas en rebanadas con cebollas salteadas en tortilla, servido con pan especial de casa, salsa pomodoro, y dedos de queso.',en:'Sliced potatoes with sautéed onions in an omelette, served with special house bread, pomodoro sauce, and cheese sticks.'}},{name:{es:'Nachos Diesel',en:'Diesel Nachos'},price:'$5.00',description:{es:'Porción de nachos con queso cheddar y mozarella gratinado, aderezado con salsa de carne especial de la casa.',en:'Portion of nachos with melted cheddar and mozzarella cheese, topped with special house meat sauce.'}},{name:{es:'Bowl de la Casa - Pollo',en:'House Bowl - Chicken'},price:'$5.50',description:{es:'Una proteína de 200gr. A elegir, arroz al curry, tomate cherry, zanahorias en corte juliana, maíz dulce, en una cama de lechuga.',en:'A 200g protein of your choice, curry rice, cherry tomatoes, julienned carrots, sweet corn, on a bed of lettuce.'}},{name:{es:'Bowl de la Casa - Lomo',en:'House Bowl - Tenderloin'},price:'$6.50',description:{es:'Una proteína de 200gr. A elegir, arroz al curry, tomate cherry, zanahorias en corte juliana, maíz dulce, en una cama de lechuga.',en:'A 200g protein of your choice, curry rice, cherry tomatoes, julienned carrots, sweet corn, on a bed of lettuce.'}},]},
+          {id:'pastas',title:{es:'Pastas',en:'Pastas'},icon:PastaIcon,imageUrl:'https://i.ibb.co/577yF0T/pastas.jpg',items:[{name:{es:'Pasta Alfredo',en:'Alfredo Pasta'},price:'$7.50',description:{es:'250gr. de pasta artesanal bañada en salsa Alfredo, con tocineta y champiñones, pan de ajo y queso mozarella rallado.',en:'250g of artisanal pasta in Alfredo sauce, with bacon and mushrooms, garlic bread, and grated mozzarella cheese.'}},{name:{es:'Pasta en Salsa Pesto',en:'Pesto Pasta'},price:'$7.50',description:{es:'250gr. de pasta artesanal aderezados con salsa al pesto (albahaca, ajo, cebolla y crema de leche), acompañada con 100gr. de pollo apanado o a la plancha.',en:'250g of artisanal pasta with pesto sauce (basil, garlic, onion, and cream), served with 100g of breaded or grilled chicken.'}},{name:{es:'Lasaña',en:'Lasagna'},price:'$7.50',description:{es:'Ragú de carne entre capas de fideo artesanal y queso mozarella acompañado con pan de ajo.',en:'Meat ragu between layers of artisanal pasta and mozzarella cheese, served with garlic bread.'}},{name:{es:'Pizzeta (porción 1 persona)',en:'Pizzetta (1 person serving)'},price:'$4.00',description:{es:'Masa de pizza aderezada con pasta de tomate hecha en el momento, cubierta de 2 tipos de mozarella derretidos al horno y embutidos.',en:'Pizza dough with freshly made tomato paste, covered with 2 types of melted mozzarella and cold cuts.'}},]},
+          {id:'desayunos',title:{es:'Desayunos',en:'Breakfasts'},icon:EggIcon,imageUrl:'https://i.ibb.co/d4VBMn3h/desayunos.jpg',items:[{name:{es:'Tortilla Española',en:'Spanish Omelette'},price:'$5.00',description:{es:'Chips de Papas, cebollas salteadas en su tortilla, servido con pan de ajo especial de la casa, dedos de queso, café y jugo del día.',en:'Potato chips, sautéed onions in an omelette, served with special house garlic bread, cheese sticks, coffee, and juice of the day.'}},{name:{es:'Manaba',en:'Manaba'},price:'$4.75',description:{es:'Bolón de verde gigante, queso/chicharrón o mixto, servido con carne punzada, huevo frito, café y jugo del día.',en:'Giant plantain bolon, cheese/pork rinds or mixed, served with shredded meat, fried egg, coffee, and juice of the day.'}},{name:{es:'Omelet',en:'Omelette'},price:'$4.75',description:{es:'Omelet relleno de jamón y mozarella fundido, servido con pan especial casa, dedos de queso, café y jugo del día.',en:'Omelette filled with ham and melted mozzarella, served with special house bread, cheese sticks, coffee, and juice of the day.'}},{name:{es:'Mote Pillo',en:'Mote Pillo'},price:'$4.75',description:{es:'Mote al estilo Cuencano, aromatizado a las finas hierbas, servido con chorizo especial, queso, café y jugo del día.',en:'Cuenca-style hominy, flavored with fine herbs, served with special sausage, cheese, coffee, and juice of the day.'}},{name:{es:'Waffle (Oreo o Red Velvet)',en:'Waffle (Oreo or Red Velvet)'},price:'$4.75',description:{es:'Acompañado con siropes de sabores, una bola de helado, fruta del día, huevos revueltos, café y jugo del día.',en:'Served with flavored syrups, a scoop of ice cream, fruit of the day, scrambled eggs, coffee, and juice of the day.'}},]},
+          {id:'cafe-especialidad',title:{es:'Café de Especialidad',en:'Specialty Coffee'},icon:CoffeeIcon,imageUrl:'https://i.ibb.co/1fF80MTG/cafe.jpg',items:[{name:{es:'Espresso',en:'Espresso'},price:'$1.50'},{name:{es:'Doppio',en:'Doppio'},price:'$1.75'},{name:{es:'Café Americano',en:'Americano Coffee'},price:'$2.50'},{name:{es:'Café Irlandés',en:'Irish Coffee'},price:'$2.75'},{name:{es:'Cappuccino/Latte',en:'Cappuccino/Latte'},price:'$2.75'},{name:{es:'Clásico',en:'Classic'},price:'$2.75'},{name:{es:'Afogato',en:'Affogato'},price:'$3.00'},{name:{es:'Macchiato',en:'Macchiato'},price:'$3.00'},{name:{es:'Mocaccino',en:'Mocaccino'},price:'$3.00'},]},
+          {id:'postres',title:{es:'Postres',en:'Desserts'},icon:DessertIcon,imageUrl:'https://i.ibb.co/0jkJKJvK/postres.jpg',items:[{name:{es:'Cheesecake de Frutos Rojos',en:'Red Berries Cheesecake'},price:'$3.50',description:{es:'Cremoso pastel de queso sobre una base crujiente de galleta, cubierto con una deliciosa mezcla de frutos rojos frescos y coulis artesanal.',en:'Creamy cheesecake on a crunchy cookie base, topped with a delicious mix of fresh red berries and artisanal coulis.'}},{name:{es:'Tiramisú Clásico',en:'Classic Tiramisu'},price:'$3.50',description:{es:'Delicado bizcocho bañado en miel infusionada con café espresso, cubierto con una suave espuma de mascarpone y finalizado con un sutil toque de cacao amargo.',en:'A delicate sponge cake soaked in honey infused with espresso, topped with a smooth mascarpone foam and finished with a subtle touch of bitter cocoa.'}},{name:{es:'Waffle Oreo',en:'Oreo Waffle'},price:'$4.00',description:{es:'Dos waffles brownie, bañados en chocolate, Oreo triturada y helado.',en:'Two brownie waffles, covered in chocolate, crushed Oreo, and ice cream.'}},{name:{es:'Waffle Red Velvet',en:'Red Velvet Waffle'},price:'$4.00',description:{es:'Dos waffles Red Velvet, rellenos de coulis de frutos rojos, decorados con crema y helado.',en:'Two Red Velvet waffles, filled with red berry coulis, decorated with cream and ice cream.'}},{name:{es:'Cremoso de Mango',en:'Creamy Mango'},price:'$3.50',description:{es:'Deliciosa crema de mango con un toque de hierbabuena, lima y ron, inspirada en el clásico mojito.',en:'Delicious mango cream with a hint of mint, lime, and rum, inspired by the classic mojito.'}},{name:{es:'Torta de Sacher',en:'Sacher Cake'},price:'$3.50',description:{es:'Torta de chocolate humectada en vino tinto, rellena de manjar de leche, bañada en ganache de chocolate y decorada con polvo de oro.',en:'Chocolate cake moistened with red wine, filled with dulce de leche, covered in chocolate ganache, and topped with gold dust.'}},]},
+          {id:'otras-bebidas',title:{es:'Otras Bebidas',en:'Other Drinks'},icon:CocktailIcon,imageUrl:'https://i.ibb.co/5gzx6pLN/bebidas.jpg',items:[{name:{es:'Chocolate',en:'Chocolate'},price:'$3.00'},{name:{es:'Té de Frutos Rojos (Prensa)',en:'Red Berry Tea (French Press)'},price:'$3.00'},{name:{es:'Té de Frutos Rojos (Taza)',en:'Red Berry Tea (Cup)'},price:'$2.00'},{name:{es:'Té Verde con Almendra',en:'Green Tea with Almond'},price:'$2.00'},{name:{es:'Té Verde/Negro Ruso',en:'Russian Green/Black Tea'},price:'$2.00'},{name:{es:'Aromática',en:'Herbal Tea'},price:'$1.50'},{name:{es:'Frappuccino/Frappé',en:'Frappuccino/Frappé'},price:'$3.50'},{name:{es:'Milkshake',en:'Milkshake'},price:'$3.50'},{name:{es:'Limonada 1918 (Original o Jamaica)',en:'1918 Lemonade (Original or Hibiscus)'},price:'$2.50'},{name:{es:'Zumo de Naranja',en:'Orange Juice'},price:'$2.50'},{name:{es:'Jugos y Batidos',en:'Juices & Smoothies'},price:'$2.00'},{name:{es:'Bebida Gaseosa',en:'Soda'},price:'$1.25'},{name:{es:'Agua con/sin gas',en:'Water with/without gas'},price:'$1.25'},{name:{es:'Copa de Vino Hervido',en:'Glass of Mulled Wine'},price:'$2.75'},]},
+          {id:'extras',title:{es:'Extras',en:'Extras'},icon:PlusCircleIcon,imageUrl:'https://i.ibb.co/cKVRDvmv/extras.jpg',items:[{name:{es:'Papas Rústicas',en:'Rustic Potates'},price:'$1.50'},{name:{es:'Papas Cremosas',en:'Creamy Potatoes'},price:'$2.50'},{name:{es:'Filete de Pollo',en:'Chicken Fillet'},price:'$1.50'},{name:{es:'Tocino',en:'Bacon'},price:'$1.00'},{name:{es:'Chicharrón',en:'Pork Rinds'},price:'$1.00'},{name:{es:'Queso Cheddar/Mozarella',en:'Cheddar/Mozzarella Cheese'},price:'$0.75'},{name:{es:'Huevos',en:'Eggs'},price:'$0.75'},]}
+        ];
+        // --- FIN: Datos del Menú ---
+
+        // --- Datos de Contacto y Redes Sociales (Ahora con URLs de imágenes) ---
+        const contactInfo = {
+            address: {es: "Dirección:", en: "Address:"},
+            schedule: {es: "Horario de Atención:", en: "Opening Hours:"},
+            phones: {es: "Teléfonos:", en: "Phones:"},
+            address_val: {es: "10 de Agosto entre Colón y Espejo. Riobamba - Ecuador.", en: "10 de Agosto between Colón and Espejo. Riobamba - Ecuador."},
+            schedule_val: {es: "Lunes a sábado | 08h00 a 12h30 y de 16h00 a 21h00", en: "Monday to Saturday | 08:00 to 12:30 and 16:00 to 21:00"}
+        };
+
+        const socialLinks = [
+            { platform: 'tiktok', url: 'https://www.tiktok.com/@cafetto1918', iconUrl: 'https://i.ibb.co/fYcvXK2q/icon-tiktok.png', label: { es: 'TikTok', en: 'TikTok' } },
+            { platform: 'facebook', url: 'https://www.facebook.com/cafetto1918?locale=es_LA', iconUrl: 'https://i.ibb.co/gZ45fQZj/icon-facebook.png', label: { es: 'Facebook', en: 'Facebook' } },
+            { platform: 'instagram', url: 'https://www.instagram.com/cafetto1918/', iconUrl: 'https://i.ibb.co/7xx6dBTd/icon-instagram.png', label: { es: 'Instagram', en: 'Instagram' } },
+        ];
+        
+        // **NUEVO: Textos para el modal de WhatsApp**
+        const whatsappModalText = {
+            title: { es: "Abrir WhatsApp", en: "Open WhatsApp" },
+            message: { es: "¿Deseas realizar una reserva?", en: "Would you like to make a reservation?" },
+            confirm: { es: "Confirmar", en: "Confirm" },
+            cancel: { es: "Cancelar", en: "Cancel" },
+            linkMessage: { es: "Quiero%20realizar%20una%20reserva", en: "I%20would%20like%20to%20make%20a%20reservation" }
+        };
+        // --- FIN: Datos ---
+
+
+        // --- INICIO: Lógica de la Aplicación ---
+
+        // Contexto para manejar el idioma
+        const LanguageContext = createContext(undefined);
+
+        const LanguageProvider = ({ children }) => {
+          const [language, setLanguage] = useState('es');
+          const t = useCallback((translation) => translation[language], [language]);
+          const value = { language, setLanguage, t };
+          return React.createElement(LanguageContext.Provider, { value }, children);
+        };
+
+        const useLanguage = () => {
+          const context = useContext(LanguageContext);
+          if (context === undefined) {
+            throw new Error('useLanguage must be used within a LanguageProvider');
+          }
+          return context;
+        };
+
+        // Hook para espiar el scroll y determinar la sección activa
+        const useScrollSpy = (ids, options) => {
+            const [activeId, setActiveId] = useState('');
+
+            useEffect(() => {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach((entry) => {
+                        if (entry.isIntersecting) {
+                            setActiveId(entry.target.id);
+                        }
+                    });
+                }, options);
+
+                ids.forEach(id => {
+                    const element = document.getElementById(id);
+                    if (element) observer.observe(element);
+                });
+
+                return () => {
+                    ids.forEach(id => {
+                        const element = document.getElementById(id);
+                        if (element) observer.unobserve(element);
+                    });
+                };
+            }, [ids, options]);
+
+            return activeId;
+        };
+
+        // Componente para cambiar de idioma
+        const LanguageSwitcher = () => {
+          const { language, setLanguage } = useLanguage();
+          return (
+            React.createElement('div', { className: "flex items-center space-x-2" },
+              React.createElement('button', {
+                onClick: () => setLanguage('es'),
+                className: `p-1 rounded-md transition-all duration-300 ${language === 'es' ? 'bg-highlight/20 ring-2 ring-highlight' : 'opacity-60 hover:opacity-100'}`,
+                'aria-label': "Cambiar a Español"
+              }, React.createElement(SpainFlag)),
+              React.createElement('button', {
+                onClick: () => setLanguage('en'),
+                className: `p-1 rounded-md transition-all duration-300 ${language === 'en' ? 'bg-highlight/20 ring-2 ring-highlight' : 'opacity-60 hover:opacity-100'}`,
+                'aria-label': "Switch to English"
+              }, React.createElement(UKFlag))
+            )
+          );
+        };
+
+        // Componente para los enlaces de navegación
+        const NavLink = ({ href, activeId, onClick, children, isMobile = false }) => {
+            const isActive = activeId === href.substring(1);
+
+            const handleClick = (e) => {
+                e.preventDefault();
+                onClick();
+                const targetId = href.substring(1);
+                const targetElement = document.getElementById(targetId);
+                if (targetElement) {
+                    const headerOffset = 80; // Altura del encabezado fijo
+                    const elementPosition = targetElement.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: "smooth"
+                    });
+                }
+            };
+
+            return (
+                React.createElement('a', {
+                    href,
+                    onClick: handleClick,
+                    className: `nav-link-item px-3 py-2 rounded-md text-sm font-bold uppercase transition-all duration-300 whitespace-nowrap ${isActive ? 'bg-highlight text-primary-bg shadow-md' : 'text-text-light hover:bg-white/10 hover:text-highlight'}`
+                }, children)
+            );
+        };
+
+        // Componente del Encabezado con nueva disposición para móvil
+        const Header = ({ isMenuOpen, setIsMenuOpen, activeId }) => {
+          const { t } = useLanguage();
+          return (
+            React.createElement('header', { className: "fixed top-0 left-0 w-full bg-nav-bg/90 backdrop-blur-sm text-nav-text p-4 px-4 md:px-10 shadow-lg z-50 flex justify-between items-center h-[80px]" },
+              // Contenedor Izquierdo: Botón Hamburguesa (solo en móvil), Navegación (solo en desktop)
+              React.createElement('div', { className: "flex items-center space-x-4" },
+                React.createElement('button', {
+                    onClick: () => setIsMenuOpen(!isMenuOpen),
+                    className: "lg:hidden text-text-light hover:text-highlight transition-colors", // Oculto en lg y superiores
+                    'aria-label': "Abrir menú"
+                }, React.createElement(HamburgerIcon)),
+                React.createElement('nav', { className: "hidden lg:flex items-center space-x-2" }, // Visible en lg y superiores
+                    menuData.map(category => React.createElement(NavLink, { key: category.id, href: `#${category.id}`, activeId, onClick: () => {} }, t(category.title)))
+                )
+              ),
+              // Contenedor Derecho: Banderas y Logo
+              React.createElement('div', { className: "flex items-center space-x-4" },
+                React.createElement(LanguageSwitcher),
+                React.createElement('a', { href: "#hero", className: "font-heading text-2xl md:text-3xl text-highlight font-extrabold uppercase tracking-wider" }, "Cafetto 1918")
+              )
+            )
+          );
+        };
+        
+        // Componente del Menú Móvil (con cierre al hacer clic afuera y espaciado corregido)
+        const MobileMenu = ({ isOpen, setIsOpen, activeId, info, socialLinks }) => {
+          const { t } = useLanguage();
+          
+          if (!isOpen) return null;
+          
+          return (
+            React.createElement('div', { 
+                className: "fixed inset-0 z-[1001] bg-black/50 lg:hidden",
+                onClick: () => setIsOpen(false) 
+            }, 
+                React.createElement('div', { 
+                    className: `fixed top-0 left-0 h-full w-64 bg-nav-bg/95 backdrop-blur-sm shadow-xl transform transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : '-translate-x-full'}`,
+                    onClick: e => e.stopPropagation()
+                },
+                    React.createElement('div', { className: "mobile-menu-content flex flex-col p-6 overflow-y-auto" },
+                        React.createElement('div', { className: "flex justify-between items-center mb-8" }, 
+                          React.createElement('a', { href: "#hero", onClick: () => setIsOpen(false), className: "font-heading text-1xl text-highlight font-extrabold uppercase tracking-wider" }, "Menu Cafetto"),
+                          React.createElement('button', {
+                              onClick: () => setIsOpen(false),
+                              className: "text-text-light hover:text-highlight transition-colors",
+                              'aria-label': "Cerrar menú"
+                          }, React.createElement(CloseIcon))
+                        ),
+                        React.createElement('nav', { className: "flex flex-col items-start mobile-nav-links space-y-1" },
+                            menuData.map(category => React.createElement(NavLink, { key: category.id, href: `#${category.id}`, activeId, onClick: () => setIsOpen(false), isMobile: true }, t(category.title)))
+                        ),
+                         React.createElement('div', { className: "mt-8 pt-6 border-t border-white/10" }, 
+                            React.createElement('div', { className: "flex justify-center space-x-6 mb-6" },
+                                socialLinks.map(link => {
+                                    return React.createElement('a', {
+                                        key: link.platform,
+                                        href: link.url,
+                                        target: "_blank",
+                                        rel: "noopener noreferrer",
+                                        className: "transition-transform duration-300 hover:scale-110",
+                                        'aria-label': t(link.label)
+                                    }, React.createElement('img', {src: link.iconUrl, className: "w-6 h-6", alt: link.platform}));
+                                })
+                            ),
+                            React.createElement('div', { className: "text-center text-text-medium text-xs space-y-2" },
+                                React.createElement('p', null, React.createElement('strong', {className: "text-text-light font-bold"}, t(info.address)), React.createElement('br'), t(info.address_val)),
+                                React.createElement('p', null, React.createElement('strong', {className: "text-text-light font-bold"}, t(info.schedule)), React.createElement('br'), t(info.schedule_val)),
+                                React.createElement('p', null, React.createElement('strong', {className: "text-text-light font-bold"}, t(info.phones)), React.createElement('br'), React.createElement('a', {href: "tel:+593979404088", className: "text-highlight hover:text-text-light transition"}, "0979404088"), " - ", React.createElement('a', {href: "tel:+593978888670", className: "text-highlight hover:text-text-light transition"}, "0978888670"))
+                            )
+                         )
+                    )
+                )
+            )
+          );
+        };
+        
+        // Componente de la sección Héroe (Ahora con LOGO animado)
+        const Hero = ({ onOpenMenu }) => (
+            React.createElement('section', { 
+                id: "hero", 
+                className: "pt-[80px] h-[35vh] md:h-[60vh] flex flex-col justify-center items-center text-center bg-cover bg-center", 
+                style:{backgroundImage: "url('https://i.ibb.co/0pwKcJnZ/PORTADA-INICIO.jpg')"} 
+            },
+                React.createElement('button', { 
+                    onClick: onOpenMenu, // Acción de clic para abrir el menú
+                    className: "w-48 md:w-64 transition-transform duration-300 hover:scale-105 lg:cursor-default logo-pulse" 
+                }, React.createElement('img', { src: "https://i.ibb.co/7t3JrHPf/LOGO-CAFETTO.png", alt: "Logo Cafetto 1918"}))
+            )
+        );
+
+        // Componente para la tarjeta de un plato del menú (espaciado reducido)
+        const MenuItemCard = ({ item }) => {
+          const { t } = useLanguage();
+          return (
+            React.createElement('div', { className: "bg-primary-bg p-5 rounded-lg shadow-lg flex flex-col h-full hover:shadow-2xl hover:-translate-y-1 transition-all duration-300" }, // padding reducido
+                React.createElement('div', { className: "flex justify-between items-baseline border-b border-dashed border-white/10 pb-2 mb-3" }, // mb reducido
+                    React.createElement('h3', { className: "font-body text-xl font-bold uppercase tracking-wide text-text-light" }, t(item.name)),
+                    React.createElement('p', { className: "font-body text-xl font-bold text-highlight flex-shrink-0 ml-3" }, item.price)
+                ),
+                item.description && React.createElement('p', { className: "font-body text-text-medium text-sm leading-relaxed flex-grow" }, t(item.description))
+            )
+          );
+        };
+
+        // Componente para una sección de categoría del menú (iconos SVG restaurados)
+        const MenuCategorySection = ({ category }) => {
+            const { t } = useLanguage();
+            const Icon = category.icon;
+            return (
+                React.createElement('section', { id: category.id, className: "py-16 md:py-24" },
+                    React.createElement('div', { className: "max-w-4xl mx-auto bg-secondary-bg p-6 sm:p-10 md:p-12 rounded-xl shadow-2xl" }, // padding reducido
+                        React.createElement('h2', { className: "font-heading text-4xl sm:text-5xl md:text-6xl text-highlight font-bold uppercase text-center tracking-wider relative pb-5 mb-8" },
+                            React.createElement('span', { className: "flex justify-center items-center" }, // quitado gap-4 para que el SVG controle el margen
+                                React.createElement(Icon), 
+                                ` ${t(category.title)}`
+                            ),
+                            React.createElement('span', { className: "absolute bottom-0 left-1/2 -translate-x-1/2 w-24 h-1 bg-accent rounded-full" })
+                        ),
+                        React.createElement('img', { src: category.imageUrl, alt: t(category.title), className: "w-full h-64 md:h-80 object-cover rounded-lg mb-12 shadow-lg", loading: "lazy" }),
+                        React.createElement('div', { className: "grid grid-cols-1 md:grid-cols-2 gap-6" }, // gap reducido de 8 a 6
+                            category.items.map((item, index) => React.createElement(MenuItemCard, { key: index, item: item }))
+                        )
+                    )
+                )
+            );
+        };
+
+        // Componente del Pie de Página (Actualizado con iconos de imagen)
+        const Footer = ({ info, socialLinks }) => {
+            const { t } = useLanguage();
+
+            return (
+                React.createElement('footer', { className: "bg-nav-bg text-center py-4 px-4 mt-4 text-text-small" },
+                    // Social Media Links
+                    React.createElement('div', { className: "flex justify-center space-x-6 text-text-light mb-6" },
+                        socialLinks.map(link => {
+                             return React.createElement('a', {
+                                 key: link.platform,
+                                 href: link.url,
+                                 target: "_blank",
+                                 rel: "noopener noreferrer",
+                                 className: "transition-transform duration-300 hover:scale-110",
+                                 'aria-label': t(link.label)
+                             }, React.createElement('img', { src: link.iconUrl, className: "w-8 h-8", alt: link.platform }));
+                        })
+                    ),
+                    // Contact Info
+                    React.createElement('p', { className: "mb-3" }, React.createElement('strong', {className: "text-text-light font-bold"}, t(info.address)), ` ${t(info.address_val)}`),
+                    React.createElement('p', { className: "mb-3" }, React.createElement('strong', {className: "text-text-light font-bold"}, t(info.schedule)), ` ${t(info.schedule_val)}`),
+                    React.createElement('p', null, React.createElement('strong', {className: "text-text-light font-bold"}, t(info.phones)), " ", React.createElement('a', {href: "tel:+593979404088", className: "text-highlight hover:text-text-light transition"}, "0979404088"), " - ", React.createElement('a', {href: "tel:+593978888670", className: "text-highlight hover:text-text-light transition"}, "0978888670"))
+                )
+            );
+        };
+        
+        // Componente del modal de WhatsApp (AHORA MULTILINGÜE)
+        const WhatsAppModal = ({ isOpen, onClose }) => {
+            const { t } = useLanguage();
+            if (!isOpen) return null;
+            
+            const whatsappLink = "https://wa.me/593979404088?text=" + t(whatsappModalText.linkMessage);
+            
+            return React.createElement('div', {
+                className: "fixed inset-0 z-[1002] flex items-center justify-center bg-black/70",
+                onClick: onClose
+            }, React.createElement('div', {
+                className: "bg-secondary-bg p-8 rounded-lg shadow-2xl text-center mx-4",
+                onClick: e => e.stopPropagation() // Previene que el clic en el modal lo cierre
+            },
+                React.createElement('h3', { className: "font-heading text-2xl text-highlight mb-4"}, t(whatsappModalText.title)),
+                React.createElement('p', { className: "text-text-light mb-6"}, t(whatsappModalText.message)),
+                React.createElement('div', { className: "flex justify-center gap-4" },
+                    React.createElement('a', {
+                        href: whatsappLink,
+                        target: "_blank",
+                        rel: "noopener noreferrer",
+                        className: "bg-whatsapp hover:bg-whatsapp-dark text-white font-bold py-2 px-6 rounded-lg transition-colors duration-300",
+                        onClick: onClose
+                    }, t(whatsappModalText.confirm)),
+                    React.createElement('button', {
+                        onClick: onClose,
+                        className: "bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-6 rounded-lg transition-colors duration-300"
+                    }, t(whatsappModalText.cancel))
+                )
+            ));
+        };
+
+        // Componente del botón flotante de WhatsApp (Ahora un botón que abre el modal)
+        const WhatsAppButton = ({ onClick }) => {
+            return (
+                React.createElement('button', {
+                    onClick: onClick,
+                    className: "fixed top-[35%] right-6 w-16 h-16 rounded-full flex justify-center items-center shadow-lg z-40 transition-transform duration-300 whatsapp-pulse",
+                    'aria-label': "Abrir chat de WhatsApp"
+                }, React.createElement('img', { src: "https://i.ibb.co/JW9qS3qh/whatsapp.png", className: "w-full h-full object-cover rounded-full", alt: "WhatsApp" }))
+            );
+        };
+
+        // Componente Principal de la Aplicación
+        const App = () => {
+          const [isMenuOpen, setIsMenuOpen] = useState(false);
+          const [isWhatsAppModalOpen, setIsWhatsAppModalOpen] = useState(false);
+          
+          const categoryIds = useMemo(() => menuData.map(c => c.id), []);
+          const activeId = useScrollSpy(categoryIds, { rootMargin: '-40% 0px -60% 0px' });
+
+          useEffect(() => {
+              const handleResize = () => {
+                  if (window.innerWidth >= 1024) {
+                      setIsMenuOpen(false);
+                  }
+              };
+              window.addEventListener('resize', handleResize);
+              return () => window.removeEventListener('resize', handleResize);
+          }, []);
+
+
+          return (
+            React.createElement(LanguageProvider, null,
+                React.createElement('div', { className: "bg-primary-bg min-h-screen font-body text-text-light" },
+                    React.createElement(Header, { isMenuOpen, setIsMenuOpen, activeId }),
+                    React.createElement(MobileMenu, { isOpen: isMenuOpen, setIsOpen: setIsMenuOpen, activeId, info: contactInfo, socialLinks: socialLinks }),
+                    React.createElement('main', null,
+                        React.createElement(Hero, { onOpenMenu: () => setIsMenuOpen(true) }),
+                        React.createElement('div', { className: "container mx-auto px-4" },
+                            menuData.map(category => React.createElement(MenuCategorySection, { key: category.id, category }))
+                        )
+                    ),
+                    React.createElement(Footer, { info: contactInfo, socialLinks: socialLinks }),
+                    React.createElement(WhatsAppButton, { onClick: () => setIsWhatsAppModalOpen(true) }),
+                    React.createElement(WhatsAppModal, { 
+                        isOpen: isWhatsAppModalOpen, 
+                        onClose: () => setIsWhatsAppModalOpen(false) 
+                    })
+                )
+            )
+          );
+        };
+        // --- FIN: Lógica de la Aplicación ---
+
+
+        // --- INICIO: Renderizado de la Aplicación ---
+        const rootElement = document.getElementById('root');
+        const root = ReactDOM.createRoot(rootElement);
+        root.render(React.createElement(App));
+        // --- FIN: Renderizado de la Aplicación ---
+
+    </script>
+</body>
+</html>

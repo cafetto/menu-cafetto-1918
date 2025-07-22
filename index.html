@@ -114,9 +114,9 @@
 
     <!-- Audio de fondo -->
     <audio id="background-music" loop controls volume="0.2">
-        <source src="https://github.com/cafetto/menucafetto/blob/b6b51aabb2152c899d299869bf89dcdb245574fe/Pirouette.mp3?raw=true" type="audio/mpeg">
-        Tu navegador no soporta el elemento de audio.
-    </audio>
+    <!-- Cambiado el SRC a /Pirouette.mp3 para que Vercel lo sirva desde la raíz -->
+    <source src="/Pirouette.mp3" type="audio/mpeg">
+</audio>
 
     <!-- Script principal de la aplicación React -->
     <script>

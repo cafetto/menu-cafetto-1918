@@ -74,10 +74,10 @@
             }
         }
         .whatsapp-pulse {
-            animation: pulse-green 3s infinite;
+            animation: pulse-green 1s infinite;
         }
         .review-pulse {
-            animation: pulse-gold 3s infinite;
+            animation: pulse-gold 4s infinite;
         }
 
         /* Animación de pulso para el logo en la portada */
@@ -571,7 +571,7 @@
             return (
                 React.createElement('button', {
                     onClick: onClick,
-                    className: "fixed top-[calc(35%_+_5rem)] right-6 w-12 h-12 rounded-full flex justify-center items-center shadow-lg z-40 bg-review-color/80 hover:bg-review-color transition-all duration-300 review-pulse", // Posición y tamaño ajustados, clase de pulso
+                    className: "fixed top-[calc(35%_+_4rem)] right-6 w-9 h-9 rounded-full flex justify-center items-center shadow-lg z-40 bg-review-color/80 hover:bg-review-color transition-all duration-300 review-pulse", // Posición y tamaño ajustados, clase de pulso
                     'aria-label': t(reviewModalText.button)
                 }, 
                     React.createElement('img', { src: "https://i.ibb.co/DHfFKvDC/CALIFICAR.png", className: "w-full h-full object-cover rounded-full", alt: "CALIFICAR" })

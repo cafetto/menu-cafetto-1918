@@ -1,5 +1,3 @@
---- START OF FILE MENUCAFETTO-V27-FINAL.html ---
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -7,127 +5,352 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cafetto 1918 - Menú Gourmet</title>
 
-    <!-- Preconexión a dominios de fuentes e imágenes para una carga más rápida -->
+    <!-- Preconexión a dominios de fuentes e imágenes -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="preconnect" href="https://i.ibb.co">
 
-    <!-- Importación de Fuentes de Google -->
+    <!-- Fuentes de Google -->
     <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 
-    <!-- Inclusión de Tailwind CSS a través de CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Font Awesome para iconos -->
+    <!-- Font Awesome para Iconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9xXqehU40Tx+dbmaWpQ9PqQ+6L4AA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <!-- Configuración personalizada de Tailwind CSS -->
-    <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            'primary-bg': '#1a1a1a',
-            'secondary-bg': '#2a2a2a',
-            'nav-bg': '#111111',
-            'text-light': '#f0f0f0',
-            'text-medium': '#b0b0b0',
-            'highlight': '#e4b882',
-            'accent': '#c49a62',
-            'whatsapp': '#25D366',
-            'whatsapp-dark': '#128C7E',
-          },
-          fontFamily: {
-            heading: ['EB Garamond', 'serif'],
-            body: ['Montserrat', 'sans-serif'],
-          },
-           boxShadow: {
-            'lg': '0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.15)',
-            'xl': '0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.1)',
-            '2xl': '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
-          }
-        }
-      }
-    }
-    </script>
+    <!-- Tailwind CSS vía CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Estilos CSS Personalizados -->
     <style>
-        /* Estilo para un scroll suave en toda la página */
-        html {
-            scroll-behavior: smooth;
+        /* Variables CSS */
+        :root {
+            --primary-bg: #1a1a1a;
+            --secondary-bg: #2a2a2a;
+            --nav-bg: #111111;
+            --text-light: #f0f0f0;
+            --text-medium: #b0b0b0;
+            --highlight: #e4b882;
+            --accent: #c49a62;
+            --whatsapp: #25D366;
+            --whatsapp-dark: #128C7E;
         }
-        /* Sombra de texto personalizada para el Héroe */
-        .text-shadow-lg {
-            text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
+        /* Estilos Generales */
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: Montserrat, sans-serif;
+            margin: 0;
+            padding-top: 80px; /* Espacio para el header fijo */
+            background-color: var(--primary-bg);
+            color: var(--text-light);
+            line-height: 1.6;
         }
-        /* Altura mínima para el menú móvil si el contenido es corto */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        .text-shadow-lg { text-shadow: 2px 2px 8px rgba(0,0,0,0.8); }
+
+        /* --- ENCABEZADO Y NAVEGACIÓN --- */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 80px;
+            background-color: rgba(17, 17, 17, 0.9);
+            backdrop-filter: blur(4px);
+            padding: 0 2.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .logo {
+            font-family: EB Garamond, serif;
+            font-size: 1.8em;
+            font-weight: 900;
+            color: var(--highlight);
+            text-transform: uppercase;
+            text-decoration: none;
+            letter-spacing: 0.05em;
+        }
+        .nav-links {
+            display: none; /* Oculto por defecto, se muestra en pantallas grandes */
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .nav-links a {
+            padding: 0.5rem 0.75rem;
+            border-radius: 0.375rem;
+            font-size: 0.98em;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--nav-text);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            letter-spacing: 0.5px;
+        }
+        .nav-links a:hover {
+            color: var(--nav-hover);
+            background-color: rgba(255, 255, 255, 0.08);
+        }
+        .nav-links a.active {
+            background-color: var(--highlight);
+            color: var(--primary-bg);
+            font-weight: 900;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+        }
+        .hamburger-btn {
+            display: block; /* Visible por defecto, se oculta en pantallas grandes */
+            font-size: 1.75rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--text-light);
+        }
+        .hamburger-btn:hover {
+            color: var(--highlight);
+        }
+        .language-switcher button {
+            padding: 0.25rem;
+            border-radius: 0.375rem;
+            transition: all 0.3s;
+            opacity: 0.6;
+            background: none;
+            border: none;
+        }
+        .language-switcher button.active {
+            opacity: 1;
+            background-color: rgba(228, 184, 130, 0.2); /* highlight/20 */
+            box-shadow: 0 0 0 2px var(--highlight); /* ring-2 */
+        }
+        .language-switcher img {
+            height: 1.5rem;
+            width: 2rem;
+            border-radius: 2px;
+        }
+
+        /* --- MENÚ MÓVIL (HAMBURGUESA) --- */
+        .mobile-menu {
+            transform: translateX(-100%); /* Menú oculto a la izquierda */
+            transition: transform 0.3s ease-in-out;
+        }
+        .mobile-menu.is-open {
+            transform: translateX(0);
+        }
+        /* Oculta el botón de hamburguesa en pantallas grandes */
+        @media (min-width: 1024px) {
+            .hamburger-btn, .mobile-menu {
+                display: none;
+            }
+        }
+        /* Ajustes de espaciado dentro del menú móvil */
         .mobile-menu-content {
             min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
+        .mobile-nav-links {
+             gap: 0.5rem; /* Espaciado reducido entre enlaces del menu movil */
+        }
         .mobile-nav-links .nav-link-item {
-             padding-top: 0.25rem;
-             padding-bottom: 0.25rem;
+             padding-top: 0.5rem;
+             padding-bottom: 0.5rem;
         }
         .mobile-nav-links .nav-link-item.bg-highlight {
-             padding-top: 0.25rem;
-             padding-bottom: 0.25rem;
+             padding-top: 0.5rem;
+             padding-bottom: 0.5rem;
         }
 
-        /* Animación de pulso para el botón de WhatsApp */
-        @keyframes pulse-green {
-            0%, 100% {
-                transform: scale(1);
-                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
-            }
-            50% {
-                transform: scale(1.1);
-                box-shadow: 0 0 0 10px rgba(37, 211, 102, 0);
-            }
-        }
-        .whatsapp-pulse {
-            animation: pulse-green 3s infinite;
-        }
-
-        /* Animación de pulso para el logo en la portada */
-        @keyframes pulse-white {
-            0%, 100% {
-                transform: scale(1);
-                filter: drop-shadow(0 0 0px rgba(240, 240, 240, 0.7));
-            }
-            50% {
-                transform: scale(1.05);
-                filter: drop-shadow(0 0 15px rgba(240, 240, 240, 0.5));
-            }
-        }
-        .logo-pulse {
-            animation: pulse-white 5s infinite;
-        }
-        
-        /* Estilos para controles de audio */
-        .audio-controls {
-            position: fixed;
-            bottom: 100px; /* Posicionado sobre el botón de WhatsApp */
-            right: 6px;
-            z-index: 40;
-            background-color: rgba(42, 37, 37, 0.9); /* Usando secondary-bg con opacidad */
-            padding: 0.5rem;
-            border-radius: 0.5rem;
+        /* --- SECCIONES Y CONTENIDO DEL MENÚ --- */
+        .hero-section {
+            height: 35vh;
             display: flex;
+            flex-direction: column;
+            justify-content: center;
             align-items: center;
-            gap: 0.5rem;
+            text-align: center;
+            background-size: cover;
+            background-position: center;
+            color: var(--text-light);
+        }
+        .hero-section h1 {
+            font-family: var(--heading-font);
+            font-size: 4rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            text-shadow: 2px 2px 8px rgba(0,0,0,0.8);
+        }
+        /* Botón "INSPÍRATE" que abre el menú */
+        .hero-section button {
+            margin-top: 1rem;
+            background-color: var(--highlight);
+            color: var(--primary-bg);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding: 0.5rem 1.5rem;
+            border-radius: 0.375rem;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.3);
+            font-size: 1.125rem; /* 18px */
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        .hero-section button:hover {
+            transform: scale(1.1);
+        }
+
+        .category-section {
+            padding: 4rem 0;
+        }
+        .category-content {
+            max-width: 56rem;
+            margin: 0 auto;
+            background-color: var(--secondary-bg);
+            padding: 2.5rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        .category-content h2 {
+            font-family: var(--heading-font);
+            font-size: 3rem;
+            color: var(--highlight);
+            font-weight: 700;
+            text-transform: uppercase;
+            text-align: center;
+            position: relative;
+            padding-bottom: 1.25rem;
+            margin-bottom: 2rem;
+            letter-spacing: 1px;
+        }
+        .category-content h2 i {
+            color: var(--accent);
+            margin-right: 15px;
+            font-size: 0.9em;
+            vertical-align: middle;
+        }
+        .category-content h2::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 3px;
+            background-color: var(--accent);
+            margin: 10px auto;
+            border-radius: 5px;
+        }
+        .category-image {
+            width: 100%;
+            height: 16rem; /* 256px */
+            object-fit: cover;
+            border-radius: 0.5rem;
+            margin-bottom: 3rem;
             box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3);
         }
-        .play-pause-btn {
-            background: none;
-            border: none;
-            color: var(--text-light);
-            font-size: 1.4rem; /* Tamaño del icono */
-            cursor: pointer;
-            padding: 0.25rem;
+        .menu-items-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
         }
-        .volume-slider {
-            width: 60px; /* Ancho del slider */
+        .menu-item {
+            background-color: var(--primary-bg);
+            padding: 1.25rem; /* padding reducido */
+            border-radius: 0.5rem;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .menu-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 18px 35px rgba(0, 0, 0, 0.4);
+        }
+        .menu-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+            padding-bottom: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+        .menu-item-header h3 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-light);
+            margin: 0;
+        }
+        .menu-item-header .price {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: var(--highlight);
+            flex-shrink: 0;
+            margin-top: auto; /* Empuja el precio hacia abajo */
+        }
+        .menu-item-description {
+            font-size: 0.875rem;
+            color: var(--text-medium);
+            line-height: 1.5;
+            margin-bottom: 0.75rem;
+            flex-grow: 1;
+        }
+        
+        /* --- FOOTER --- */
+        footer {
+            background-color: var(--nav-bg);
+            text-align: center;
+            padding: 2rem 1rem;
+            margin-top: 2.5rem; /* Margen superior para separar del contenido */
+            color: var(--text-medium);
+            font-size: 1.1rem;
+        }
+        footer .footer-social-links {
+            margin-bottom: 1.5rem;
+        }
+        footer p { margin-bottom: 0.75rem; line-height: 1.8; }
+        footer strong {
+            font-weight: 700;
+            color: var(--text-light);
+            font-family: Montserrat, sans-serif;
+        }
+        footer a {
+            color: var(--highlight);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        footer a:hover {
+            color: var(--text-light);
+        }
+
+        /* --- BOTÓN WHATSAPP FLOTANTE --- */
+        /* Se mantiene el botón original de WhatsApp y se añade la animación */
+        .whatsapp-btn {
+            position: fixed;
+            top: 35%; /* Ajustado para estar en la mitad vertical */
+            right: 6px; /* Ligeramente separado del borde derecho */
+            width: 64px; /* w-16 */
+            height: 64px; /* h-16 */
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2.2em;
+            box-shadow: 0 5px 15px -3px rgba(0,0,0,0.4); /* Sombra lg */
+            z-index: 40;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none;
+        }
+        .whatsapp-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
         }
     </style>
 
@@ -141,7 +364,7 @@
     <div id="root"></div>
 
     <!-- Audio de fondo -->
-    <audio id="background-music" loop volume="0.2">
+    <audio id="background-music" loop muted controls volume="0.2">
         <!-- SRC apunta al archivo de audio en la raíz del proyecto Vercel -->
         <source src="/Pirouette.mp3" type="audio/mpeg">
     </audio>
@@ -400,7 +623,7 @@
                         <div class="bg-primary-bg p-5 rounded-lg shadow-lg flex flex-col h-full hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
                             <div class="flex justify-between items-baseline border-b border-dashed border-white/10 pb-2 mb-3">
                                 <h3 class="font-body text-xl font-bold uppercase tracking-wide text-text-light">Tortilla Española / Spanish Omelette</h3>
-                                <p class="font-body text-xl font-bold text-highlight flex-shrink-0 ml-4">$5.00</p>
+                                <p class="font-body text-xl font-bold text-highlight flex-shrink-0 ml-3">$5.00</p>
                             </div>
                             <p class="font-body text-text-medium text-sm leading-relaxed flex-grow">Chips de Papas, cebollas salteadas en su tortilla, servido con pan de ajo especial de la casa, dedos de queso, café y jugo del día. / Potato chips, sautéed onions in an omelette, served with special house garlic bread, cheese sticks, coffee, and juice of the day.</p>
                         </div>
@@ -497,6 +720,140 @@
                             <div class="flex justify-between items-baseline border-b border-dashed border-white/10 pb-2 mb-3">
                                 <h3 class="font-body text-xl font-bold uppercase tracking-wide">Mocaccino</h3>
                                 <p class="font-body text-xl font-bold text-highlight flex-shrink-0 ml-4">$3.00</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section id="postres" class="py-12">
+                <div class="max-w-4xl mx-auto bg-secondary-bg p-6 sm:p-10 md:p-12 rounded-xl shadow-2xl">
+                    <h2 class="font-heading text-4xl sm:text-5xl md:text-6xl text-highlight font-bold uppercase text-center tracking-wider relative pb-5 mb-8">
+                        <span class="flex justify-center items-center">
+                            <i class="fas fa-ice-cream mr-3"></i> Postres / Desserts
+                        </span>
+                        <span class="absolute bottom-0 left-1/2 -translate-x-1/2 w-24 h-1 bg-accent rounded-full"></span>
+                    </h2>
+                    <img src="https://i.ibb.co/0jkJKJvK/postres.jpg" alt="Postres" class="w-full h-64 md:h-80 object-cover rounded-lg mb-12 shadow-lg" loading="lazy">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-primary-bg p-5 rounded-lg shadow-lg flex flex-col h-full hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+                            <div class="flex justify-between items-baseline border-b border-dashed border-white/10 pb-2 mb-3">
+                                <h3 class="font-body text-xl font-bold uppercase tracking-wide text-text-light">Cheesecake de Frutos Rojos / Red Berries Cheesecake</h3>
+                                <p class="font-body text-xl font-bold text-highlight flex-shrink-0 ml-4">$3.50</p>
+                            </div>
+                            <p class="font-body text-text-medium text-sm leading-relaxed flex-grow">Cremoso pastel de queso sobre una base crujiente de galleta, cubierto con una deliciosa mezcla de frutos rojos frescos y coulis artesanal. / Creamy cheesecake on a crunchy cookie base, topped with a delicious mix of fresh red berries and artisanal coulis.</p>
+                        </div>
+                        <div class="bg-primary-bg p-5 rounded-lg shadow-lg flex flex-col h-full hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+                            <div class="flex justify-between items-baseline border-b border-dashed border-white/10 pb-2 mb-3">
+                                <h3 class="font-body text-xl font-bold uppercase tracking-wide">Tiramisú Clásico / Classic Tiramisu</h3>
+                                <p class="font-body text-xl font-bold text-highlight flex-shrink-0 ml-4">$3.50</p>
+                            </div>
+                            <p class="font-body text-text-medium text-sm leading-relaxed flex-grow">Delicado bizcocho bañado en miel infusionada con café espresso, cubierto con una suave espuma de mascarpone y finalizado con un sutil toque de cacao amargo. / A delicate sponge cake soaked in honey infused with espresso, topped with a smooth mascarpone foam and finished with a subtle touch of bitter cocoa.</p>
+                        </div>
+                        <div class="bg-primary-bg p-5 rounded-lg shadow-lg flex flex-col h-full hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+                            <div class="flex justify-between items-baseline border-b border-dashed border-white/10 pb-2 mb-3">
+                                <h3 class="font-body text-xl font-bold uppercase tracking-wide">Waffle Oreo</h3>
+                                <p class="font-body text-xl font-bold text-highlight flex-shrink-0 ml-4">$4.00</p>
+                            </div>
+                            <p class="font-body text-text-medium text-sm leading-relaxed">Dos waffles brownie, bañados en chocolate, Oreo triturada y helado. / Two brownie waffles, covered in chocolate, crushed Oreo, and ice cream.</p>
+                        </div>
+                        <div class="bg-primary-bg p-5 rounded-lg shadow-lg flex flex-col h-full hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+                            <div class="flex justify-between items-baseline border-b border-dashed border-white/10 pb-2 mb-3">
+                                <h3 class="font-body text-xl font-bold uppercase tracking-wide">Waffle Red Velvet</h3>
+                                <p class="font-body text-xl font-bold text-highlight flex-shrink-0 ml-4">$4.00</p>
+                            </div>
+                            <p class="font-body text-text-medium text-sm leading-relaxed">Dos waffles Red Velvet, rellenos de coulis de frutos rojos, decorados con crema y helado. / Two Red Velvet waffles, filled with red berry coulis, decorated with cream and ice cream.</p>
+                        </div>
+                        <div class="bg-primary-bg p-5 rounded-lg shadow-lg flex flex-col h-full hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+                            <div class="flex justify-between items-baseline border-b border-dashed border-white/10 pb-2 mb-3">
+                                <h3 class="font-body text-xl font-bold uppercase tracking-wide">Cremoso de Mango / Creamy Mango</h3>
+                                <p class="font-body text-xl font-bold text-highlight flex-shrink-0 ml-4">$3.50</p>
+                            </div>
+                            <p class="font-body text-text-medium text-sm leading-relaxed">Deliciosa crema de mango con un toque de hierbabuena, lima y ron, inspirada en el clásico mojito. / Delicious mango cream with a hint of mint, lime, and rum, inspired by the classic mojito.</p>
+                        </div>
+                        <div class="bg-primary-bg p-5 rounded-lg shadow-lg flex flex-col h-full hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+                            <div class="flex justify-between items-baseline border-b border-dashed border-white/10 pb-2 mb-3">
+                                <h3 class="font-body text-xl font-bold uppercase tracking-wide">Torta de Sacher / Sacher Cake</h3>
+                                <p class="font-body text-xl font-bold text-highlight flex-shrink-0 ml-4">$3.50</p>
+                            </div>
+                            <p class="font-body text-text-medium text-sm leading-relaxed">Torta de chocolate humectada en vino tinto, rellena de manjar de leche, bañada en ganache de chocolate y decorada con polvo de oro. / Chocolate cake moistened with red wine, filled with dulce de leche, covered in chocolate ganache, and topped with gold dust.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section id="otras-bebidas" class="py-12">
+                <div class="max-w-4xl mx-auto bg-secondary-bg p-6 sm:p-10 md:p-12 rounded-xl shadow-2xl">
+                    <h2 class="font-heading text-4xl sm:text-5xl md:text-6xl text-highlight font-bold uppercase text-center tracking-wider relative pb-5 mb-8">
+                        <span class="flex justify-center items-center">
+                            <i class="fas fa-martini-glass-citrus mr-3"></i> Otras Bebidas / Other Drinks
+                        </span>
+                        <span class="absolute bottom-0 left-1/2 -translate-x-1/2 w-24 h-1 bg-accent rounded-full"></span>
+                    </h2>
+                    <img src="https://i.ibb.co/5gzx6pLN/bebidas.jpg" alt="Bebidas" class="w-full h-64 md:h-80 object-cover rounded-lg mb-12 shadow-lg" loading="lazy">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-primary-bg p-5 rounded-lg shadow-lg">
+                            <div class="flex justify-between items-baseline border-b border-dashed border-white/10 pb-2 mb-3">
+                                <h3 class="font-body text-xl font-bold uppercase tracking-wide text-text-light">Chocolate</h3>
+                                <p class="font-body text-xl font-bold text-highlight flex-shrink-0 ml-4">$3.00</p>
+                            </div>
+                        </div>
+                        <div class="bg-primary-bg p-5 rounded-lg shadow-lg">
+                            <div class="flex justify-between items-baseline border-b border-dashed border-white/10 pb-2 mb-3">
+                                <h3 class="font-body text-xl font-bold uppercase tracking-wide">Té de Frutos Rojos (Prensa) / Red Berry Tea (French Press)</h3>
+                                <p class="font-body text-xl font-bold text-highlight flex-shrink-0 ml-4">$3.00</p>
+                            </div>
+                        </div>
+                        <div class="bg-primary-bg p-5 rounded-lg shadow-lg">
+                            <div class="flex justify-between items-baseline border-b border-dashed border-white/10 pb-2 mb-3">
+                                <h3 class="font-body text-xl font-bold uppercase tracking-wide">Té de Frutos Rojos (Taza) / Red Berry Tea (Cup)</h3>
+                                <p class="font-body text-xl font-bold text-highlight flex-shrink-0 ml-4">$2.00</p>
+                            </div>
+                        </div>
+                        <div class="bg-primary-bg p-5 rounded-lg shadow-lg">
+                            <div class="flex justify-between items-baseline border-b border-dashed border-white/10 pb-2 mb-3">
+                                <h3 class="font-body text-xl font-bold uppercase tracking-wide">Té Verde con Almendra / Green Tea with Almond</h3>
+                                <p class="font-body text-xl font-bold text-highlight flex-shrink-0 ml-4">$2.00</p>
+                            </div>
+                        </div>
+                        <div class="bg-primary-bg p-5 rounded-lg shadow-lg">
+                            <div class="flex justify-between items-baseline border-b border-dashed border-white/10 pb-2 mb-3">
+                                <h3 class="font-body text-xl font-bold uppercase tracking-wide">Té Verde/Negro Ruso / Russian Green/Black Tea</h3>
+                                <p class="font-body text-xl font-bold text-highlight flex-shrink-0 ml-4">$2.00</p>
+                            </div>
+                        </div>
+                        <div class="bg-primary-bg p-5 rounded-lg shadow-lg">
+                            <div class="flex justify-between items-baseline border-b border-dashed border-white/10 pb-2 mb-3">
+                                <h3 class="font-body text-xl font-bold uppercase tracking-wide">Aromática / Herbal Tea</h3>
+                                <p class="font-body text-xl font-bold text-highlight flex-shrink-0 ml-4">$1.50</p>
+                            </div>
+                        </div>
+                        <div class="bg-primary-bg p-5 rounded-lg shadow-lg">
+                            <div class="flex justify-between items-baseline border-b border-dashed border-white/10 pb-2 mb-3">
+                                <h3 class="font-body text-xl font-bold uppercase tracking-wide">Frappuccino/Frappé</h3>
+                                <p class="font-body text-xl font-bold text-highlight flex-shrink-0 ml-4">$3.50</p>
+                            </div>
+                        </div>
+                        <div class="bg-primary-bg p-5 rounded-lg shadow-lg">
+                            <div class="flex justify-between items-baseline border-b border-dashed border-white/10 pb-2 mb-3">
+                                <h3 class="font-body text-xl font-bold uppercase tracking-wide">Milkshake</h3>
+                                <p class="font-body text-xl font-bold text-highlight flex-shrink-0 ml-4">$3.50</p>
+                            </div>
+                        </div>
+                        <div class="bg-primary-bg p-5 rounded-lg shadow-lg">
+                            <div class="flex justify-between items-baseline border-b border-dashed border-white/10 pb-2 mb-3">
+                                <h3 class="font-body text-xl font-bold uppercase tracking-wide">Limonada 1918 (Original o Jamaica) / 1918 Lemonade (Original or Hibiscus)</h3>
+                                <p class="font-body text-xl font-bold text-highlight flex-shrink-0 ml-4">$2.50</p>
+                            </div>
+                        </div>
+                        <div class="bg-primary-bg p-5 rounded-lg shadow-lg">
+                            <div class="flex justify-between items-baseline border-b border-dashed border-white/10 pb-2 mb-3">
+                                <h3 class="font-body text-xl font-bold uppercase tracking-wide">Zumo de Naranja / Orange Juice</h3>
+                                <p class="font-body text-xl font-bold text-highlight flex-shrink-0 ml-4">$2.50</p>
+                            </div>
+                        </div>
+                        <div class="bg-primary-bg p-5 rounded-lg shadow-lg">
+                            <div class="flex justify-between items-baseline border-b border-dashed border-white/10 pb-2 mb-3">
+                                <h3 class="font-body text-xl font-bold uppercase tracking-wide">Jugos y Batidos / Juices & Smoothies</h3>
+                                <p class="font-body text-xl font-bold text-highlight flex-shrink-0 ml-4">$2.00</p>
                             </div>
                         </div>
                     </div>

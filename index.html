@@ -117,25 +117,26 @@
         audio.currentTime = 0;
         audio.play();
 
-        // Fade-in al volumen objetivo (0.02)
-        const targetVolume = 0.05;
-        const fadeDuration = 2000; // milisegundos (2 segundos)
+        const targetVolume = 0.02;
+        const fadeDuration = 2000;
         const steps = 20;
         let step = 0;
 
         const fadeInterval = setInterval(() => {
           step++;
           audio.volume = (targetVolume / steps) * step;
-
-          if (step >= steps) {
-            clearInterval(fadeInterval);
-          }
+          if (step >= steps) clearInterval(fadeInterval);
         }, fadeDuration / steps);
       }
     });
-  });
-</script>
 
+    // Detectar si el usuario cambia de pestaña o minimiza
+    document.addEventListener("visibilitychange", () => {
+      if (document.visibilityState === "hidden") {
+        audio.pause(); // pausa la música
+      }
+    });
+  });
 </script>
 
     <script>

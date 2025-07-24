@@ -340,11 +340,11 @@
                 onClick: () => setIsOpen(false) 
             }, 
                 React.createElement('div', { 
-                    className: `fixed top-0 left-0 h-full w-64 bg-nav-bg/95 backdrop-blur-sm shadow-xl transform transition-transform duration-300 ease-in-out ${isOpen ? 'translate-x-0' : '-translate-x-full'}`,
+                    className: `fixed top-0 left-0 h-full w-64 bg-nav-bg/95 backdrop-blur-sm shadow-xl transform transition-transform duration-1000 ease-in-out ${isOpen ? 'translate-x-0' : '-translate-x-full'}`,
                     onClick: e => e.stopPropagation()
                 },
                     React.createElement('div', { className: "mobile-menu-content flex flex-col p-6 overflow-y-auto" },
-                        React.createElement('div', { className: "flex justify-between items-center mb-8" }, 
+                        React.createElement('div', { className: "flex justify-between items-center mb-4" }, 
                           React.createElement('a', { href: "#hero", onClick: () => setIsOpen(false), className: "font-heading text-xl text-highlight font-extrabold uppercase tracking-wider" }, "Menu Cafetto"),
                           React.createElement('button', {
                               onClick: () => setIsOpen(false),

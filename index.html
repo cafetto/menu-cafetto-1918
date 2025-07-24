@@ -102,9 +102,40 @@
 <body class="bg-primary-bg">
     <div id="root"></div>
 
-    <audio id="background-music" loop muted controls volume="0.2">
-        <source src="https://res.cloudinary.com/dg0yutpna/video/upload/v1753161439/Pirouette_j1pou6.mp3" type="audio/mpeg">
-    </audio>
+    <audio id="background-music">
+  <source src="https://res.cloudinary.com/dg0yutpna/video/upload/v1753161439/Pirouette_j1pou6.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const audio = document.getElementById("background-music");
+
+    document.body.addEventListener("click", () => {
+      if (audio.paused) {
+        audio.volume = 0;
+        audio.currentTime = 0;
+        audio.play();
+
+        // Fade-in al volumen objetivo (0.02)
+        const targetVolume = 0.05;
+        const fadeDuration = 2000; // milisegundos (2 segundos)
+        const steps = 20;
+        let step = 0;
+
+        const fadeInterval = setInterval(() => {
+          step++;
+          audio.volume = (targetVolume / steps) * step;
+
+          if (step >= steps) {
+            clearInterval(fadeInterval);
+          }
+        }, fadeDuration / steps);
+      }
+    });
+  });
+</script>
+
+</script>
 
     <script>
         const { useState, createContext, useContext, useEffect, useMemo, useCallback } = React;
@@ -324,20 +355,20 @@
                         React.createElement('nav', { className: "flex flex-col items-start mobile-nav-links space-y-1" },
                             menuData.map(category => React.createElement(NavLink, { key: category.id, href: `#${category.id}`, activeId, onClick: () => setIsOpen(false), isMobile: true }, t(category.title)))
                         ),
-                         React.createElement('div', { className: "mt-auto pt-6 border-t border-white/10" }, 
+                         React.createElement('div', { className: "mt-auto pt-2 border-t border-white/20" }, 
                             // Botón de Reseña en Menú Móvil
                             React.createElement('button', {
                                 onClick: () => { setIsOpen(false); setIsReviewModalOpen(true); }, // Cierra menú y abre modal de reseña
-                                className: "w-full bg-secondary-bg hover:bg-highlight/20 text-text-light font-bold py-2 px-4 rounded-md transition-colors duration-300 flex flex-col items-center mb-6 text-sm"
+                                className: "w-full bg-secondary-bg hover:bg-highlight/20 text-text-light font-bold py-2 px-4 rounded-md transition-colors duration-300 flex flex-col items-center mb-2 text-sm"
                             }, 
-                                React.createElement('p', {className: "mb-2"}, t(reviewModalText.button)),
+                                React.createElement('p', {className: "mb-1"}, t(reviewModalText.button)),
                                 React.createElement('div', { className: "flex items-center" },
                                     React.createElement('i', { className: "fas fa-star text-lg text-highlight mr-1 opacity-70" }),
                                     React.createElement('i', { className: "fas fa-star text-xl text-highlight" }),
                                     React.createElement('i', { className: "fas fa-star text-lg text-highlight ml-1 opacity-70" })
                                 )
                             ),
-                            React.createElement('div', { className: "flex justify-center space-x-6 mb-6" },
+                            React.createElement('div', { className: "flex justify-center space-x-6 mb-1" },
                                 socialLinks.map(link => {
                                     return React.createElement('a', {
                                         key: link.platform,
@@ -352,7 +383,8 @@
                             React.createElement('div', { className: "text-center text-text-medium text-sm space-y-3" },
                                 React.createElement('p', null, React.createElement('strong', {className: "text-text-light font-bold"}, t(info.address)), React.createElement('br'), React.createElement('a', { href: "https://maps.google.com/0", target: "_blank", className: "text-highlight hover:text-text-light transition" }, t(info.address_val))),
                                 React.createElement('p', null, React.createElement('strong', {className: "text-text-light font-bold"}, t(info.schedule)), React.createElement('br'), t(info.schedule_val)),
-                                React.createElement('p', null, React.createElement('strong', {className: "text-text-light font-bold"}, t(info.phones)), React.createElement('br'), React.createElement('a', {href: "tel:+593979404088", className: "text-highlight hover:text-text-light transition"}, "0979404088"), " - ", React.createElement('a', {href: "tel:+593978888670", className: "text-highlight hover:text-text-light transition"}, "0978888670"))
+                                React.createElement('p', null, React.createElement('strong', {className: "text-text-light font-bold"}, t(info.phones)), React.createElement('br'), React.createElement('a', {href: "tel:+593979404088", className: "text-highlight hover:text-text-light transition"}, "0979404088"), " - ", React.createElement('a', {href: "tel:+593978888670", className: "text-highlight hover:text-text-light transition"}, "0978888670")),
+                                React.createElement('p', { className: "text-text-light font-light opacity-50", style: { fontSize: '10px' }}, t(info.address1))
                             )
                          )
                     )
@@ -446,7 +478,8 @@
                     // Contact Info
                     React.createElement('p', null, React.createElement('strong', {className: "text-text-light font-bold"}, t(info.address)), React.createElement('br'), React.createElement('a', { href: "https://maps.google.com/0", target: "_blank", className: "text-highlight hover:text-text-light transition" }, t(info.address_val))),
                     React.createElement('p', null, React.createElement('strong', {className: "text-text-light font-bold"}, t(info.schedule)), React.createElement('br'), t(info.schedule_val)),
-                    React.createElement('p', null, React.createElement('strong', {className: "text-text-light font-bold"}, t(info.phones)), React.createElement('br'), React.createElement('a', {href: "tel:+593979404088", className: "text-highlight hover:text-text-light transition"}, "0979404088"), " - ", React.createElement('a', {href: "tel:+593978888670", className: "text-highlight hover:text-text-light transition"}, "0978888670"))
+                    React.createElement('p', null, React.createElement('strong', {className: "text-text-light font-bold"}, t(info.phones)), React.createElement('br'), React.createElement('a', {href: "tel:+593979404088", className: "text-highlight hover:text-text-light transition"}, "0979404088"), " - ", React.createElement('a', {href: "tel:+593978888670", className: "text-highlight hover:text-text-light transition"}, "0978888670")),
+                React.createElement('p', { className: "text-text-light font-light opacity-50", style: { fontSize: '10px' }}, t(info.address1))
                 )
             );
         };

@@ -130,11 +130,16 @@
       }
     });
 
-    // Detectar si el usuario cambia de pestaña o minimiza
+    // Opción 1: Cuando el documento pierde visibilidad
     document.addEventListener("visibilitychange", () => {
       if (document.visibilityState === "hidden") {
-        audio.pause(); // pausa la música
+        audio.pause();
       }
+    });
+
+    // Opción 2: Cuando la ventana pierde el foco (más confiable en algunos navegadores)
+    window.addEventListener("blur", () => {
+      audio.pause();
     });
   });
 </script>

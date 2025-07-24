@@ -308,7 +308,7 @@
         const Header = ({ isMenuOpen, setIsMenuOpen, activeId }) => {
           const { t } = useLanguage();
           return (
-            React.createElement('header', { className: "fixed top-0 left-0 w-full bg-nav-bg/90 backdrop-blur-sm text-nav-text p-4 px-4 md:px-10 shadow-lg z-50 flex justify-between items-center h-[80px]" },
+            React.createElement('header', { className: "fixed top-0 left-0 w-full bg-nav-bg/60 backdrop-blur-sm text-nav-text p-4 px-4 md:px-10 shadow-lg z-50 flex justify-between items-center h-[80px]" },
               // Contenedor Izquierdo: Botón Hamburguesa (solo en móvil), Navegación (solo en desktop)
               React.createElement('div', { className: "flex items-center space-x-4" },
                 React.createElement('button', {
@@ -341,7 +341,7 @@
                 onClick: () => setIsOpen(false) 
             }, 
                 React.createElement('div', { 
-                    className: `fixed top-0 left-0 h-full w-64 bg-nav-bg/95 backdrop-blur-sm shadow-xl transform transition-transform duration-1000 ease-in-out ${isOpen ? 'translate-x-0' : '-translate-x-full'}`,
+                    className: `fixed top-0 left-0 h-full w-64 bg-nav-bg/70 backdrop-blur-sm shadow-xl transform transition-transform duration-1000 ease-in-out ${isOpen ? 'translate-x-0' : '-translate-x-full'}`,
                     onClick: e => e.stopPropagation()
                 },
                     React.createElement('div', { className: "mobile-menu-content flex flex-col p-6 overflow-y-auto" },
@@ -413,7 +413,7 @@
           const { t } = useLanguage();
           return (
             React.createElement('div', { className: "bg-primary-bg p-5 rounded-lg shadow-lg flex flex-col h-full hover:shadow-2xl hover:-translate-y-1 transition-all duration-300" }, // padding reducido
-                React.createElement('div', { className: "flex justify-between items-baseline border-b border-dashed border-white/10 pb-2 mb-3" }, // mb reducido
+                React.createElement('div', { className: "flex justify-between items-baseline border-b border-dashed border-white/10 pb-1 mb-1" }, // mb reducido
                     React.createElement('h3', { className: "font-body text-xl font-bold uppercase tracking-wide text-text-light" }, t(item.name)),
                     React.createElement('p', { className: "font-body text-xl font-bold text-highlight flex-shrink-0 ml-3" }, item.price)
                 ),
@@ -428,8 +428,8 @@
             const Icon = category.icon;
             return (
                 React.createElement('section', { id: category.id, className: "py-16 md:py-24" },
-                    React.createElement('div', { className: "max-w-4xl mx-auto bg-secondary-bg p-6 sm:p-10 md:p-12 rounded-xl shadow-2xl" }, // padding reducido
-                        React.createElement('h2', { className: "font-heading text-4xl sm:text-5xl md:text-6xl text-highlight font-bold uppercase text-center tracking-wider relative pb-5 mb-8" },
+                    React.createElement('div', { className: "max-w-4xl mx-auto bg-secondary-bg p-2 sm:p-10 md:p-12 rounded-xl shadow-2xl" }, // padding reducido
+                        React.createElement('h2', { className: "font-heading text-2xl sm:text-5xl md:text-4xl text-highlight font-bold uppercase text-center tracking-wider relative pb-5 mb-8" },
                             React.createElement('span', { className: "flex justify-center items-center" }, // quitado gap-4 para que el SVG controle el margen
                                 React.createElement(Icon), 
                                 ` ${t(category.title)}`

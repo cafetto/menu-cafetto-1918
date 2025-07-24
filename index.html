@@ -437,7 +437,7 @@
                             React.createElement('span', { className: "absolute bottom-0 left-1/2 -translate-x-1/2 w-24 h-1 bg-accent rounded-full" })
                         ),
                         React.createElement('img', { src: category.imageUrl, alt: t(category.title), className: "w-full h-64 md:h-80 object-cover rounded-lg mb-12 shadow-lg", loading: "lazy" }),
-                        React.createElement('div', { className: "grid grid-cols-1 md:grid-cols-2 gap-6" }, // gap reducido de 8 a 6
+                        React.createElement('div', { className: "grid grid-cols-1 md:grid-cols-3 gap-4" }, // gap reducido de 8 a 6
                             category.items.map((item, index) => React.createElement(MenuItemCard, { key: index, item: item }))
                         )
                     )

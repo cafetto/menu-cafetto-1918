@@ -358,16 +358,16 @@
                          React.createElement('div', { className: "mt-auto pt-2 border-t border-white/20" }, 
                             // Botón de Reseña en Menú Móvil
                             React.createElement('button', {
-                                onClick: () => { setIsOpen(false); setIsReviewModalOpen(true); }, // Cierra menú y abre modal de reseña
-                                className: "w-full bg-secondary-bg hover:bg-highlight/20 text-text-light font-bold py-2 px-4 rounded-md transition-colors duration-300 flex flex-col items-center mb-2 text-sm"
-                            }, 
-                                React.createElement('p', {className: "mb-1"}, t(reviewModalText.button)),
-                                React.createElement('div', { className: "flex items-center" },
-                                    React.createElement('i', { className: "fas fa-star text-lg text-highlight mr-1 opacity-70" }),
-                                    React.createElement('i', { className: "fas fa-star text-xl text-highlight" }),
-                                    React.createElement('i', { className: "fas fa-star text-lg text-highlight ml-1 opacity-70" })
-                                )
-                            ),
+                            onClick: () => setIsReviewModalOpen(true),
+                            className: "w-full bg-highlight hover:bg-accent text-primary-bg font-bold py-2 px-4 rounded-md transition-colors duration-300 flex flex-col items-center mb-6 text-sm" // Cambiado bg y hover:bg
+                            },
+                            React.createElement('p', {className: "mb-1"}, t(reviewModalText.button)),
+                            React.createElement('div', { className: "flex items-center" },
+                            React.createElement('i', { className: "fas fa-star text-lg text-primary-bg mr-1 opacity-70" }), // Color de estrella cambiado a primary-bg para contraste
+                            React.createElement('i', { className: "fas fa-star text-xl text-primary-bg" }), // Color de estrella cambiado a primary-bg para contraste
+                            React.createElement('i', { className: "fas fa-star text-lg text-primary-bg ml-1 opacity-70" }) // Color de estrella cambiado a primary-bg para contraste
+                            )
+),
                             React.createElement('div', { className: "flex justify-center space-x-6 mb-1" },
                                 socialLinks.map(link => {
                                     return React.createElement('a', {
@@ -453,9 +453,9 @@
                     // Botón de Reseña en Footer
                     React.createElement('button', {
                         onClick: () => setIsReviewModalOpen(true),
-                        className: "w-full bg-secondary-bg hover:bg-highlight/20 text-text-light font-bold py-2 px-4 rounded-md transition-colors duration-300 flex flex-col items-center mb-6 text-sm"
+                        className: "w-full bg-secondary-bg hover:bg-accent text-primary-bg font-bold py-2 px-4 rounded-md transition-colors duration-300 flex flex-col items-center mb-6 text-sm" // Cambiado bg y hover:bg
                     }, 
-                        React.createElement('p', {className: "mb-2"}, t(reviewModalText.button)),
+                        React.createElement('p', {className: "mb-1"}, t(reviewModalText.button)),
                         React.createElement('div', { className: "flex items-center" },
                             React.createElement('i', { className: "fas fa-star text-lg text-highlight mr-1 opacity-70" }),
                             React.createElement('i', { className: "fas fa-star text-xl text-highlight" }),

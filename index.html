@@ -1,3 +1,5 @@
+--- START OF FILE MENUCAFETTO-V27-FINAL.html ---
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -139,7 +141,7 @@
     <div id="root"></div>
 
     <!-- Audio de fondo -->
-    <audio id="background-music" loop muted>
+    <audio id="background-music" loop volume="0.2">
         <!-- SRC apunta al archivo de audio en la raíz del proyecto Vercel -->
         <source src="/Pirouette.mp3" type="audio/mpeg">
     </audio>
@@ -170,7 +172,7 @@
     </header>
 
     <!-- Menú Desplegable Móvil -->
-    <div id="mobile-menu" class="mobile-menu fixed top-0 left-0 h-full w-64 bg-nav-bg/95 backdrop-blur-sm shadow-xl z- transform transition-transform duration-300 ease-in-out -translate-x-full">
+    <div id="mobile-menu" class="mobile-menu fixed top-0 left-0 h-full w-64 bg-nav-bg/95 backdrop-blur-sm shadow-xl z-[49] transform transition-transform duration-300 ease-in-out -translate-x-full">
         <div class="mobile-menu-content flex flex-col p-6 overflow-y-auto">
             <div class="flex justify-between items-center mb-8">
                 <a href="#hero" onclick="setIsOpenMenu(false)" class="font-heading text-xl text-highlight font-extrabold uppercase">Menu Cafetto</a>
@@ -198,9 +200,9 @@
                     <a href="https://www.instagram.com/cafetto1918/" target="_blank" class="hover:opacity-80 transition-opacity"><img src="https://i.ibb.co/7xx6dBTd/icon-instagram.png" alt="instagram" class="w-8 h-8"></a>
                 </div>
                 <div class="text-center text-text-medium text-sm space-y-3">
-                    <p><strong>Dirección / Address:</strong><br><a href="https://maps.app.goo.gl/TmbBzTDeUPeCfcgf6" target="_blank" class="text-highlight hover:text-text-light transition">10 de Agosto entre Colón y Espejo. Riobamba - Ecuador.</a></p>
-                    <p><strong>Horario / Hours:</strong><br>Lunes a sábado | 08h00-12h30, 16h00-21h00</p>
-                    <p><strong>Teléfonos / Phones:</strong> <a href="tel:+593979404088" class="text-highlight hover:text-text-light transition">0979404088</a> - <a href="tel:+593978888670" class="text-highlight hover:text-text-light transition">0978888670</a></p>
+                    <p><strong>Dirección:</strong> 10 de Agosto entre Colón y Espejo. Riobamba - Ecuador.</p>
+                    <p><strong>Horario de Atención:</strong> Lunes a sábado | 08h00-12h30, 16h00-21h00</p>
+                    <p><strong>Teléfonos:</strong> <a href="tel:+593979404088" class="text-highlight hover:text-text-light transition">0979404088</a> - <a href="tel:+593978888670" class="text-highlight hover:text-text-light transition">0978888670</a></p>
                 </div>
             </div>
         </div>
@@ -210,7 +212,7 @@
         <!-- Sección Héroe con Logo Animado -->
         <section id="hero" class="pt-[80px] h-[35vh] md:h-[60vh] flex flex-col justify-center items-center text-center bg-cover bg-center" style="background-image: url('https://i.ibb.co/0pwKcJnZ/PORTADA-INICIO.jpg');">
             <button 
-                onClick="toggleMenu()"
+                onclick="toggleMenu()"
                 class="w-48 md:w-64 transition-transform duration-300 hover:scale-105 lg:cursor-default logo-pulse" 
                 aria-label="Abrir menú"
             >
@@ -500,158 +502,6 @@
                     </div>
                 </div>
             </section>
-            <section id="postres" class="py-12">
-                <div class="max-w-4xl mx-auto bg-secondary-bg p-6 sm:p-10 md:p-12 rounded-xl shadow-2xl">
-                    <h2 class="font-heading text-4xl sm:text-5xl md:text-6xl text-highlight font-bold uppercase text-center tracking-wider relative pb-5 mb-8">
-                        <span class="flex justify-center items-center">
-                            <i class="fas fa-ice-cream mr-3"></i> Postres / Desserts
-                        </span>
-                        <span class="absolute bottom-0 left-1/2 -translate-x-1/2 w-24 h-1 bg-accent rounded-full"></span>
-                    </h2>
-                    <img src="https://i.ibb.co/0jkJKJvK/postres.jpg" alt="Postres" class="w-full h-64 md:h-80 object-cover rounded-lg mb-12 shadow-lg" loading="lazy">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="bg-primary-bg p-5 rounded-lg shadow-lg flex flex-col h-full hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
-                            <div class="flex justify-between items-baseline border-b border-dashed border-white/10 pb-2 mb-3">
-                                <h3 class="font-body text-xl font-bold uppercase tracking-wide text-text-light">Cheesecake de Frutos Rojos / Red Berries Cheesecake</h3>
-                                <p class="font-body text-xl font-bold text-highlight flex-shrink-0 ml-4">$3.50</p>
-                            </div>
-                            <p class="font-body text-text-medium text-sm leading-relaxed flex-grow">Cremoso pastel de queso sobre una base crujiente de galleta, cubierto con una deliciosa mezcla de frutos rojos frescos y coulis artesanal. / Creamy cheesecake on a crunchy cookie base, topped with a delicious mix of fresh red berries and artisanal coulis.</p>
-                        </div>
-                        <div class="bg-primary-bg p-5 rounded-lg shadow-lg flex flex-col h-full hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
-                            <div class="flex justify-between items-baseline border-b border-dashed border-white/10 pb-2 mb-3">
-                                <h3 class="font-body text-xl font-bold uppercase tracking-wide">Tiramisú Clásico / Classic Tiramisu</h3>
-                                <p class="font-body text-xl font-bold text-highlight flex-shrink-0 ml-4">$3.50</p>
-                            </div>
-                            <p class="font-body text-text-medium text-sm leading-relaxed flex-grow">Delicado bizcocho bañado en miel infusionada con café espresso, cubierto con una suave espuma de mascarpone y finalizado con un sutil toque de cacao amargo. / A delicate sponge cake soaked in honey infused with espresso, topped with a smooth mascarpone foam and finished with a subtle touch of bitter cocoa.</p>
-                        </div>
-                        <div class="bg-primary-bg p-5 rounded-lg shadow-lg flex flex-col h-full hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
-                            <div class="flex justify-between items-baseline border-b border-dashed border-white/10 pb-2 mb-3">
-                                <h3 class="font-body text-xl font-bold uppercase tracking-wide">Waffle Oreo</h3>
-                                <p class="font-body text-xl font-bold text-highlight flex-shrink-0 ml-4">$4.00</p>
-                            </div>
-                            <p class="font-body text-text-medium text-sm leading-relaxed">Dos waffles brownie, bañados en chocolate, Oreo triturada y helado. / Two brownie waffles, covered in chocolate, crushed Oreo, and ice cream.</p>
-                        </div>
-                        <div class="bg-primary-bg p-5 rounded-lg shadow-lg flex flex-col h-full hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
-                            <div class="flex justify-between items-baseline border-b border-dashed border-white/10 pb-2 mb-3">
-                                <h3 class="font-body text-xl font-bold uppercase tracking-wide">Waffle Red Velvet</h3>
-                                <p class="font-body text-xl font-bold text-highlight flex-shrink-0 ml-4">$4.00</p>
-                            </div>
-                            <p class="font-body text-text-medium text-sm leading-relaxed">Dos waffles Red Velvet, rellenos de coulis de frutos rojos, decorados con crema y helado. / Two Red Velvet waffles, filled with red berry coulis, decorated with cream and ice cream.</p>
-                        </div>
-                        <div class="bg-primary-bg p-5 rounded-lg shadow-lg flex flex-col h-full hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
-                            <div class="flex justify-between items-baseline border-b border-dashed border-white/10 pb-2 mb-3">
-                                <h3 class="font-body text-xl font-bold uppercase tracking-wide">Cremoso de Mango / Creamy Mango</h3>
-                                <p class="font-body text-xl font-bold text-highlight flex-shrink-0 ml-4">$3.50</p>
-                            </div>
-                            <p class="font-body text-text-medium text-sm leading-relaxed">Deliciosa crema de mango con un toque de hierbabuena, lima y ron, inspirada en el clásico mojito. / Delicious mango cream with a hint of mint, lime, and rum, inspired by the classic mojito.</p>
-                        </div>
-                        <div class="bg-primary-bg p-5 rounded-lg shadow-lg flex flex-col h-full hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
-                            <div class="flex justify-between items-baseline border-b border-dashed border-white/10 pb-2 mb-3">
-                                <h3 class="font-body text-xl font-bold uppercase tracking-wide">Torta de Sacher / Sacher Cake</h3>
-                                <p class="font-body text-xl font-bold text-highlight flex-shrink-0 ml-4">$3.50</p>
-                            </div>
-                            <p class="font-body text-text-medium text-sm leading-relaxed">Torta de chocolate humectada en vino tinto, rellena de manjar de leche, bañada en ganache de chocolate y decorada con polvo de oro. / Chocolate cake moistened with red wine, filled with dulce de leche, covered in chocolate ganache, and topped with gold dust.</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
-            <section id="otras-bebidas" class="py-12">
-                <div class="max-w-4xl mx-auto bg-secondary-bg p-6 sm:p-10 md:p-12 rounded-xl shadow-2xl">
-                    <h2 class="font-heading text-4xl sm:text-5xl md:text-6xl text-highlight font-bold uppercase text-center tracking-wider relative pb-5 mb-8">
-                        <span class="flex justify-center items-center">
-                            <i class="fas fa-martini-glass-citrus mr-3"></i> Otras Bebidas / Other Drinks
-                        </span>
-                        <span class="absolute bottom-0 left-1/2 -translate-x-1/2 w-24 h-1 bg-accent rounded-full"></span>
-                    </h2>
-                    <img src="https://i.ibb.co/5gzx6pLN/bebidas.jpg" alt="Bebidas" class="w-full h-64 md:h-80 object-cover rounded-lg mb-12 shadow-lg" loading="lazy">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="bg-primary-bg p-5 rounded-lg shadow-lg">
-                            <div class="flex justify-between items-baseline border-b border-dashed border-white/10 pb-2 mb-3">
-                                <h3 class="font-body text-xl font-bold uppercase tracking-wide text-text-light">Chocolate</h3>
-                                <p class="font-body text-xl font-bold text-highlight flex-shrink-0 ml-4">$3.00</p>
-                            </div>
-                        </div>
-                        <div class="bg-primary-bg p-5 rounded-lg shadow-lg">
-                            <div class="flex justify-between items-baseline border-b border-dashed border-white/10 pb-2 mb-3">
-                                <h3 class="font-body text-xl font-bold uppercase tracking-wide">Té de Frutos Rojos (Prensa) / Red Berry Tea (French Press)</h3>
-                                <p class="font-body text-xl font-bold text-highlight flex-shrink-0 ml-4">$3.00</p>
-                            </div>
-                        </div>
-                        <div class="bg-primary-bg p-5 rounded-lg shadow-lg">
-                            <div class="flex justify-between items-baseline border-b border-dashed border-white/10 pb-2 mb-3">
-                                <h3 class="font-body text-xl font-bold uppercase tracking-wide">Té de Frutos Rojos (Taza) / Red Berry Tea (Cup)</h3>
-                                <p class="font-body text-xl font-bold text-highlight flex-shrink-0 ml-4">$2.00</p>
-                            </div>
-                        </div>
-                        <div class="bg-primary-bg p-5 rounded-lg shadow-lg">
-                            <div class="flex justify-between items-baseline border-b border-dashed border-white/10 pb-2 mb-3">
-                                <h3 class="font-body text-xl font-bold uppercase tracking-wide">Té Verde con Almendra / Green Tea with Almond</h3>
-                                <p class="font-body text-xl font-bold text-highlight flex-shrink-0 ml-4">$2.00</p>
-                            </div>
-                        </div>
-                        <div class="bg-primary-bg p-5 rounded-lg shadow-lg">
-                            <div class="flex justify-between items-baseline border-b border-dashed border-white/10 pb-2 mb-3">
-                                <h3 class="font-body text-xl font-bold uppercase tracking-wide">Té Verde/Negro Ruso / Russian Green/Black Tea</h3>
-                                <p class="font-body text-xl font-bold text-highlight flex-shrink-0 ml-4">$2.00</p>
-                            </div>
-                        </div>
-                        <div class="bg-primary-bg p-5 rounded-lg shadow-lg">
-                            <div class="flex justify-between items-baseline border-b border-dashed border-white/10 pb-2 mb-3">
-                                <h3 class="font-body text-xl font-bold uppercase tracking-wide">Aromática / Herbal Tea</h3>
-                                <p class="font-body text-xl font-bold text-highlight flex-shrink-0 ml-4">$1.50</p>
-                            </div>
-                        </div>
-                        <div class="bg-primary-bg p-5 rounded-lg shadow-lg">
-                            <div class="flex justify-between items-baseline border-b border-dashed border-white/10 pb-2 mb-3">
-                                <h3 class="font-body text-xl font-bold uppercase tracking-wide">Frappuccino/Frappé</h3>
-                                <p class="font-body text-xl font-bold text-highlight flex-shrink-0 ml-4">$3.50</p>
-                            </div>
-                        </div>
-                        <div class="bg-primary-bg p-5 rounded-lg shadow-lg">
-                            <div class="flex justify-between items-baseline border-b border-dashed border-white/10 pb-2 mb-3">
-                                <h3 class="font-body text-xl font-bold uppercase tracking-wide">Milkshake</h3>
-                                <p class="font-body text-xl font-bold text-highlight flex-shrink-0 ml-4">$3.50</p>
-                            </div>
-                        </div>
-                        <div class="bg-primary-bg p-5 rounded-lg shadow-lg">
-                            <div class="flex justify-between items-baseline border-b border-dashed border-white/10 pb-2 mb-3">
-                                <h3 class="font-body text-xl font-bold uppercase tracking-wide">Limonada 1918 (Original o Jamaica) / 1918 Lemonade (Original or Hibiscus)</h3>
-                                <p class="font-body text-xl font-bold text-highlight flex-shrink-0 ml-4">$2.50</p>
-                            </div>
-                        </div>
-                        <div class="bg-primary-bg p-5 rounded-lg shadow-lg">
-                            <div class="flex justify-between items-baseline border-b border-dashed border-white/10 pb-2 mb-3">
-                                <h3 class="font-body text-xl font-bold uppercase tracking-wide">Zumo de Naranja / Orange Juice</h3>
-                                <p class="font-body text-xl font-bold text-highlight flex-shrink-0 ml-4">$2.50</p>
-                            </div>
-                        </div>
-                        <div class="bg-primary-bg p-5 rounded-lg shadow-lg">
-                            <div class="flex justify-between items-baseline border-b border-dashed border-white/10 pb-2 mb-3">
-                                <h3 class="font-body text-xl font-bold uppercase tracking-wide">Jugos y Batidos / Juices & Smoothies</h3>
-                                <p class="font-body text-xl font-bold text-highlight flex-shrink-0 ml-4">$2.00</p>
-                            </div>
-                        </div>
-                        <div class="bg-primary-bg p-5 rounded-lg shadow-lg">
-                            <div class="flex justify-between items-baseline border-b border-dashed border-white/10 pb-2 mb-3">
-                                <h3 class="font-body text-xl font-bold uppercase tracking-wide">Bebida Gaseosa / Soda</h3>
-                                <p class="font-body text-xl font-bold text-highlight flex-shrink-0 ml-4">$1.25</p>
-                            </div>
-                        </div>
-                        <div class="bg-primary-bg p-5 rounded-lg shadow-lg">
-                            <div class="flex justify-between items-baseline border-b border-dashed border-white/10 pb-2 mb-3">
-                                <h3 class="font-body text-xl font-bold uppercase tracking-wide">Agua con/sin gas / Water with/without gas</h3>
-                                <p class="font-body text-xl font-bold text-highlight flex-shrink-0 ml-4">$1.25</p>
-                            </div>
-                        </div>
-                        <div class="bg-primary-bg p-5 rounded-lg shadow-lg">
-                            <div class="flex justify-between items-baseline border-b border-dashed border-white/10 pb-2 mb-3">
-                                <h3 class="font-body text-xl font-bold uppercase tracking-wide">Copa de Vino Hervido / Glass of Mulled Wine</h3>
-                                <p class="font-body text-xl font-bold text-highlight flex-shrink-0 ml-4">$2.75</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
             <section id="extras" class="py-12">
                 <div class="max-w-4xl mx-auto bg-secondary-bg p-6 sm:p-10 md:p-12 rounded-xl shadow-2xl">
                     <h2 class="font-heading text-4xl sm:text-5xl md:text-6xl text-highlight font-bold uppercase text-center tracking-wider relative pb-5 mb-8">
@@ -730,7 +580,7 @@
     </button>
 
     <!-- Modal de WhatsApp -->
-    <div id="whatsapp-modal" class="hidden fixed inset-0 z- flex items-center justify-center bg-black/70">
+    <div id="whatsapp-modal" class="hidden fixed inset-0 z-[1002] flex items-center justify-center bg-black/70">
         <div class="bg-secondary-bg p-8 rounded-lg shadow-2xl text-center mx-4" onclick="event.stopPropagation()">
             <h3 class="font-heading text-2xl text-highlight mb-4">Abrir WhatsApp</h3>
             <p class="text-text-light mb-6">¿Deseas realizar una reserva?</p>
@@ -781,7 +631,6 @@
         }
 
         // Inicializar idioma
-        // Se mantiene el idioma guardado, pero el modal usa el idioma actual (español por defecto)
         switchLanguage(localStorage.getItem('cafetto-lang') || 'es');
 
         // --- Hook de Scrollspy para resaltar enlaces activos ---
@@ -889,7 +738,7 @@
           );
         };
         
-        // Menú Móvil
+        // Componente del Menú Móvil (con cierre al hacer clic afuera y espaciado corregido)
         const MobileMenu = ({ isOpen, setIsOpen, activeId, info, socialLinks }) => {
           const { t } = useLanguage();
           
@@ -897,7 +746,7 @@
           
           return (
             React.createElement('div', { 
-                className: "fixed inset-0 z- bg-black/50 lg:hidden",
+                className: "fixed inset-0 z-[1001] bg-black/50 lg:hidden",
                 onClick: () => setIsOpen(false) 
             }, 
                 React.createElement('div', { 
@@ -917,7 +766,6 @@
                             menuData.map(category => React.createElement(NavLink, { key: category.id, href: `#${category.id}`, activeId, onClick: () => setIsOpen(false), isMobile: true }, t(category.title)))
                         ),
                          React.createElement('div', { className: "mt-auto pt-6 border-t border-white/10" }, 
-                            React.createElement('p', {className: "text-[7px] text-text-medium opacity-40 text-center mb-1"}, "By Artia: Marketing y Publicidad Integral."),
                             React.createElement('div', { className: "flex justify-center space-x-6 mb-6" },
                                 socialLinks.map(link => {
                                     return React.createElement('a', {
@@ -1028,7 +876,7 @@
             const whatsappLink = "https://wa.me/593998388863?text=" + t(whatsappModalText.linkMessage);
             
             return React.createElement('div', {
-                className: "fixed inset-0 z- flex items-center justify-center bg-black/70",
+                className: "fixed inset-0 z-[1002] flex items-center justify-center bg-black/70",
                 onClick: onClose
             }, React.createElement('div', {
                 className: "bg-secondary-bg p-8 rounded-lg shadow-2xl text-center mx-4",
@@ -1115,4 +963,3 @@
     </script>
 </body>
 </html>
-118.9s

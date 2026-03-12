@@ -4,17 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cafetto 1918 - Menú Gourmet</title>
-
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="preconnect" href="https://i.ibb.co">
-
     <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-
     <script src="https://cdn.tailwindcss.com"></script>
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9xXqehU40Tx+dbmaWpQ9PqQ+6L4AA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
     <script>
     tailwind.config = {
       theme: {
@@ -30,13 +24,13 @@
             'artia': '#483804',
             'whatsapp': '#25D366',
             'whatsapp-dark': '#128C7E',
-            'review-color': '#FFD700', /* Gold color for review button/stars */
+            'review-color': '#FFD700',
           },
           fontFamily: {
             heading: ['EB Garamond', 'serif'],
             body: ['Montserrat', 'sans-serif'],
           },
-           boxShadow: {
+          boxShadow: {
             'lg': '0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.15)',
             'xl': '0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.1)',
             '2xl': '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
@@ -50,104 +44,351 @@
         .text-shadow-lg { text-shadow: 2px 2px 8px rgba(0,0,0,0.8); }
         .mobile-menu-content { min-height: 100vh; display: flex; flex-direction: column; }
         .mobile-nav-links .nav-link-item { padding-top: 0.25rem; padding-bottom: 0.25rem; }
-        .mobile-nav-links .nav-link-item.bg-highlight { padding-top: 0.25rem; padding-bottom: 0.25rem; }
 
-        /* Animación de pulso para el botón de WhatsApp y Reseña */
+        /* ===== ANIMACIONES HERO ===== */
+
+        /* Partículas de vapor / polvo de café */
+        @keyframes float-particle {
+            0% { transform: translateY(0) translateX(0) scale(1); opacity: 0; }
+            10% { opacity: 0.6; }
+            80% { opacity: 0.3; }
+            100% { transform: translateY(-120px) translateX(var(--dx)) scale(0.3); opacity: 0; }
+        }
+
+        .particle {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(228,184,130,0.5) 0%, transparent 70%);
+            animation: float-particle var(--dur) ease-in infinite;
+            animation-delay: var(--delay);
+            width: var(--size);
+            height: var(--size);
+            pointer-events: none;
+        }
+
+        /* Brillo barrido horizontal sobre el logo */
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) skewX(-20deg); }
+            100% { transform: translateX(300%) skewX(-20deg); }
+        }
+        .logo-shimmer {
+            position: relative;
+            overflow: hidden;
+        }
+        .logo-shimmer::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent 30%, rgba(255,255,255,0.25) 50%, transparent 70%);
+            animation: shimmer 3.5s ease-in-out infinite;
+            border-radius: 4px;
+        }
+
+        /* Fade-in + slide-up del logo */
+        @keyframes hero-entrance {
+            0% { opacity: 0; transform: translateY(30px) scale(0.92); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .hero-logo-anim {
+            animation: hero-entrance 1.2s cubic-bezier(0.22,1,0.36,1) forwards;
+        }
+
+        /* Pulso suave del logo (tras la entrada) */
+        @keyframes pulse-white {
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 0px rgba(240,240,240,0.7)); }
+            50% { transform: scale(1.04); filter: drop-shadow(0 0 18px rgba(228,184,130,0.45)); }
+        }
+        .logo-pulse { animation: pulse-white 5s ease-in-out infinite 1.4s; }
+
+        /* Línea dorada animada bajo el hero */
+        @keyframes line-expand {
+            0% { width: 0; opacity: 0; }
+            100% { width: 80px; opacity: 1; }
+        }
+        .hero-line {
+            animation: line-expand 1.4s cubic-bezier(0.22,1,0.36,1) 0.6s forwards;
+            width: 0;
+        }
+
+        /* Texto welcome fade-in */
+        @keyframes text-reveal {
+            0% { opacity: 0; letter-spacing: 0.4em; }
+            100% { opacity: 1; letter-spacing: 0.25em; }
+        }
+        .hero-text-anim {
+            animation: text-reveal 2.0s ease-out 0.3s forwards;
+            opacity: 0;
+        }
+
+        /* Año 1918 typing effect */
+        @keyframes year-in {
+            0% { opacity: 0; transform: translateY(8px); }
+            100% { opacity: 0.7; transform: translateY(0); }
+        }
+        .hero-year-anim {
+            animation: year-in 1s ease-out 1.8s forwards;
+            opacity: 0;
+        }
+
+        /* Overlay gradiente del hero */
+        .hero-overlay {
+            background: linear-gradient(
+                to bottom,
+                rgba(13,26,28,0.35) 0%,
+                rgba(13,26,28,0.1) 40%,
+                rgba(13,26,28,0.5) 100%
+            );
+        }
+
+        /* ===== SCROLL REVEAL ===== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(32px);
+            transition: opacity 0.7s ease, transform 0.7s ease;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===== CARDS MENÚ ===== */
+        .menu-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            border: 1px solid transparent;
+        }
+        .menu-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 0 24px rgba(228,184,130,0.15);
+            border-color: rgba(228,184,130,0.25);
+        }
+
+        /* ===== IMAGEN CATEGORÍA CON PARALLAX LEVE ===== */
+        .category-img {
+            transition: transform 0.6s ease;
+            transform-origin: center;
+        }
+        .category-section:hover .category-img {
+            transform: scale(1.03);
+        }
+        .category-img-wrap {
+            overflow: hidden;
+            border-radius: 0.5rem;
+        }
+
+        /* ===== TÍTULO CATEGORÍA CON HOVER GLOW ===== */
+        .category-title {
+            transition: text-shadow 0.4s ease;
+        }
+        .category-section:hover .category-title {
+            text-shadow: 0 0 30px rgba(228,184,130,0.3);
+        }
+
+        /* ===== BOTONES FLOTANTES ===== */
         @keyframes pulse-green {
-            0%, 100% {
-                transform: scale(1);
-                box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7);
-            }
-            50% {
-                transform: scale(1.1);
-                box-shadow: 0 0 0 10px rgba(37, 211, 102, 0);
-            }
+            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(37,211,102,0.7); }
+            50% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(37,211,102,0); }
         }
         @keyframes pulse-gold {
-            0%, 100% {
-                transform: scale(1);
-                box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7);
-            }
-            50% {
-                transform: scale(1.1);
-                box-shadow: 0 0 0 10px rgba(255, 215, 0, 0);
-            }
+            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255,215,0,0.7); }
+            50% { transform: scale(1.1); box-shadow: 0 0 0 10px rgba(255,215,0,0); }
         }
-        .whatsapp-pulse {
-            animation: pulse-green 1s infinite;
+        .whatsapp-pulse { animation: pulse-green 1s infinite; }
+        .review-pulse { animation: pulse-gold 4s infinite; }
+
+        /* ===== NAV HIGHLIGHT BAR ===== */
+        .nav-link-item {
+            position: relative;
         }
-        .review-pulse {
-            animation: pulse-gold 4s infinite;
+        .nav-link-item::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 2px;
+            background: #e4b882;
+            transition: width 0.3s ease;
+            border-radius: 2px;
+        }
+        .nav-link-item:hover::after {
+            width: 70%;
         }
 
-        /* Animación de pulso para el logo en la portada */
-        @keyframes pulse-white {
-            0%, 100% {
-                transform: scale(1);
-                filter: drop-shadow(0 0 0px rgba(240, 240, 240, 0.7));
-            }
-            50% {
-                transform: scale(1.05);
-                filter: drop-shadow(0 0 15px rgba(240, 240, 240, 0.5));
-            }
+        /* ===== HEADER SCROLL EFFECT ===== */
+        .header-scrolled {
+            background: rgba(13,26,28,0.92) !important;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.4) !important;
         }
-        .logo-pulse {
-            animation: pulse-white 5s infinite;
+
+        /* ===== PRECIO GLOW ===== */
+        .price-glow {
+            transition: text-shadow 0.3s ease;
+        }
+        .menu-card:hover .price-glow {
+            text-shadow: 0 0 12px rgba(228,184,130,0.5);
+        }
+
+        /* ===== SEPARADOR DECORATIVO ===== */
+        .ornament {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            justify-content: center;
+            margin: 12px 0;
+        }
+        .ornament-line {
+            flex: 1;
+            max-width: 80px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #c49a62, transparent);
+        }
+        .ornament-dot {
+            width: 5px;
+            height: 5px;
+            border-radius: 50%;
+            background: #e4b882;
+            box-shadow: 0 0 6px rgba(228,184,130,0.5);
+        }
+
+        /* ===== CURSOR PERSONALIZADO ===== */
+        * { cursor: none !important; }
+        .custom-cursor {
+            width: 12px;
+            height: 12px;
+            background: #e4b882;
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: transform 0.1s ease, width 0.2s ease, height 0.2s ease, background 0.2s ease;
+            mix-blend-mode: difference;
+        }
+        .custom-cursor.hovering {
+            width: 28px;
+            height: 28px;
+            background: rgba(228,184,130,0.4);
+        }
+
+        /* ===== FOOTER MEJORADO ===== */
+        .footer-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(228,184,130,0.4), transparent);
+            margin: 16px 0;
+        }
+
+        /* Ripple en botones */
+        @keyframes ripple {
+            to { transform: scale(4); opacity: 0; }
+        }
+        .btn-ripple {
+            position: relative;
+            overflow: hidden;
+        }
+        .btn-ripple .ripple-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.3);
+            transform: scale(0);
+            animation: ripple 0.6s linear;
+            pointer-events: none;
+        }
+
+        /* Mobile menu transition */
+        .mobile-panel {
+            transform: translateX(-100%);
+            transition: transform 0.35s cubic-bezier(0.4,0,0.2,1);
+        }
+        .mobile-panel.open {
+            transform: translateX(0);
+        }
+
+        /* Grain overlay sutil */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.3;
         }
     </style>
-
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
-
 </head>
 <body class="bg-primary-bg">
+    <!-- Cursor personalizado -->
+    <div class="custom-cursor" id="custom-cursor"></div>
+
     <div id="root"></div>
 
-    <audio id="background-music">
-  <source src="https://res.cloudinary.com/dg0yutpna/video/upload/v1753161439/Pirouette_j1pou6.mp3" type="audio/mpeg">
-</audio>
-
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const audio = document.getElementById("background-music");
-
-    document.body.addEventListener("click", () => {
-      if (audio.paused) {
-        audio.volume = 0;
-        audio.currentTime = 0;
-        audio.play();
-
-        const targetVolume = 0.02;
-        const fadeDuration = 2000;
-        const steps = 20;
-        let step = 0;
-
-        const fadeInterval = setInterval(() => {
-          step++;
-          audio.volume = (targetVolume / steps) * step;
-          if (step >= steps) clearInterval(fadeInterval);
-        }, fadeDuration / steps);
-      }
-    });
-
-    // Opción 1: Cuando el documento pierde visibilidad
-    document.addEventListener("visibilitychange", () => {
-      if (document.visibilityState === "hidden") {
-        audio.pause();
-      }
-    });
-
-    // Opción 2: Cuando la ventana pierde el foco (más confiable en algunos navegadores)
-    window.addEventListener("blur", () => {
-      audio.pause();
-    });
-  });
-</script>
+    <audio id="background-music" loop>
+        <source src="https://res.cloudinary.com/dg0yutpna/video/upload/v1753161439/Pirouette_j1pou6.mp3" type="audio/mpeg">
+    </audio>
 
     <script>
-        const { useState, createContext, useContext, useEffect, useMemo, useCallback } = React;
+        // ===== MÚSICA (código original mantenido intacto) =====
+        document.addEventListener("DOMContentLoaded", () => {
+            const audio = document.getElementById("background-music");
+            document.body.addEventListener("click", () => {
+                if (audio.paused) {
+                    audio.volume = 0;
+                    audio.currentTime = 0;
+                    audio.play();
+                    const targetVolume = 0.02;
+                    const fadeDuration = 2000;
+                    const steps = 20;
+                    let step = 0;
+                    const fadeInterval = setInterval(() => {
+                        step++;
+                        audio.volume = (targetVolume / steps) * step;
+                        if (step >= steps) clearInterval(fadeInterval);
+                    }, fadeDuration / steps);
+                }
+            });
+            document.addEventListener("visibilitychange", () => {
+                if (document.visibilityState === "hidden") audio.pause();
+            });
+            window.addEventListener("blur", () => { audio.pause(); });
+        });
 
-        // --- INICIO: Componentes de Iconos (SVG para categorías y banderas) ---
+        // ===== CURSOR PERSONALIZADO =====
+        const cursor = document.getElementById('custom-cursor');
+        document.addEventListener('mousemove', e => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+        });
+        document.addEventListener('mouseover', e => {
+            if (e.target.matches('a, button, [role=button]')) {
+                cursor.classList.add('hovering');
+            } else {
+                cursor.classList.remove('hovering');
+            }
+        });
+
+        // ===== SCROLL REVEAL =====
+        const observerReveal = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, { threshold: 0.1 });
+
+        // ===== HEADER SCROLL =====
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('main-header');
+            if (header) {
+                if (window.scrollY > 50) header.classList.add('header-scrolled');
+                else header.classList.remove('header-scrolled');
+            }
+        });
+    </script>
+
+    <script>
+        const { useState, createContext, useContext, useEffect, useMemo, useCallback, useRef } = React;
+
+        // --- Iconos ---
         const SteakIcon = (props) => React.createElement('svg', { xmlns: "http://www.w3.org/2000/svg", className: "h-8 w-8 md:h-8 md:w-8 inline-block align-middle mr-2", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round", ...props }, React.createElement('path', { d: "M13.293 13.293A2 2 0 1 0 10.707 10.707l-2.439 2.439a2 2 0 0 0 0 2.828l2.121 2.121a2 2 0 0 0 2.828 0l2.439-2.439zM15 13.5l-1.5-1.5M10.5 18H18a2 2 0 0 0 2-2v-2.5M12 3v2M18 3v2M6 3v2M9 21v-3.5a2.5 2.5 0 0 1 2.5-2.5h0A2.5 2.5 0 0 1 14 17.5V21" }));
         const SandwichIcon = (props) => React.createElement('svg', { xmlns: "http://www.w3.org/2000/svg", className: "h-8 w-8 md:h-8 md:w-8 inline-block align-middle mr-2", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round", ...props }, React.createElement('path', { d: "M3 11h18M3 16h18M4 7h16a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2zM8 7V5c0-1.1.9-2 2-2h4a2 2 0 0 1 2 2v2" }));
         const UtensilsIcon = (props) => React.createElement('svg', { xmlns: "http://www.w3.org/2000/svg", className: "h-8 w-8 md:h-8 md:w-8 inline-block align-middle mr-2", viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: "2", strokeLinecap: "round", strokeLinejoin: "round", ...props }, React.createElement('path', { d: "M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2M7 2v11M14 2v10a3 3 0 0 0 3 3h0a3 3 0 0 0 3-3V2" }));
@@ -161,9 +402,8 @@
         const UKFlag = () => React.createElement('svg', { xmlns: "http://www.w3.org/2000/svg", className: "h-6 w-8 rounded-sm", viewBox: "0 0 1200 600" }, React.createElement('clipPath', { id: "a" }, React.createElement('path', { d: "M0 0h1200v600H0z" })), React.createElement('clipPath', { id: "b" }, React.createElement('path', { d: "M600 0v300h600V0zm0 300v300h600V300zM0 300v300h600V300zM0 0v300h600V0z" })), React.createElement('g', { clipPath: "url(#a)" }, React.createElement('path', { fill: "#00247d", d: "M0 0h1200v600H0z" }), React.createElement('path', { stroke: "#fff", strokeWidth: "60", d: "M0 0l1200 600m0-600L0 600" }), React.createElement('g', { clipPath: "url(#b)" }, React.createElement('path', { stroke: "#cf142b", strokeWidth: "40", d: "M0 0l1200 600m0-600L0 600" })), React.createElement('path', { stroke: "#fff", strokeWidth: "100", d: "M600 0v600M0 300h1200" }), React.createElement('path', { stroke: "#cf142b", strokeWidth: "60", d: "M600 0v600M0 300h1200" })));
         const HamburgerIcon = () => React.createElement('svg', { xmlns: "http://www.w3.org/2000/svg", className: "h-10 w-10", fill: "none", viewBox: "0 0 24 24", stroke: "currentColor" }, React.createElement('path', { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M4 6h16M4 12h16M4 18h16" }));
         const CloseIcon = () => React.createElement('svg', { xmlns: "http://www.w3.org/2000/svg", className: "h-8 w-8", fill: "none", viewBox: "0 0 24 24", stroke: "currentColor" }, React.createElement('path', { strokeLinecap: "round", strokeLinejoin: "round", strokeWidth: 2, d: "M6 18L18 6M6 6l12 12" }));
-        // --- FIN: Componentes de Iconos ---
 
-        // --- INICIO: Datos del Menú ---
+        // --- Datos del Menú (idénticos al original) ---
         const menuData = [
           {id:'cortes-especiales',title:{es:'Cortes Especiales',en:'Special Cuts'},icon:SteakIcon,imageUrl:'https://i.ibb.co/Nn6q9hkn/Cortes-Especiales.jpg',items:[{name:{es:'Picaña',en:'Picanha'},price:'$12.50',description:{es:'Todos los cortes vienen acompañados con una guarnición de papas cremosas o papas rústicas, vegetales salteados con mantequilla y albahaca y chimichurri argentino.',en:'All cuts are served with a side of creamy potatoes or rustic potatoes, vegetables sautéed in butter and basil, and Argentine chimichurri.'}},{name:{es:'T-Bone Steak',en:'T-Bone Steak'},price:'$10.00',description:{es:'Todos los cortes vienen acompañados con una guarnición de papas cremosas o papas rústicas, vegetales salteados con mantequilla y albahaca y chimichurri argentino.',en:'All cuts are served with a side of creamy potatoes or rustic potatoes, vegetables sautéed in butter and basil, and Argentine chimichurri.'}},{name:{es:'Rib Eye',en:'Rib Eye'},price:'$9.00',description:{es:'Todos los cortes vienen acompañados con una guarnición de papas cremosas o papas rústicas, vegetales salteados con mantequilla y albahaca y chimichurri argentino.',en:'All cuts are served with a side of creamy potatoes or rustic potatoes, vegetables sautéed in butter and basil, and Argentine chimichurri.'}},{name:{es:'Lomo Fino de Res al Vino Tinto y Champiñones',en:'Beef Tenderloin in Red Wine and Mushroom Sauce'},price:'$9.00',description:{es:'200gr. de lomo fino de res, base de salsa madre, hongos salteados al vino tinto, papas cremosas, ensalada fresca y vegetales.',en:'200g of beef tenderloin, mother sauce base, mushrooms sautéed in red wine, creamy potatoes, fresh salad, and vegetables.'}},]},
           {id:'sanduches',title:{es:'Sánduches',en:'Sandwiches'},icon:SandwichIcon,imageUrl:'https://i.ibb.co/d4Z2cCDG/Sanduches.png',items:[{name:{es:'Sánduche Americano',en:'American Sandwich'},price:'$3.50',description:{es:'Pan especial de casa, triple jamón York, doble queso cheddar, lechuga y tomate.',en:'Special house bread, triple York ham, double cheddar cheese, lettuce, and tomato.'}},{name:{es:'Sánduche Croque Monsieur',en:'Croque Monsieur Sandwich'},price:'$3.50',description:{es:'Pan de molde sanduchero, doble jamón York, doble queso mozarella, queso parmesano y salsa bechamel.',en:'Sandwich bread, double York ham, double mozzarella cheese, parmesan cheese, and béchamel sauce.'}},{name:{es:'Sánduche de Filete de Pollo en Salsa de Champiñones',en:'Chicken Fillet Sandwich in Mushroom Sauce'},price:'$3.75',description:{es:'150gr. de filete de pollo en salsa de champiñones, queso cheddar, lechuga, tomate y mayonesa de la casa.',en:'150g chicken fillet in mushroom sauce, cheddar cheese, lettuce, tomato, and house mayonnaise.'}},{name:{es:'Sánduche Chicken Crispy',en:'Crispy Chicken Sandwich'},price:'$4.50',description:{es:'170gr. de filete de pollo apanado con queso cheddar, lechuga, tomate aderezado con mayonesa, salsa pomodoro y papas rústicas.',en:'170g breaded chicken fillet with cheddar cheese, lettuce, tomato, dressed with mayonnaise, pomodoro sauce, and rustic potatoes.'}},{name:{es:'Pulled Pork',en:'Pulled Pork'},price:'$4.75',description:{es:'180gr. de lomo de cerdo mechado, aderezado con salsa BBQ de la casa, acompañado con vegetales frescos y papas rústicas.',en:'180g of shredded pork loin, seasoned with house-made BBQ sauce, served with fresh vegetables and rustic potatoes.'}},{name:{es:'Sánduche de Lomo Fino',en:'Tenderloin Sandwich'},price:'$5.75',description:{es:'180gr. de lomo fino, aderezado con chimichurri especial al estilo argentino, lechuga, tomate, mayonesa y papas rústicas.',en:'180g of tenderloin, seasoned with special Argentine-style chimichurri, lettuce, tomato, mayonnaise, and rustic potatoes.'}},{name:{es:'Sánduche de Lomo al Vino Tinto',en:'Tenderloin Sandwich in Red Wine Sauce'},price:'$5.75',description:{es:'180gr. de lomo fino, en salsa de vino con champiñones, hongos secos, lechuga, tomate y papas rústicas.',en:'180g of tenderloin in wine sauce with mushrooms, dried fungi, lettuce, tomato, and rustic potatoes.'}},]},
@@ -175,9 +415,8 @@
           {id:'otras-bebidas',title:{es:'Otras Bebidas',en:'Other Drinks'},icon:CocktailIcon,imageUrl:'https://i.ibb.co/5gzx6pLN/bebidas.jpg',items:[{name:{es:'Chocolate',en:'Chocolate'},price:'$3.00'},{name:{es:'Té de Frutos Rojos (Prensa)',en:'Red Berry Tea (French Press)'},price:'$3.00'},{name:{es:'Té de Frutos Rojos (Taza)',en:'Red Berry Tea (Cup)'},price:'$2.00'},{name:{es:'Té Verde con Almendra',en:'Green Tea with Almond'},price:'$2.00'},{name:{es:'Té Verde/Negro Ruso',en:'Russian Green/Black Tea'},price:'$2.00'},{name:{es:'Aromática',en:'Herbal Tea'},price:'$1.50'},{name:{es:'Frappuccino/Frappé',en:'Frappuccino/Frappé'},price:'$3.50'},{name:{es:'Milkshake',en:'Milkshake'},price:'$3.50'},{name:{es:'Limonada 1918 (Original)',en:'1918 Lemonade (Original)'},price:'$2.50'},{name:{es:'Zumo de Naranja',en:'Orange Juice'},price:'$2.50'},{name:{es:'Jugos y Batidos',en:'Juices & Smoothies'},price:'$2.00'},{name:{es:'Bebida Gaseosa',en:'Soda'},price:'$1.25'},{name:{es:'Agua con/sin gas',en:'Water with/without gas'},price:'$1.25'},{name:{es:'Copa de Vino Hervido',en:'Glass of Mulled Wine'},price:'$2.75'},]},
           {id:'extras',title:{es:'Extras',en:'Extras'},icon:PlusCircleIcon,imageUrl:'https://i.ibb.co/cKVRDvmv/extras.jpg',items:[{name:{es:'Papas Rústicas',en:'Rustic Potates'},price:'$1.50'},{name:{es:'Papas Cremosas',en:'Creamy Potatoes'},price:'$2.50'},{name:{es:'Filete de Pollo',en:'Chicken Fillet'},price:'$1.50'},{name:{es:'Tocino',en:'Bacon'},price:'$1.00'},{name:{es:'Chicharrón',en:'Pork Rinds'},price:'$1.00'},{name:{es:'Queso Cheddar/Mozarella',en:'Cheddar/Mozzarella Cheese'},price:'$0.75'},{name:{es:'Huevos',en:'Eggs'},price:'$0.75'},]}
         ];
-        // --- FIN: Datos del Menú ---
 
-        // --- Datos de Contacto y Redes Sociales ---
+        // --- Datos de Contacto ---
         const contactInfo = {
             address1: {es: "By Artia: Marketing y Publicidad Integral", en: "Made by Artia: Comprehensive Marketing and Advertising"},
             address: {es: "Dirección:", en: "Address:"},
@@ -186,15 +425,12 @@
             address_val: {es: "10 de Agosto entre Colón y Espejo. Riobamba - Ecuador.", en: "10 de Agosto between Colón and Espejo. Riobamba - Ecuador."},
             schedule_val: {es: "Lunes a sábado | 08h00 a 12h30 y de 16h00 a 21h00", en: "Monday to Saturday | 08:00 to 12:30 and 16:00 to 21:00"}
         };
-
         const socialLinks = [
             { platform: 'Ubicación', url: 'https://maps.app.goo.gl/mZthkkufTVLR2fwg6', iconUrl: 'https://i.ibb.co/cS6PKXmK/ubicacion-cafetto-1.png', label: { es: 'Ubicación', en: 'Location' } },
             { platform: 'tiktok', url: 'https://www.tiktok.com/@cafetto1918', iconUrl: 'https://i.ibb.co/fYcvXK2q/icon-tiktok.png', label: { es: 'TikTok', en: 'TikTok' } },
             { platform: 'facebook', url: 'https://www.facebook.com/cafetto1918?locale=es_LA', iconUrl: 'https://i.ibb.co/gZ45fQZj/icon-facebook.png', label: { es: 'Facebook', en: 'Facebook' } },
             { platform: 'instagram', url: 'https://www.instagram.com/cafetto1918/', iconUrl: 'https://i.ibb.co/7xx6dBTd/icon-instagram.png', label: { es: 'Instagram', en: 'Instagram' } },
         ];
-        
-        // **Textos para el modal de WhatsApp**
         const whatsappModalText = {
             title: { es: "Abrir WhatsApp", en: "Open WhatsApp" },
             message: { es: "¿Deseas realizar una reserva?", en: "Would you like to make a reservation?" },
@@ -202,471 +438,380 @@
             cancel: { es: "Cancelar", en: "Cancel" },
             linkMessage: { es: "Quiero%20realizar%20una%20reserva", en: "I%20would%20like%20to%20make%20a%20reservation" }
         };
-
-        // **Textos para el modal de Reseña**
         const reviewModalText = {
             title: { es: "¡Tu Opinión Cuenta!", en: "Your Opinion Matters!" },
             message: { es: "Ayúdanos a mejorar tu experiencia.", en: "Help us improve your experience." },
             button: { es: "Calificar en Google", en: "Rate on Google" }
         };
-        // --- FIN: Datos ---
 
-
-        // --- INICIO: Lógica de la Aplicación ---
-
-        // Contexto para manejar el idioma
+        // --- Contexto de idioma ---
         const LanguageContext = createContext(undefined);
-
         const LanguageProvider = ({ children }) => {
-          const [language, setLanguage] = useState('es');
-          const t = useCallback((translation) => translation[language], [language]);
-          const value = { language, setLanguage, t };
-          return React.createElement(LanguageContext.Provider, { value }, children);
+            const [language, setLanguage] = useState('es');
+            const t = useCallback((translation) => translation[language], [language]);
+            return React.createElement(LanguageContext.Provider, { value: { language, setLanguage, t } }, children);
         };
+        const useLanguage = () => useContext(LanguageContext);
 
-        const useLanguage = () => {
-          const context = useContext(LanguageContext);
-          if (context === undefined) {
-            throw new Error('useLanguage must be used within a LanguageProvider');
-          }
-          return context;
-        };
-
-        // Hook para espiar el scroll y determinar la sección activa
+        // --- ScrollSpy ---
         const useScrollSpy = (ids, options) => {
             const [activeId, setActiveId] = useState('');
-
             useEffect(() => {
                 const observer = new IntersectionObserver((entries) => {
                     entries.forEach((entry) => {
-                        if (entry.isIntersecting) {
-                            setActiveId(entry.target.id);
-                        }
+                        if (entry.isIntersecting) setActiveId(entry.target.id);
                     });
                 }, options);
-
-                ids.forEach(id => {
-                    const element = document.getElementById(id);
-                    if (element) observer.observe(element);
-                });
-
-                return () => {
-                    ids.forEach(id => {
-                        const element = document.getElementById(id);
-                        if (element) observer.unobserve(element);
-                    });
-                };
+                ids.forEach(id => { const el = document.getElementById(id); if (el) observer.observe(el); });
+                return () => ids.forEach(id => { const el = document.getElementById(id); if (el) observer.unobserve(el); });
             }, [ids, options]);
-
             return activeId;
         };
 
-        // Componente para cambiar de idioma
+        // --- LanguageSwitcher ---
         const LanguageSwitcher = () => {
-          const { language, setLanguage } = useLanguage();
-          return (
-            React.createElement('div', { className: "flex items-center space-x-2" },
-              React.createElement('button', {
-                onClick: () => setLanguage('es'),
-                className: `p-1 rounded-md transition-all duration-300 ${language === 'es' ? 'bg-highlight/20 ring-2 ring-highlight' : 'opacity-60 hover:opacity-100'}`,
-                'aria-label': "Cambiar a Español"
-              }, React.createElement(SpainFlag)),
-              React.createElement('button', {
-                onClick: () => setLanguage('en'),
-                className: `p-1 rounded-md transition-all duration-300 ${language === 'en' ? 'bg-highlight/20 ring-2 ring-highlight' : 'opacity-60 hover:opacity-100'}`,
-                'aria-label': "Switch to English"
-              }, React.createElement(UKFlag))
-            )
-          );
+            const { language, setLanguage } = useLanguage();
+            return React.createElement('div', { className: "flex items-center space-x-2" },
+                React.createElement('button', { onClick: () => setLanguage('es'), className: `p-1 rounded-md transition-all duration-300 ${language === 'es' ? 'bg-highlight/20 ring-2 ring-highlight' : 'opacity-60 hover:opacity-100'}`, 'aria-label': "Español" }, React.createElement(SpainFlag)),
+                React.createElement('button', { onClick: () => setLanguage('en'), className: `p-1 rounded-md transition-all duration-300 ${language === 'en' ? 'bg-highlight/20 ring-2 ring-highlight' : 'opacity-60 hover:opacity-100'}`, 'aria-label': "English" }, React.createElement(UKFlag))
+            );
         };
 
-        // Componente para los enlaces de navegación
-        const NavLink = ({ href, activeId, onClick, children, isMobile = false }) => {
+        // --- NavLink ---
+        const NavLink = ({ href, activeId, onClick, children }) => {
             const isActive = activeId === href.substring(1);
-
             const handleClick = (e) => {
                 e.preventDefault();
                 onClick();
-                const targetId = href.substring(1);
-                const targetElement = document.getElementById(targetId);
-                if (targetElement) {
-                    const headerOffset = 80; // Altura del encabezado fijo
-                    const elementPosition = targetElement.getBoundingClientRect().top;
-                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
-                    window.scrollTo({
-                        top: offsetPosition,
-                        behavior: "smooth"
-                    });
-                }
+                const el = document.getElementById(href.substring(1));
+                if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.pageYOffset - 80, behavior: "smooth" });
             };
+            return React.createElement('a', {
+                href, onClick: handleClick,
+                className: `nav-link-item px-3 py-2 rounded-md text-sm font-bold uppercase transition-all duration-300 whitespace-nowrap ${isActive ? 'bg-highlight text-primary-bg shadow-md' : 'text-text-light hover:bg-white/10 hover:text-highlight'}`
+            }, children);
+        };
 
-            return (
-                React.createElement('a', {
-                    href,
-                    onClick: handleClick,
-                    className: `nav-link-item px-3 py-2 rounded-md text-sm font-bold uppercase transition-all duration-300 whitespace-nowrap ${isActive ? 'bg-highlight text-primary-bg shadow-md' : 'text-text-light hover:bg-white/10 hover:text-highlight'}`
-                }, children)
+        // --- Header ---
+        const Header = ({ isMenuOpen, setIsMenuOpen, activeId }) => {
+            const { t } = useLanguage();
+            return React.createElement('header', {
+                id: "main-header",
+                className: "fixed top-0 left-0 w-full bg-nav-bg/60 backdrop-blur-sm text-nav-text p-4 px-4 md:px-10 shadow-lg z-50 flex justify-between items-center h-[80px] transition-all duration-500"
+            },
+                React.createElement('div', { className: "flex items-center space-x-4" },
+                    React.createElement('button', { onClick: () => setIsMenuOpen(!isMenuOpen), className: "lg:hidden text-text-light hover:text-highlight transition-colors", 'aria-label': "Menú" }, React.createElement(HamburgerIcon)),
+                    React.createElement('nav', { className: "hidden lg:flex items-center space-x-2" },
+                        menuData.map(cat => React.createElement(NavLink, { key: cat.id, href: `#${cat.id}`, activeId, onClick: () => {} }, t(cat.title)))
+                    )
+                ),
+                React.createElement('div', { className: "flex items-center space-x-4" },
+                    React.createElement(LanguageSwitcher),
+                    React.createElement('a', { href: "#hero", className: "font-heading text-2xl md:text-3xl text-highlight font-extrabold uppercase tracking-wider transition-all duration-300 hover:text-accent" }, "Cafetto 1918")
+                )
             );
         };
 
-        // Componente del Encabezado con nueva disposición para móvil
-        const Header = ({ isMenuOpen, setIsMenuOpen, activeId }) => {
-          const { t } = useLanguage();
-          return (
-            React.createElement('header', { className: "fixed top-0 left-0 w-full bg-nav-bg/60 backdrop-blur-sm text-nav-text p-4 px-4 md:px-10 shadow-lg z-50 flex justify-between items-center h-[80px]" },
-              // Contenedor Izquierdo: Botón Hamburguesa (solo en móvil), Navegación (solo en desktop)
-              React.createElement('div', { className: "flex items-center space-x-4" },
-                React.createElement('button', {
-                    onClick: () => setIsMenuOpen(!isMenuOpen),
-                    className: "lg:hidden text-text-light hover:text-highlight transition-colors", // Oculto en lg y superiores
-                    'aria-label': "Abrir menú"
-                }, React.createElement(HamburgerIcon)),
-                React.createElement('nav', { className: "hidden lg:flex items-center space-x-2" }, // Visible en lg y superiores
-                    menuData.map(category => React.createElement(NavLink, { key: category.id, href: `#${category.id}`, activeId, onClick: () => {} }, t(category.title)))
-                )
-              ),
-              // Contenedor Derecho: Banderas y Logo
-              React.createElement('div', { className: "flex items-center space-x-4" },
-                React.createElement(LanguageSwitcher),
-                React.createElement('a', { href: "#hero", className: "font-heading text-2xl md:text-3xl text-highlight font-extrabold uppercase tracking-wider" }, "Cafetto 1918")
-              )
-            )
-          );
-        };
-        
-        // Componente del Menú Móvil (con cierre al hacer clic afuera y espaciado corregido)
+        // --- MobileMenu ---
         const MobileMenu = ({ isOpen, setIsOpen, activeId, info, socialLinks, setIsReviewModalOpen }) => {
-          const { t } = useLanguage();
-          
-          if (!isOpen) return null;
-          
-          return (
-            React.createElement('div', { 
-                className: "fixed inset-0 z-[1001] bg-black/50 lg:hidden",
-                onClick: () => setIsOpen(false) 
-            }, 
-                React.createElement('div', { 
-                    className: `fixed top-0 left-0 h-full w-64 bg-nav-bg/70 backdrop-blur-sm shadow-xl transform transition-transform duration-1000 ease-in-out ${isOpen ? 'translate-x-0' : '-translate-x-full'}`,
+            const { t } = useLanguage();
+            return React.createElement('div', {
+                className: `fixed inset-0 z-[1001] lg:hidden transition-opacity duration-300 ${isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`,
+                style: { background: 'rgba(0,0,0,0.5)' },
+                onClick: () => setIsOpen(false)
+            },
+                React.createElement('div', {
+                    className: `mobile-panel fixed top-0 left-0 h-full w-64 bg-nav-bg/80 backdrop-blur-md shadow-xl ${isOpen ? 'open' : ''}`,
                     onClick: e => e.stopPropagation()
                 },
                     React.createElement('div', { className: "mobile-menu-content flex flex-col p-6 overflow-y-auto" },
-                        React.createElement('div', { className: "flex justify-between items-center mb-6" }, 
-                          React.createElement('a', { href: "#hero", onClick: () => setIsOpen(false), className: "font-heading text-xl text-highlight font-extrabold uppercase tracking-wider" }, "Menu Cafetto"),
-                          React.createElement('button', {
-                              onClick: () => setIsOpen(false),
-                              className: "text-text-light hover:text-highlight transition-colors",
-                              'aria-label': "Cerrar menú"
-                          }, React.createElement(CloseIcon))
+                        React.createElement('div', { className: "flex justify-between items-center mb-6" },
+                            React.createElement('a', { href: "#hero", onClick: () => setIsOpen(false), className: "font-heading text-xl text-highlight font-extrabold uppercase tracking-wider" }, "Menu Cafetto"),
+                            React.createElement('button', { onClick: () => setIsOpen(false), className: "text-text-light hover:text-highlight transition-colors" }, React.createElement(CloseIcon))
                         ),
                         React.createElement('nav', { className: "flex flex-col items-start mobile-nav-links space-y-1" },
-                            menuData.map(category => React.createElement(NavLink, { key: category.id, href: `#${category.id}`, activeId, onClick: () => setIsOpen(false), isMobile: true }, t(category.title)))
+                            menuData.map(cat => React.createElement(NavLink, { key: cat.id, href: `#${cat.id}`, activeId, onClick: () => setIsOpen(false) }, t(cat.title)))
                         ),
-                         React.createElement('div', { className: "pt-3 border-t border-white/15" }, 
-                            // Botón de Reseña en Menú Móvil
+                        React.createElement('div', { className: "pt-3 border-t border-white/15" },
                             React.createElement('button', {
-                            onClick: () => setIsReviewModalOpen(true),
-                            className: "w-full bg-primary-bg hover:bg-highlight text-highlight font-bold py-2 px-4 rounded-md transition-colors duration-50 flex flex-col items-center mb-2 text-sm" // Cambiado bg y hover:bg
+                                onClick: () => setIsReviewModalOpen(true),
+                                className: "w-full bg-primary-bg hover:bg-highlight text-highlight font-bold py-2 px-4 rounded-md transition-colors duration-200 flex flex-col items-center mb-2 text-sm"
                             },
-                            React.createElement('p', {className: "mb-1"}, t(reviewModalText.button)),
-                            React.createElement('div', { className: "flex items-center" },
-                            React.createElement('i', { className: "fas fa-star text-lg text-primary-bg mr-1 opacity-70" }), // Color de estrella cambiado a primary-bg para contraste
-                            React.createElement('i', { className: "fas fa-star text-xl text-primary-bg" }), // Color de estrella cambiado a primary-bg para contraste
-                            React.createElement('i', { className: "fas fa-star text-lg text-primary-bg ml-1 opacity-70" }) // Color de estrella cambiado a primary-bg para contraste
-                            )
-),
+                                React.createElement('p', { className: "mb-1" }, t(reviewModalText.button)),
+                                React.createElement('div', { className: "flex items-center" },
+                                    React.createElement('i', { className: "fas fa-star text-lg text-primary-bg mr-1 opacity-70" }),
+                                    React.createElement('i', { className: "fas fa-star text-xl text-primary-bg" }),
+                                    React.createElement('i', { className: "fas fa-star text-lg text-primary-bg ml-1 opacity-70" })
+                                )
+                            ),
                             React.createElement('div', { className: "flex justify-center space-x-6 mb-1" },
-                                socialLinks.map(link => {
-                                    return React.createElement('a', {
-                                        key: link.platform,
-                                        href: link.url,
-                                        target: "_blank",
-                                        rel: "noopener noreferrer",
-                                        className: "transition-transform duration-300 hover:scale-110",
-                                        'aria-label': t(link.label)
-                                    }, React.createElement('img', {src: link.iconUrl, className: "w-8 h-8", alt: link.platform}));
-                                })
+                                socialLinks.map(link => React.createElement('a', { key: link.platform, href: link.url, target: "_blank", rel: "noopener noreferrer", className: "transition-transform duration-300 hover:scale-110", 'aria-label': t(link.label) },
+                                    React.createElement('img', { src: link.iconUrl, className: "w-8 h-8", alt: link.platform })
+                                ))
                             ),
                             React.createElement('div', { className: "text-center text-text-medium text-xs space-y-3" },
-                                React.createElement('p', null, React.createElement('strong', {className: "text-text-light font-bold"}, t(info.address)), React.createElement('br'), React.createElement('a', { href: "https://maps.app.goo.gl/mZthkkufTVLR2fwg6", target: "_blank", className: "text-highlight hover:text-text-light transition" }, t(info.address_val))),
-                                React.createElement('p', null, React.createElement('strong', {className: "text-text-light font-bold"}, t(info.schedule)), React.createElement('br'), t(info.schedule_val)),
-                                React.createElement('p', null, React.createElement('strong', {className: "text-text-bold font-bold"}, t(info.phones)), React.createElement('br'), React.createElement('a', {href: "tel:+593979404088", className: "text-highlight hover:text-text-light transition"}, "0979404088"), " - ", React.createElement('a', {href: "tel:+593978888670", className: "text-highlight hover:text-text-light transition"}, "0978888670")),
-                                React.createElement('p', { className: "text-text-light font-light opacity-50", style: { fontSize: '10px' }}, t(info.address1))
+                                React.createElement('p', null, React.createElement('strong', { className: "text-text-light font-bold" }, t(info.address)), React.createElement('br'), React.createElement('a', { href: "https://maps.app.goo.gl/mZthkkufTVLR2fwg6", target: "_blank", className: "text-highlight hover:text-text-light transition" }, t(info.address_val))),
+                                React.createElement('p', null, React.createElement('strong', { className: "text-text-light font-bold" }, t(info.schedule)), React.createElement('br'), t(info.schedule_val)),
+                                React.createElement('p', null, React.createElement('strong', { className: "text-text-light font-bold" }, t(info.phones)), React.createElement('br'), React.createElement('a', { href: "tel:+593979404088", className: "text-highlight" }, "0979404088"), " - ", React.createElement('a', { href: "tel:+593978888670", className: "text-highlight" }, "0978888670")),
+                                React.createElement('p', { className: "text-text-light font-light opacity-50", style: { fontSize: '10px' } }, t(info.address1))
                             )
-                         )
+                        )
                     )
                 )
-            )
-          );
+            );
         };
-        
-        // Componente de la sección Héroe (Ahora con LOGO animado)
-        const Hero = ({ onOpenMenu }) => (
-            React.createElement('section', { 
-                id: "hero", 
-                className: "pt-[80px] h-[35vh] md:h-[60vh] flex flex-col justify-center items-center text-center bg-cover bg-center", 
-                style:{backgroundImage: "url('https://i.ibb.co/0pwKcJnZ/PORTADA-INICIO.jpg')"} 
+
+        // --- Hero con partículas y animaciones ---
+        const Particle = ({ style }) => React.createElement('div', { className: "particle", style });
+
+        const Hero = ({ onOpenMenu }) => {
+            const particles = useMemo(() => {
+                return Array.from({ length: 18 }, (_, i) => ({
+                    id: i,
+                    style: {
+                        '--dur': `${3 + Math.random() * 5}s`,
+                        '--delay': `${Math.random() * 5}s`,
+                        '--dx': `${(Math.random() - 0.5) * 60}px`,
+                        '--size': `${6 + Math.random() * 14}px`,
+                        left: `${10 + Math.random() * 80}%`,
+                        bottom: `${5 + Math.random() * 30}%`,
+                    }
+                }));
+            }, []);
+
+            return React.createElement('section', {
+                id: "hero",
+                className: "pt-[80px] h-[40vh] md:h-[65vh] flex flex-col justify-center items-center text-center bg-cover bg-center relative overflow-hidden",
+                style: { backgroundImage: "url('https://i.ibb.co/0pwKcJnZ/PORTADA-INICIO.jpg')" }
             },
-                React.createElement('button', { 
-                    onClick: onOpenMenu, // Acción de clic para abrir el menú
-                    className: "w-48 md:w-64 transition-transform duration-300 hover:scale-105 lg:cursor-default logo-pulse" 
-                }, React.createElement('img', { src: "https://i.ibb.co/7t3JrHPf/LOGO-CAFETTO.png", alt: "Logo Cafetto 1918"}))
-            )
+                // Overlay gradiente
+                React.createElement('div', { className: "hero-overlay absolute inset-0" }),
+
+                // Partículas flotantes
+                ...particles.map(p => React.createElement(Particle, { key: p.id, style: p.style })),
+
+                // Contenido central
+                React.createElement('div', { className: "relative z-10 flex flex-col items-center" },
+                    // Texto bienvenida
+                    React.createElement('p', {
+                        className: "hero-text-anim font-body text-xs md:text-sm tracking-[0.25em] text-highlight/80 uppercase mb-4 font-light"
+                    }, "Bienvenidos"),
+
+                    // Logo con shimmer y animación
+                    React.createElement('button', {
+                        onClick: onOpenMenu,
+                        className: "logo-shimmer hero-logo-anim logo-pulse w-44 md:w-72 transition-transform duration-300 hover:scale-105 lg:cursor-default"
+                    },
+                        React.createElement('img', { src: "https://i.ibb.co/7t3JrHPf/LOGO-CAFETTO.png", alt: "Logo Cafetto 1918", className: "w-full" })
+                    ),
+
+                    // Línea dorada decorativa
+                    React.createElement('div', { className: "hero-line h-[2px] bg-gradient-to-r from-transparent via-highlight to-transparent mt-5 mb-3" }),
+
+                    // Año
+                    React.createElement('p', {
+                        className: "hero-year-anim font-heading text-sm md:text-base text-text-medium tracking-[0.3em]"
+                    }, "Te esperamos")
+                )
+            );
+        };
+
+        // --- Ornamento decorativo ---
+        const Ornament = () => React.createElement('div', { className: "ornament" },
+            React.createElement('div', { className: "ornament-line" }),
+            React.createElement('div', { className: "ornament-dot" }),
+            React.createElement('div', { className: "ornament-dot", style: { transform: 'scale(1.5)' } }),
+            React.createElement('div', { className: "ornament-dot" }),
+            React.createElement('div', { className: "ornament-line" })
         );
 
-        // Componente para la tarjeta de un plato del menú (espaciado reducido)
-        const MenuItemCard = ({ item }) => {
-          const { t } = useLanguage();
-          return (
-            React.createElement('div', { className: "bg-primary-bg p-5 rounded-lg shadow-lg flex flex-col h-full hover:shadow-2xl hover:-translate-y-1 transition-all duration-300" }, // padding reducido
-                React.createElement('div', { className: "flex justify-between items-baseline border-b border-dashed border-white/10 pb-1 mb-1" }, // mb reducido
-                    React.createElement('h3', { className: "font-body text-9sm font-bold uppercase tracking-wide text-text-light" }, t(item.name)),
-                    React.createElement('p', { className: "font-body text-xl font-bold text-highlight flex-shrink-0 ml-3" }, item.price)
+        // --- MenuItemCard mejorada ---
+        const MenuItemCard = ({ item, index }) => {
+            const { t } = useLanguage();
+            const ref = useRef(null);
+            useEffect(() => {
+                const el = ref.current;
+                if (el) {
+                    el.style.transitionDelay = `${index * 0.06}s`;
+                    observerReveal.observe(el);
+                }
+                return () => { if (el) observerReveal.unobserve(el); };
+            }, []);
+            return React.createElement('div', {
+                ref,
+                className: "reveal menu-card bg-primary-bg p-5 rounded-lg shadow-lg flex flex-col h-full"
+            },
+                React.createElement('div', { className: "flex justify-between items-baseline border-b border-dashed border-highlight/15 pb-2 mb-2" },
+                    React.createElement('h3', { className: "font-body text-sm font-bold uppercase tracking-wide text-text-light" }, t(item.name)),
+                    React.createElement('p', { className: "price-glow font-body text-xl font-bold text-highlight flex-shrink-0 ml-3" }, item.price)
                 ),
                 item.description && React.createElement('p', { className: "font-body text-text-medium text-sm leading-relaxed flex-grow" }, t(item.description))
-            )
-          );
+            );
         };
 
-        // Componente para una sección de categoría del menú (iconos SVG restaurados)
+        // --- MenuCategorySection mejorada con scroll reveal ---
         const MenuCategorySection = ({ category }) => {
             const { t } = useLanguage();
             const Icon = category.icon;
-            return (
-                React.createElement('section', { id: category.id, className: "py-10 md:py-18" },
-                    React.createElement('div', { className: "max-w-4xl mx-auto bg-secondary-bg p-2 sm:p-10 md:p-12 rounded-xl shadow-2xl" }, // padding reducido
-                        React.createElement('h2', { className: "font-heading text-2xl sm:text-5xl md:text-4xl text-highlight font-bold uppercase text-center tracking-wider relative pb-5 mb-8" },
-                            React.createElement('span', { className: "flex justify-center items-center" }, // quitado gap-4 para que el SVG controle el margen
-                                React.createElement(Icon), 
-                                ` ${t(category.title)}`
-                            ),
+            const headerRef = useRef(null);
+            useEffect(() => {
+                const el = headerRef.current;
+                if (el) observerReveal.observe(el);
+                return () => { if (el) observerReveal.unobserve(el); };
+            }, []);
+            return React.createElement('section', { id: category.id, className: "category-section py-10 md:py-18" },
+                React.createElement('div', { className: "max-w-4xl mx-auto bg-secondary-bg p-2 sm:p-10 md:p-12 rounded-xl shadow-2xl" },
+                    React.createElement('div', { ref: headerRef, className: "reveal" },
+                        React.createElement('h2', { className: "category-title font-heading text-2xl sm:text-5xl md:text-4xl text-highlight font-bold uppercase text-center tracking-wider relative pb-3 mb-2" },
+                            React.createElement('span', { className: "flex justify-center items-center" }, React.createElement(Icon), ` ${t(category.title)}`),
                             React.createElement('span', { className: "absolute bottom-0 left-1/2 -translate-x-1/2 w-24 h-1 bg-accent rounded-full" })
                         ),
-                        React.createElement('img', { src: category.imageUrl, alt: t(category.title), className: "w-full h-64 md:h-80 object-cover rounded-lg mb-12 shadow-lg", loading: "lazy" }),
-                        React.createElement('div', { className: "grid grid-cols-1 md:grid-cols-3 gap-4" }, // gap reducido de 8 a 6
-                            category.items.map((item, index) => React.createElement(MenuItemCard, { key: index, item: item }))
+                        React.createElement(Ornament),
+                        React.createElement('div', { className: "category-img-wrap mb-10 mt-4" },
+                            React.createElement('img', { src: category.imageUrl, alt: t(category.title), className: "category-img w-full h-64 md:h-80 object-cover", loading: "lazy" })
                         )
+                    ),
+                    React.createElement('div', { className: "grid grid-cols-1 md:grid-cols-3 gap-4" },
+                        category.items.map((item, idx) => React.createElement(MenuItemCard, { key: idx, item, index: idx }))
                     )
                 )
             );
         };
 
-        // Componente del Pie de Página (Actualizado con iconos de imagen)
+        // --- Footer ---
         const Footer = ({ info, socialLinks, setIsReviewModalOpen }) => {
             const { t } = useLanguage();
-
-            return (
-                React.createElement('footer', { className: "bg-nav-bg text-center py-4 px-4 mt-4 text-text-small" },
-                    // Botón de Reseña en Footer
-                    React.createElement('button', {
-                        onClick: () => setIsReviewModalOpen(true),
-                        className: "w-full bg-primary-bg hover:bg-highlight text-highlight font-bold py-2 px-4 rounded-md transition-colors duration-50 flex flex-col items-center mb-2 text-sm" // Cambiado bg y hover:bg
-                    }, 
-                        React.createElement('p', {className: "mb-1"}, t(reviewModalText.button)),
-                        React.createElement('div', { className: "flex items-center" },
-                            React.createElement('i', { className: "fas fa-star text-lg text-highlight mr-1 opacity-70" }),
-                            React.createElement('i', { className: "fas fa-star text-xl text-highlight" }),
-                            React.createElement('i', { className: "fas fa-star text-lg text-highlight ml-1 opacity-70" })
-                        )
-                    ),
-                    // Social Media Links
-                    React.createElement('div', { className: "flex justify-center space-x-6 text-text-light mb-6" },
-                        socialLinks.map(link => {
-                             return React.createElement('a', {
-                                 key: link.platform,
-                                 href: link.url,
-                                 target: "_blank",
-                                 rel: "noopener noreferrer",
-                                 className: "transition-transform duration-300 hover:scale-110",
-                                 'aria-label': t(link.label)
-                             }, React.createElement('img', { src: link.iconUrl, className: "w-8 h-8", alt: link.platform }));
-                        })
-                    ),
-                    // Contact Info
-                    React.createElement('p', null, React.createElement('strong', {className: "text-text-light font-bold"}, t(info.address)), React.createElement('br'), React.createElement('a', { href: "https://maps.app.goo.gl/mZthkkufTVLR2fwg6", target: "_blank", className: "text-highlight hover:text-text-light transition" }, t(info.address_val))),
-                    React.createElement('p', null, React.createElement('strong', {className: "text-text-light font-bold"}, t(info.schedule)), React.createElement('br'), t(info.schedule_val)),
-                    React.createElement('p', null, React.createElement('strong', {className: "text-text-light font-bold"}, t(info.phones)), React.createElement('br'), React.createElement('a', {href: "tel:+593979404088", className: "text-highlight hover:text-text-light transition"}, "0979404088"), " - ", React.createElement('a', {href: "tel:+593978888670", className: "text-highlight hover:text-text-light transition"}, "0978888670")),
-                React.createElement('p', { className: "text-text-light font-light opacity-50", style: { fontSize: '10px' }}, t(info.address1))
+            return React.createElement('footer', { className: "bg-nav-bg text-center py-6 px-4 mt-4" },
+                React.createElement('div', { className: "footer-divider" }),
+                React.createElement('button', {
+                    onClick: () => setIsReviewModalOpen(true),
+                    className: "w-full bg-primary-bg hover:bg-highlight text-highlight font-bold py-2 px-4 rounded-md transition-colors duration-200 flex flex-col items-center mb-4 text-sm"
+                },
+                    React.createElement('p', { className: "mb-1" }, t(reviewModalText.button)),
+                    React.createElement('div', { className: "flex items-center" },
+                        React.createElement('i', { className: "fas fa-star text-lg text-highlight mr-1 opacity-70" }),
+                        React.createElement('i', { className: "fas fa-star text-xl text-highlight" }),
+                        React.createElement('i', { className: "fas fa-star text-lg text-highlight ml-1 opacity-70" })
+                    )
+                ),
+                React.createElement('div', { className: "flex justify-center space-x-6 text-text-light mb-4" },
+                    socialLinks.map(link => React.createElement('a', { key: link.platform, href: link.url, target: "_blank", rel: "noopener noreferrer", className: "transition-transform duration-300 hover:scale-110", 'aria-label': t(link.label) },
+                        React.createElement('img', { src: link.iconUrl, className: "w-8 h-8", alt: link.platform })
+                    ))
+                ),
+                React.createElement('div', { className: "footer-divider" }),
+                React.createElement('div', { className: "text-text-medium text-xs space-y-2 mt-2" },
+                    React.createElement('p', null, React.createElement('strong', { className: "text-text-light" }, t(info.address)), React.createElement('br'), React.createElement('a', { href: "https://maps.app.goo.gl/mZthkkufTVLR2fwg6", target: "_blank", className: "text-highlight hover:text-text-light transition" }, t(info.address_val))),
+                    React.createElement('p', null, React.createElement('strong', { className: "text-text-light" }, t(info.schedule)), React.createElement('br'), t(info.schedule_val)),
+                    React.createElement('p', null, React.createElement('strong', { className: "text-text-light" }, t(info.phones)), React.createElement('br'), React.createElement('a', { href: "tel:+593979404088", className: "text-highlight" }, "0979404088"), " - ", React.createElement('a', { href: "tel:+593978888670", className: "text-highlight" }, "0978888670")),
+                    React.createElement('div', { className: "footer-divider" }),
+                    React.createElement('p', { className: "opacity-40 text-[10px]" }, t(info.address1))
                 )
             );
         };
-        
-        // Componente del modal de WhatsApp (AHORA MULTILINGÜE)
+
+        // --- Modales (igual al original) ---
         const WhatsAppModal = ({ isOpen, onClose }) => {
             const { t } = useLanguage();
             if (!isOpen) return null;
-            
-            const whatsappLink = "https://wa.me/593998388863?text=" + t(whatsappModalText.linkMessage);
-            
-            return React.createElement('div', {
-                className: "fixed inset-0 z-[1002] flex items-center justify-center bg-black/70",
-                onClick: onClose
-            }, React.createElement('div', {
-                className: "bg-secondary-bg p-8 rounded-lg shadow-2xl text-center mx-4",
-                onClick: e => e.stopPropagation() // Previene que el clic en el modal lo cierre
-            },
-                React.createElement('h3', { className: "font-heading text-2xl text-highlight mb-4"}, t(whatsappModalText.title)),
-                React.createElement('p', { className: "text-text-light mb-6"}, t(whatsappModalText.message)),
-                React.createElement('div', { className: "flex justify-center gap-4" },
-                    React.createElement('a', {
-                        href: whatsappLink,
-                        target: "_blank",
-                        rel: "noopener noreferrer",
-                        className: "bg-whatsapp hover:bg-whatsapp-dark text-white font-bold py-2 px-6 rounded-lg transition-colors duration-300",
-                        onClick: onClose
-                    }, t(whatsappModalText.confirm)),
-                    React.createElement('button', {
-                        onClick: onClose,
-                        className: "bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-6 rounded-lg transition-colors duration-300"
-                    }, t(whatsappModalText.cancel))
+            const link = "https://wa.me/593998388863?text=" + t(whatsappModalText.linkMessage);
+            return React.createElement('div', { className: "fixed inset-0 z-[1002] flex items-center justify-center bg-black/70", onClick: onClose },
+                React.createElement('div', { className: "bg-secondary-bg p-8 rounded-lg shadow-2xl text-center mx-4 border border-highlight/20", onClick: e => e.stopPropagation() },
+                    React.createElement('h3', { className: "font-heading text-2xl text-highlight mb-4" }, t(whatsappModalText.title)),
+                    React.createElement('p', { className: "text-text-light mb-6" }, t(whatsappModalText.message)),
+                    React.createElement('div', { className: "flex justify-center gap-4" },
+                        React.createElement('a', { href: link, target: "_blank", rel: "noopener noreferrer", className: "bg-whatsapp hover:bg-whatsapp-dark text-white font-bold py-2 px-6 rounded-lg transition-colors duration-300", onClick: onClose }, t(whatsappModalText.confirm)),
+                        React.createElement('button', { onClick: onClose, className: "bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-6 rounded-lg transition-colors duration-300" }, t(whatsappModalText.cancel))
+                    )
                 )
-            ));
+            );
         };
 
-        // Componente del modal de Reseña (NUEVO Y MULTILINGÜE)
         const ReviewModal = ({ isOpen, onClose }) => {
             const { t } = useLanguage();
             if (!isOpen) return null;
-            
-            const reviewLink = "https://g.page/r/CQnM1s0yttneEAE/review";
-
-            return React.createElement('div', {
-                className: "fixed inset-0 z-[1003] flex items-center justify-center bg-black/70",
-                onClick: onClose
-            }, React.createElement('div', {
-                className: "bg-secondary-bg p-8 rounded-lg shadow-2xl text-center mx-4",
-                onClick: e => e.stopPropagation()
-            },
-                React.createElement('h3', { className: "font-heading text-2xl text-highlight mb-4"}, t(reviewModalText.title)),
-                React.createElement('p', { className: "text-text-light mb-6"}, t(reviewModalText.message)),
-                React.createElement('div', { className: "flex justify-center items-center mb-4" },
-                    React.createElement('i', { className: "fas fa-star text-lg text-highlight mr-1 opacity-70" }),
-                    React.createElement('i', { className: "fas fa-star text-xl text-highlight" }), /* Estrella central más grande */
-                    React.createElement('i', { className: "fas fa-star text-lg text-highlight ml-1 opacity-70" })
-                ),
-                React.createElement('div', { className: "flex justify-center gap-4" },
-                    React.createElement('a', {
-                        href: reviewLink,
-                        target: "_blank",
-                        rel: "noopener noreferrer",
-                        className: "bg-review-color hover:bg-highlight text-primary-bg font-bold py-2 px-6 rounded-lg transition-colors duration-300",
-                        onClick: onClose
-                    }, t(reviewModalText.button)),
-                    React.createElement('button', {
-                        onClick: onClose,
-                        className: "bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-6 rounded-lg transition-colors duration-300"
-                    }, t(whatsappModalText.cancel)) /* Reutilizamos el texto "Cancelar" del modal de WhatsApp */
+            return React.createElement('div', { className: "fixed inset-0 z-[1003] flex items-center justify-center bg-black/70", onClick: onClose },
+                React.createElement('div', { className: "bg-secondary-bg p-8 rounded-lg shadow-2xl text-center mx-4 border border-highlight/20", onClick: e => e.stopPropagation() },
+                    React.createElement('h3', { className: "font-heading text-2xl text-highlight mb-4" }, t(reviewModalText.title)),
+                    React.createElement('p', { className: "text-text-light mb-6" }, t(reviewModalText.message)),
+                    React.createElement('div', { className: "flex justify-center items-center mb-4" },
+                        React.createElement('i', { className: "fas fa-star text-lg text-highlight mr-1 opacity-70" }),
+                        React.createElement('i', { className: "fas fa-star text-xl text-highlight" }),
+                        React.createElement('i', { className: "fas fa-star text-lg text-highlight ml-1 opacity-70" })
+                    ),
+                    React.createElement('div', { className: "flex justify-center gap-4" },
+                        React.createElement('a', { href: "https://g.page/r/CQnM1s0yttneEAE/review", target: "_blank", rel: "noopener noreferrer", className: "bg-review-color hover:bg-highlight text-primary-bg font-bold py-2 px-6 rounded-lg transition-colors duration-300", onClick: onClose }, t(reviewModalText.button)),
+                        React.createElement('button', { onClick: onClose, className: "bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-6 rounded-lg transition-colors duration-300" }, t(whatsappModalText.cancel))
+                    )
                 )
-            ));
-        };
-
-        // Componente del botón flotante de WhatsApp (Ahora un botón que abre el modal)
-        const WhatsAppButton = ({ onClick }) => {
-            return (
-                React.createElement('button', {
-                    onClick: onClick,
-                    className: "fixed top-[36%] right-5 w-12 h-12 rounded-full flex justify-center items-center shadow-lg z-40 transition-transform duration-300 whatsapp-pulse",
-                    'aria-label': "Abrir chat de WhatsApp"
-                }, React.createElement('img', { src: "https://i.ibb.co/JW9qS3qh/whatsapp.png", className: "w-full h-full object-cover rounded-full", alt: "WhatsApp" }))
             );
         };
-        
-        // Componente del botón flotante de Reseña (NUEVO)
+
+        // --- Botones flotantes ---
+        const WhatsAppButton = ({ onClick }) => React.createElement('button', {
+            onClick,
+            className: "fixed top-[36%] right-5 w-12 h-12 rounded-full flex justify-center items-center shadow-lg z-40 transition-transform duration-300 whatsapp-pulse",
+            'aria-label': "WhatsApp"
+        }, React.createElement('img', { src: "https://i.ibb.co/JW9qS3qh/whatsapp.png", className: "w-full h-full object-cover rounded-full", alt: "WhatsApp" }));
+
         const ReviewFloatingButton = ({ onClick }) => {
             const { t } = useLanguage();
-            return (
-                React.createElement('button', {
-                    onClick: onClick,
-                    className: "fixed top-[calc(36%_+_4rem)] right-6 w-9 h-9 rounded-full flex justify-center items-center shadow-lg z-40 bg-review-color/80 hover:bg-review-color transition-all duration-300 review-pulse", // Posición y tamaño ajustados, clase de pulso
-                    'aria-label': t(reviewModalText.button)
-                }, 
-                    React.createElement('img', { src: "https://i.ibb.co/DHfFKvDC/CALIFICAR.png", className: "w-full h-full object-cover rounded-full", alt: "CALIFICAR" })
-                )
-            );
+            return React.createElement('button', {
+                onClick,
+                className: "fixed top-[calc(36%_+_4rem)] right-6 w-9 h-9 rounded-full flex justify-center items-center shadow-lg z-40 bg-review-color/80 hover:bg-review-color transition-all duration-300 review-pulse",
+                'aria-label': t(reviewModalText.button)
+            }, React.createElement('img', { src: "https://i.ibb.co/DHfFKvDC/CALIFICAR.png", className: "w-full h-full object-cover rounded-full", alt: "CALIFICAR" }));
         };
 
-        // Componente Principal de la Aplicación
+        // --- App Principal ---
         const App = () => {
-          const [isMenuOpen, setIsMenuOpen] = useState(false);
-          const [isWhatsAppModalOpen, setIsWhatsAppModalOpen] = useState(false);
-          const [isReviewModalOpen, setIsReviewModalOpen] = useState(false); // Estado para el modal de reseña
-          
-          const categoryIds = useMemo(() => menuData.map(c => c.id), []);
-          const activeId = useScrollSpy(categoryIds, { rootMargin: '-40% 0px -60% 0px' });
+            const [isMenuOpen, setIsMenuOpen] = useState(false);
+            const [isWhatsAppModalOpen, setIsWhatsAppModalOpen] = useState(false);
+            const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+            const categoryIds = useMemo(() => menuData.map(c => c.id), []);
+            const activeId = useScrollSpy(categoryIds, { rootMargin: '-40% 0px -60% 0px' });
 
-          useEffect(() => {
-              const handleResize = () => {
-                  if (window.innerWidth >= 1024) {
-                      setIsMenuOpen(false);
-                  }
-              };
-              window.addEventListener('resize', handleResize);
-              return () => window.removeEventListener('resize', handleResize);
-          }, []);
+            useEffect(() => {
+                const handleResize = () => { if (window.innerWidth >= 1024) setIsMenuOpen(false); };
+                window.addEventListener('resize', handleResize);
 
-        // Lógica de React para controlar el audio
-        useEffect(() => {
-            const audioPlayer = document.getElementById('background-music');
-            if (audioPlayer) {
-                // Intentar reproducir el audio al montar el componente
-                audioPlayer.play().catch(error => {
-                    // console.log("La reproducción automática de audio muteado falló:", error);
-                    // Esto es normal en navegadores que requieren una interacción más directa,
-                    // pero el audio estará listo para ser desmuteado/reproducido por el usuario.
-                });
+                // Activar scroll reveal
+                setTimeout(() => {
+                    document.querySelectorAll('.reveal').forEach(el => observerReveal.observe(el));
+                }, 200);
 
-                // Establecer el volumen una vez que el audio esté cargado
-                audioPlayer.oncanplaythrough = () => {
-                    audioPlayer.volume = 0.2; // 20%
-                    if (!audioPlayer.muted && audioPlayer.paused) {
-                        // Si no está muteado (por alguna configuración de usuario) y está pausado, intentar play
-                        audioPlayer.play().catch(e => console.log("Play falló tras canplaythrough:", e));
-                    }
-                };
-            }
-        }, []); // Solo se ejecuta una vez al montar
+                return () => window.removeEventListener('resize', handleResize);
+            }, []);
 
-          return (
-            React.createElement(LanguageProvider, null,
+            useEffect(() => {
+                const audio = document.getElementById('background-music');
+                if (audio) {
+                    audio.play().catch(() => {});
+                    audio.oncanplaythrough = () => { audio.volume = 0.2; };
+                }
+            }, []);
+
+            return React.createElement(LanguageProvider, null,
                 React.createElement('div', { className: "bg-primary-bg min-h-screen font-body text-text-light" },
                     React.createElement(Header, { isMenuOpen, setIsMenuOpen, activeId }),
-                    React.createElement(MobileMenu, { isOpen: isMenuOpen, setIsOpen: setIsMenuOpen, activeId, info: contactInfo, socialLinks: socialLinks, setIsReviewModalOpen: setIsReviewModalOpen }),
+                    React.createElement(MobileMenu, { isOpen: isMenuOpen, setIsOpen: setIsMenuOpen, activeId, info: contactInfo, socialLinks, setIsReviewModalOpen }),
                     React.createElement('main', null,
                         React.createElement(Hero, { onOpenMenu: () => setIsMenuOpen(true) }),
                         React.createElement('div', { className: "container mx-auto px-4" },
-                            menuData.map(category => React.createElement(MenuCategorySection, { key: category.id, category }))
+                            menuData.map(cat => React.createElement(MenuCategorySection, { key: cat.id, category: cat }))
                         )
                     ),
-                    React.createElement(Footer, { info: contactInfo, socialLinks: socialLinks, setIsReviewModalOpen: setIsReviewModalOpen }),
+                    React.createElement(Footer, { info: contactInfo, socialLinks, setIsReviewModalOpen }),
                     React.createElement(WhatsAppButton, { onClick: () => setIsWhatsAppModalOpen(true) }),
                     React.createElement(ReviewFloatingButton, { onClick: () => setIsReviewModalOpen(true) }),
-                    React.createElement(WhatsAppModal, { 
-                        isOpen: isWhatsAppModalOpen, 
-                        onClose: () => setIsWhatsAppModalOpen(false) 
-                    }),
-                    React.createElement(ReviewModal, { 
-                        isOpen: isReviewModalOpen, 
-                        onClose: () => setIsReviewModalOpen(false) 
-                    })
+                    React.createElement(WhatsAppModal, { isOpen: isWhatsAppModalOpen, onClose: () => setIsWhatsAppModalOpen(false) }),
+                    React.createElement(ReviewModal, { isOpen: isReviewModalOpen, onClose: () => setIsReviewModalOpen(false) })
                 )
-            )
-          );
+            );
         };
-        // --- FIN: Lógica de la Aplicación ---
 
-
-        // --- INICIO: Renderizado de la Aplicación ---
         const rootElement = document.getElementById('root');
-        const root = ReactDOM.createRoot(rootElement);
-        root.render(React.createElement(App));
-        // --- FIN: Renderizado de la Aplicación ---
-
+        ReactDOM.createRoot(rootElement).render(React.createElement(App));
     </script>
 </body>
 </html>
-
-
-
-
-
-

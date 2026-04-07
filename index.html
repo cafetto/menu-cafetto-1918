@@ -117,31 +117,31 @@
 
     <!-- Navigation -->
     <nav class="fixed top-0 w-full z-50 px-6 py-4 flex justify-between items-center nav-glass">
-        <a href="#" class="w-24 md:w-32 transition-transform hover:scale-105">
-            <img src="https://i.ibb.co/nNVVy5pZ/logo-cafetto-dorado.png" alt="Logo Cafetto">
-        </a>
-        <button id="open-games" class="lg:hidden mt-1 flex items-center gap-3 px-4 py-1 border border-accent/40 rounded-full bg-accent/5 hover:bg-accent/20 transition-all group active:scale-95">
-    <i class="fas fa-gamepad text-accent text-xl animate-bounce"></i>
-</button>
-        <div class="flex items-center gap-6 md:gap-10">
-            <!-- Lang Switcher -->
-            <div class="flex gap-3 border-r border-white/10 pr-6 mr-2">
-                <img src="https://flagcdn.com/w40/es.png" class="lang-flag active" onclick="switchLang('es')" id="flag-es" title="Español">
-                <img src="https://flagcdn.com/w40/gb.png" class="lang-flag" onclick="switchLang('en')" id="flag-en" title="English">
+        <div class="flex-shrink-0">
+            <a href="#" class="block w-24 md:w-32 transition-transform hover:scale-105">
+                <img src="https://i.ibb.co/nNVVy5pZ/logo-cafetto-dorado.png" alt="Logo Cafetto">
+            </a>
+        </div>
+
+        <div class="flex items-center gap-4 md:gap-8">
+            
+            <button id="open-games" class="lg:hidden flex items-center justify-center p-2.5 border border-accent/30 rounded-full bg-accent/5 hover:bg-accent/20 transition-all active:scale-90">
+                <i class="fas fa-gamepad text-accent text-xl animate-pulse"></i>
+            </button>
+
+            <div class="flex items-center gap-2 border-r border-white/10 pr-4 font-bold tracking-tighter">
+                <span id="flag-es" onclick="switchLang('es')" class="lang-text active cursor-pointer">ES</span>
+                <span class="text-white/10 text-[9px]">/</span>
+                <span id="flag-en" onclick="switchLang('en')" class="lang-text cursor-pointer">EN</span>
             </div>
 
-            <div class="hidden lg:flex items-center gap-10 text-[10px] uppercase tracking-[0.4em] font-bold text-accent-light">
-                <a href="#menu" class="hover:text-white transition-colors" data-i18n="nav_menu">La Carta</a>
-                <a href="#footer" class="hover:text-white transition-colors" data-i18n="nav_location">Ubicación</a>
-                <a href="https://g.page/r/CQnM1s0yttneEAE/review" target="_blank" class="flex items-center gap-2 px-4 py-2 border border-yellow-400/30 hover:border-yellow-400/70 hover:bg-yellow-400/5 transition-all group" title="Calificanos en Google">
-                    <i class="fab fa-google text-yellow-400 text-sm group-hover:scale-110 transition-transform"></i>
-                    <span class="text-yellow-400/80 group-hover:text-yellow-400 transition-colors text-[9px]">Calíficanos</span>
-                    <i class="fas fa-star text-yellow-400/60 text-[8px] group-hover:text-yellow-400 transition-colors"></i>
-                </a>
-                <a href="https://wa.me/593998388863" class="px-6 py-2 border border-accent/40 hover:bg-accent hover:text-black transition-all" data-i18n="nav_reserva">Reservas</a>
+            <div class="hidden lg:flex items-center gap-8 text-[10px] uppercase tracking-[0.3em] font-bold text-accent-light">
+                <a href="#menu" class="hover:text-white transition-colors">La Carta</a>
+                <a href="#footer" class="hover:text-white transition-colors">Ubicación</a>
+                <a href="https://wa.me/593998388863" class="px-6 py-2 border border-accent/40 hover:bg-accent hover:text-black transition-all">Reservas</a>
             </div>
 
-            <button id="nav-toggle" class="lg:hidden text-accent text-2xl p-2">
+            <button id="nav-toggle" class="lg:hidden text-accent text-3xl p-1">
                 <i class="fas fa-bars-staggered"></i>
             </button>
         </div>

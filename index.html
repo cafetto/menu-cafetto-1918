@@ -125,9 +125,9 @@
 
         <div class="flex items-center gap-4 md:gap-8">
             
-            <button id="open-games" class="lg:hidden flex items-center justify-center p-2.5 border border-accent/30 rounded-full bg-accent/5 hover:bg-accent/20 transition-all active:scale-90">
-                <i class="fas fa-gamepad text-accent text-xl animate-pulse"></i>
-            </button>
+            <button class="btn-open-games lg:hidden flex items-center justify-center p-2.5 border border-accent/30 rounded-full bg-accent/5 hover:bg-accent/20 transition-all active:scale-90">
+    <i class="fas fa-gamepad text-accent text-xl animate-bounce"></i>
+</button>
 
             <div class="flex items-center gap-2 border-r border-white/10 pr-4 font-bold tracking-tighter">
                 <span id="flag-es" onclick="switchLang('es')" class="lang-text active cursor-pointer">ES</span>
@@ -169,7 +169,8 @@
                         <a href="https://www.facebook.com/cafetto1918"><i class="fab fa-facebook"></i></a>
                         <a href="https://www.tiktok.com/@cafetto1918"><i class="fab fa-tiktok"></i></a>
                     </div>
-                    <button id="open-games" class="lg:hidden mt-2 flex items-center justify-center gap-3 px-6 py-3 border border-accent/40 rounded-full bg-accent/5 hover:bg-accent/20 transition-all group active:scale-95">
+                    
+                    <button class="btn-open-games lg:hidden mt-2 flex items-center justify-center gap-3 px-6 py-3 border border-accent/40 rounded-full bg-accent/5 hover:bg-accent/20 transition-all group active:scale-95">
     <i class="fas fa-gamepad text-accent text-xl animate-bounce"></i>
     <span class="text-[11px] uppercase tracking-[0.2em] font-bold text-accent-light" data-i18n="wplay">¿Jugamos algo?</span>
 </button>
@@ -677,28 +678,30 @@
         const cursor = document.getElementById('custom-cursor');
         document.addEventListener('mousemove', e => gsap.to(cursor, { x: e.clientX - 10, y: e.clientY - 10, duration: 0.2 }));
         
-        // Lógica para el Modal de Juegos - CORREGIDA
-const openGamesBtn = document.getElementById('open-games');
+        // Lógica para el Modal de Juegos - OPTIMIZADA
+const allOpenGamesBtns = document.querySelectorAll('.btn-open-games'); // Selecciona todos los botones
 const closeGamesBtn = document.getElementById('close-games');
 const gamesModal = document.getElementById('games-modal');
 const gamesContent = document.getElementById('games-content');
 const mobileMenu = document.getElementById('mobile-menu');
 
-openGamesBtn.onclick = (e) => {
-    // Evitamos que el clic se propague a otros elementos del menú
+// Función para abrir el modal
+const openModal = (e) => {
     e.stopPropagation();
-
-    // 1. Mostramos el modal PRIMERO (ahora tiene z-150, saldrá arriba de todo)
+    
+    // 1. Mostrar el modal (z-150 lo pone sobre todo)
     gamesModal.classList.remove('opacity-0', 'pointer-events-none');
     gamesContent.classList.remove('scale-90');
     gamesContent.classList.add('scale-100');
 
-    // 2. Esperamos un instante y cerramos el menú móvil de fondo
-    // Esto evita que el modal "desaparezca" porque el padre se está moviendo
-    setTimeout(() => {
-        mobileMenu.style.transform = "translateX(100%)";
-    }, 400); 
+    // 2. Cerrar el menú móvil de fondo
+    mobileMenu.style.transform = "translateX(100%)";
 };
+
+// Aplicar la función a cada botón encontrado
+allOpenGamesBtns.forEach(btn => {
+    btn.onclick = openModal;
+});
 
 // Función para cerrar el modal
 const hideModal = () => {

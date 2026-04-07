@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>☕ Memory Café</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Mono:wght@400;500&display=swap');
+
+:root {
+  --bg:      #0d0a07;
+  --surface: #1a120b;
+  --gold:    #c8922a;
+  --gold-lt: #f5c842;
+  --cream:   #f0e6d0;
+  --amber:   #e07b24;
+  --match:   #2ecc71;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+body {
+  background: var(--bg);
+  min-height: 100vh;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  font-family: 'DM Mono', monospace;
+  overflow: hidden; position: relative;
+}
+
+.bg-grid {
+  position: fixed; inset: 0; z-index: 0;
+  background-image:
+    linear-gradient(rgba(200,146,42,.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(200,146,42,.05) 1px, transparent 1px);
+  background-size: 36px 36px;
+  animation: gs 22s linear infinite;
+}
+@keyframes gs { to { background-position: 36px 36px; } }
+
+.bg-radial {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(200,146,42,.07) 0%, transparent 70%);
+}
+
+/* ── Floating steam particles ── */
+.steam-wrap { position: fixed; inset: 0; z-index: 0; overflow: hidden; pointer-events: none; }
+.sp {
+  position: absolute; bottom: -20px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(200,146,42,.18), transparent 70%);
+  filter: blur(6px);
+  animation: steamUp var(--dur, 6s) ease-in var(--delay, 0s) infinite;
+}
+@keyframes steamUp {
+  0%   { transform: translateY(0) scale(1); opacity: 0; }
+  15%  { opacity: 1; }
+  100% { transform: translateY(-110vh) scale(2.5); opacity: 0; }
+}
+
+/* ── Wrapper ── */
+.wrapper {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column; align-items: center; gap: 20px;
+  padding: 20px;
+}
+
+/* ── Title ── */
+.title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.8rem, 5vw, 2.8rem);
+  font-weight: 900;
+  color: var(--gold-lt);
+  text-shadow: 0 0 30px rgba(200,146,42,.7), 0 0 60px rgba(200,146,42,.25);
+  text-align: center; line-height: 1;
+}
+.title span {
+  display: block; font-size: .52em; font-weight: 700;
+  letter-spacing: .35em; color: var(--cream); opacity: .6; margin-top: 5px;
+}
+
+/* ── HUD ── */
+.hud {
+  display: flex; gap: 28px; align-items: center;
+  background: linear-gradient(135deg, rgba(26,18,11,.92), rgba(13,10,7,.96));
+  border: 1px solid rgba(200,146,42,.28);
+  border-radius: 12px; padding: 10px 26px;
+  box-shadow: 0 4px 30px rgba(0,0,0,.5), inset 0 1px 0 rgba(200,146,42,.12);
+}
+.hud-item { text-align: center; }
+.hud-lbl { font-size: .58rem; letter-spacing: .2em; color: var(--gold); opacity: .7; text-transform: uppercase; }
+.hud-val {
+  font-size: 1.4rem; font-weight: 500; color: var(--cream);
+  text-shadow: 0 0 10px rgba(240,230,208,.35);
+  transition: transform .1s;
+  min-width: 60px; display: inline-block; text-align: center;
+}
+.hud-val.pop { animation: pop .25s ease; }
+@keyframes pop { 0%,100%{transform:scale(1)} 50%{transform:scale(1.45)} }
+.hud-sep { width: 1px; height: 28px; background: rgba(200,146,42,.22); }
+
+/* ── Board wrap ── */
+.board-wrap {
+  border-radius: 16px; padding: 3px;
+  background: linear-gradient(135deg, var(--gold), var(--amber), var(--gold-lt), var(--gold));
+  background-size: 300% 300%;
+  animation: shimmer 4s ease infinite;
+  box-shadow: 0 0 40px rgba(200,146,42,.32), 0 0 80px rgba(200,146,42,.12), 0 20px 60px rgba(0,0,0,.7);
+}
+@keyframes shimmer { 0%,100%{background-position:0% 50%} 50%{background-position:100% 50%} }
+
+.board {
+  background: var(--surface);
+  border-radius: 14px; padding: 18px;
+  display: grid; gap: 12px;
+  /* grid set by JS */
+}
+
+/* ── Card ── */
+.card {
+  width: 72px; height: 90px;
+  perspective: 600px;
+  cursor: pointer;
+}
+@media(max-width:520px){ .card { width: 58px; height: 74px; } }
+
+.card-inner {
+  width: 100%; height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform .45s cubic-bezier(.4,0,.2,1);
+  border-radius: 10px;
+}
+.card.flipped .card-inner,
+.card.matched .card-inner { transform: rotateY(180deg); }
+
+.card-face {
+  position: absolute; inset: 0;
+  border-radius: 10px;
+  backface-visibility: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* back face */
+.card-back {
+  background: linear-gradient(135deg, #1e1408, #2a1d0d);
+  border: 1px solid rgba(200,146,42,.3);
+  box-shadow: inset 0 0 20px rgba(200,146,42,.06);
+  overflow: hidden;
+}
+.card-back::before {
+  content: '☕';
+  font-size: 1.6rem;
+  opacity: .18;
+  filter: blur(1px);
+}
+/* subtle pattern */
+.card-back::after {
+  content: '';
+  position: absolute; inset: 0;
+  background-image: repeating-linear-gradient(
+    45deg, rgba(200,146,42,.04) 0px, rgba(200,146,42,.04) 1px, transparent 1px, transparent 10px
+  );
+}
+
+/* front face */
+.card-front {
+  transform: rotateY(180deg);
+  background: linear-gradient(135deg, #231808, #2e1f0c);
+  border: 1px solid rgba(200,146,42,.5);
+  font-size: 2.4rem;
+  box-shadow: 0 0 0 0 rgba(200,146,42,0);
+  transition: box-shadow .3s;
+}
+@media(max-width:520px){ .card-front { font-size: 1.9rem; } }
+
+.card.matched .card-front {
+  border-color: var(--match);
+  box-shadow: 0 0 18px rgba(46,204,113,.5), inset 0 0 12px rgba(46,204,113,.12);
+  animation: matchPulse .5s ease;
+}
+@keyframes matchPulse {
+  0%,100%{ transform: rotateY(180deg) scale(1); }
+  50%{ transform: rotateY(180deg) scale(1.12); }
+}
+
+.card:not(.flipped):not(.matched):hover .card-back {
+  border-color: rgba(200,146,42,.6);
+  box-shadow: inset 0 0 24px rgba(200,146,42,.12);
+}
+
+/* ── Overlay ── */
+.overlay {
+  position: fixed; inset: 0; z-index: 20;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 16px;
+  background: rgba(13,10,7,.85);
+  backdrop-filter: blur(6px);
+  transition: opacity .4s;
+}
+.overlay.hidden { opacity: 0; pointer-events: none; }
+
+.ov-icon { font-size: 4rem; filter: drop-shadow(0 0 22px var(--gold)); animation: fi 2s ease-in-out infinite; }
+@keyframes fi { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+
+.ov-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.6rem, 5vw, 2.4rem); font-weight: 900;
+  color: var(--gold-lt); text-shadow: 0 0 24px rgba(200,146,42,.7);
+  text-align: center;
+}
+.ov-sub { font-size: .8rem; color: var(--cream); opacity: .55; letter-spacing: .1em; text-align: center; max-width: 260px; }
+.ov-score { font-size: 2.8rem; font-weight: 500; color: var(--gold-lt); text-shadow: 0 0 20px var(--gold-lt); }
+.ov-lbl { font-size: .68rem; letter-spacing: .2em; color: var(--gold); opacity: .65; margin-top: -8px; }
+
+/* difficulty buttons */
+.diff-wrap { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 6px; }
+.diff-btn {
+  background: transparent;
+  border: 1px solid rgba(200,146,42,.45);
+  color: var(--gold-lt); font-family: 'DM Mono', monospace;
+  font-size: .75rem; letter-spacing: .12em; text-transform: uppercase;
+  padding: 9px 20px; border-radius: 8px; cursor: pointer;
+  transition: background .2s, transform .15s, box-shadow .2s;
+}
+.diff-btn:hover { background: rgba(200,146,42,.15); transform: scale(1.05); box-shadow: 0 0 14px rgba(200,146,42,.3); }
+.diff-btn.active { background: linear-gradient(135deg, var(--gold), var(--amber)); color: var(--bg); border-color: transparent; }
+
+.btn-play {
+  margin-top: 8px;
+  background: linear-gradient(135deg, var(--gold), var(--amber));
+  color: var(--bg); border: none; outline: none; cursor: pointer;
+  font-family: 'DM Mono', monospace; font-size: .85rem; font-weight: 500;
+  letter-spacing: .15em; text-transform: uppercase;
+  padding: 13px 36px; border-radius: 9px;
+  box-shadow: 0 4px 24px rgba(200,146,42,.45);
+  animation: glow 2s ease-in-out infinite;
+  transition: transform .15s;
+}
+@keyframes glow {
+  0%,100%{ box-shadow: 0 4px 24px rgba(200,146,42,.4), 0 0 0 0 rgba(200,146,42,.3); }
+  50%    { box-shadow: 0 4px 24px rgba(200,146,42,.65), 0 0 0 10px rgba(200,146,42,0); }
+}
+.btn-play:hover { transform: scale(1.06); animation: none; box-shadow: 0 6px 32px rgba(200,146,42,.65); }
+.btn-play:active { transform: scale(.97); }
+
+/* ── Timer bar ── */
+.timer-bar-wrap {
+  width: 100%; max-width: 420px;
+  height: 5px; background: rgba(200,146,42,.12);
+  border-radius: 5px; overflow: hidden;
+}
+.timer-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold), var(--gold-lt));
+  border-radius: 5px;
+  transition: width .1s linear, background .5s;
+  box-shadow: 0 0 8px rgba(200,146,42,.5);
+}
+
+/* ── Match flash overlay ── */
+#flashEl {
+  position: fixed; inset: 0; z-index: 15; pointer-events: none;
+  opacity: 0; background: rgba(46,204,113,.06);
+  transition: opacity .15s;
+}
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="bg-radial"></div>
+<div class="steam-wrap" id="steamWrap"></div>
+<div id="flashEl"></div>
+
+<div class="wrapper">
+  <div class="title">
+    Memory Café
+    <span>☕ Encuentra los pares</span>
+  </div>
+
+  <div class="hud">
+    <div class="hud-item">
+      <div class="hud-lbl">Movimientos</div>
+      <div class="hud-val" id="movesEl">0</div>
+    </div>
+    <div class="hud-sep"></div>
+    <div class="hud-item">
+      <div class="hud-lbl">Parejas</div>
+      <div class="hud-val" id="pairsEl">0 / 0</div>
+    </div>
+    <div class="hud-sep"></div>
+    <div class="hud-item">
+      <div class="hud-lbl">Tiempo</div>
+      <div class="hud-val" id="timeEl">0:00</div>
+    </div>
+    <div class="hud-sep"></div>
+    <div class="hud-item">
+      <div class="hud-lbl">Récord</div>
+      <div class="hud-val" id="hiEl">—</div>
+    </div>
+  </div>
+
+  <div class="timer-bar-wrap">
+    <div class="timer-bar" id="timerBar" style="width:100%"></div>
+  </div>
+
+  <div class="board-wrap">
+    <div class="board" id="board"></div>
+  </div>
+</div>
+
+<!-- Start / Win overlay -->
+<div class="overlay" id="overlay">
+  <div class="ov-icon" id="ovIcon">☕</div>
+  <div class="ov-title" id="ovTitle">Memory Café</div>
+  <div class="ov-sub" id="ovSub">Encuentra todos los pares antes de que se acabe el tiempo. ¡Tu café está casi listo!</div>
+  <div class="ov-score" id="ovScore" style="display:none"></div>
+  <div class="ov-lbl" id="ovLbl" style="display:none"></div>
+
+  <div class="diff-wrap">
+    <button class="diff-btn active" data-diff="easy">Fácil 4×3</button>
+    <button class="diff-btn" data-diff="medium">Medio 4×4</button>
+    <button class="diff-btn" data-diff="hard">Difícil 6×4</button>
+  </div>
+  <button class="btn-play" id="playBtn">Jugar →</button>
+</div>
+
+<script>
+// ── Steam particles ──────────────────────────────────────
+const sw = document.getElementById('steamWrap');
+for (let i=0;i<8;i++){
+  const d = document.createElement('div');
+  d.className='sp';
+  const sz = 30+Math.random()*50;
+  d.style.cssText=`width:${sz}px;height:${sz}px;left:${10+Math.random()*80}%;--dur:${5+Math.random()*7}s;--delay:${Math.random()*6}s`;
+  sw.appendChild(d);
+}
+
+// ── Config ───────────────────────────────────────────────
+const EMOJIS = ['☕','🫘','🧁','🍫','⭐','🥐','🍮','🧇','🫖','🍰','🥧','🍩'];
+const DIFFS  = {
+  easy:   { cols:4, rows:3, pairs:6,  time:60  },
+  medium: { cols:4, rows:4, pairs:8,  time:90  },
+  hard:   { cols:6, rows:4, pairs:12, time:120 },
+};
+
+let diff='easy', cfg=DIFFS.easy;
+let cards=[], flipped=[], matched=0, moves=0;
+let timer=null, elapsed=0, timeLimit=60;
+let hiScores = JSON.parse(localStorage.getItem('memoryCafeHi')||'{}');
+
+// ── DOM refs ─────────────────────────────────────────────
+const board    = document.getElementById('board');
+const movesEl  = document.getElementById('movesEl');
+const pairsEl  = document.getElementById('pairsEl');
+const timeEl   = document.getElementById('timeEl');
+const hiEl     = document.getElementById('hiEl');
+const timerBar = document.getElementById('timerBar');
+const overlay  = document.getElementById('overlay');
+const ovTitle  = document.getElementById('ovTitle');
+const ovSub    = document.getElementById('ovSub');
+const ovIcon   = document.getElementById('ovIcon');
+const ovScore  = document.getElementById('ovScore');
+const ovLbl    = document.getElementById('ovLbl');
+const flashEl  = document.getElementById('flashEl');
+
+function fmtTime(s){ return `${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}` }
+function fmtHi(d){
+  const v=hiScores[d];
+  return v ? `${v.moves}m ${fmtTime(v.time)}` : '—';
+}
+
+// ── Diff buttons ─────────────────────────────────────────
+document.querySelectorAll('.diff-btn').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.diff-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    diff = btn.dataset.diff;
+    cfg  = DIFFS[diff];
+    hiEl.textContent = fmtHi(diff);
+  });
+});
+
+// ── Build board ───────────────────────────────────────────
+function buildBoard(){
+  board.style.gridTemplateColumns = `repeat(${cfg.cols}, 1fr)`;
+  board.innerHTML='';
+  cards=[];
+  flipped=[];
+  matched=0; moves=0; elapsed=0;
+
+  const pool = [...EMOJIS].slice(0,cfg.pairs);
+  const deck  = shuffle([...pool,...pool]);
+
+  deck.forEach((emoji,i)=>{
+    const card = document.createElement('div');
+    card.className='card';
+    card.dataset.emoji=emoji;
+    card.dataset.idx=i;
+    card.innerHTML=`
+      <div class="card-inner">
+        <div class="card-face card-back"></div>
+        <div class="card-face card-front">${emoji}</div>
+      </div>`;
+    card.addEventListener('click',()=>flipCard(card));
+    board.appendChild(card);
+    cards.push(card);
+  });
+
+  updateHUD();
+  hiEl.textContent = fmtHi(diff);
+}
+
+function shuffle(arr){
+  for(let i=arr.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]]=[arr[j],arr[i]];
+  }
+  return arr;
+}
+
+// ── Flip logic ────────────────────────────────────────────
+let locked=false;
+
+function flipCard(card){
+  if(locked||card.classList.contains('flipped')||card.classList.contains('matched')) return;
+  card.classList.add('flipped');
+  flipped.push(card);
+
+  if(flipped.length===2){
+    locked=true; moves++;
+    updateHUD();
+    const [a,b]=flipped;
+    if(a.dataset.emoji===b.dataset.emoji){
+      setTimeout(()=>{
+        a.classList.add('matched'); b.classList.add('matched');
+        matched++;
+        flash();
+        flipped=[]; locked=false;
+        updateHUD();
+        if(matched===cfg.pairs) winGame();
+      },400);
+    } else {
+      setTimeout(()=>{
+        a.classList.remove('flipped'); b.classList.remove('flipped');
+        flipped=[]; locked=false;
+      },900);
+    }
+  }
+}
+
+function flash(){
+  flashEl.style.opacity='1';
+  setTimeout(()=>flashEl.style.opacity='0',200);
+}
+
+// ── Timer ─────────────────────────────────────────────────
+function startTimer(){
+  clearInterval(timer);
+  timeLimit = cfg.time;
+  timer = setInterval(()=>{
+    elapsed++;
+    const left = timeLimit - elapsed;
+    timeEl.textContent = fmtTime(left);
+    timerBar.style.width = (left/timeLimit*100)+'%';
+    if(left<=10) timerBar.style.background='linear-gradient(90deg,#c0392b,#e74c3c)';
+    else if(left<=20) timerBar.style.background='linear-gradient(90deg,#e07b24,#f5c842)';
+    else timerBar.style.background='linear-gradient(90deg,var(--gold),var(--gold-lt))';
+    if(left<=0){ clearInterval(timer); loseGame(); }
+  },1000);
+}
+
+// ── HUD update ────────────────────────────────────────────
+function updateHUD(){
+  const mv = movesEl;
+  mv.textContent = moves;
+  mv.classList.remove('pop'); void mv.offsetWidth; mv.classList.add('pop');
+  pairsEl.textContent=`${matched} / ${cfg.pairs}`;
+}
+
+// ── Win / Lose ────────────────────────────────────────────
+function winGame(){
+  clearInterval(timer);
+  // save hi
+  const cur = hiScores[diff];
+  if(!cur || moves<cur.moves || (moves===cur.moves && elapsed<cur.time)){
+    hiScores[diff]={moves,time:elapsed};
+    localStorage.setItem('memoryCafeHi',JSON.stringify(hiScores));
+  }
+  showOverlay('🏆','¡Ganaste!',`${moves} movimientos · ${fmtTime(elapsed)}`,
+    `${moves} movimientos`,'NUEVO RÉCORD 🎉',!!(!cur||moves<cur.moves));
+}
+
+function loseGame(){
+  showOverlay('⏰','¡Se acabó el tiempo!','Tu café se enfrió... ¡Intenta más rápido!');
+}
+
+function showOverlay(icon,title,sub,score,lbl,newRecord){
+  ovIcon.textContent=icon;
+  ovTitle.textContent=title;
+  ovSub.textContent=sub;
+  if(score){ ovScore.textContent=score; ovScore.style.display='block'; }
+  else { ovScore.style.display='none'; }
+  if(newRecord){ ovLbl.textContent=lbl; ovLbl.style.display='block'; }
+  else { ovLbl.style.display='none'; }
+  overlay.classList.remove('hidden');
+}
+
+// ── Start ─────────────────────────────────────────────────
+document.getElementById('playBtn').addEventListener('click',()=>{
+  overlay.classList.add('hidden');
+  buildBoard();
+  startTimer();
+});
+
+// Init hi display
+hiEl.textContent = fmtHi(diff);
+</script>
+</body>
+</html>

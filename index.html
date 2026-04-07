@@ -111,133 +111,6 @@
 
     <div id="custom-cursor" class="hidden md:block"></div>
 
-    <!-- ══════════════════════════════════════════
-         JUEGO TRENSITO — overlay completo
-         ══════════════════════════════════════════ -->
-    <div id="game-overlay" style="
-        display:none; position:fixed; inset:0; z-index:500;
-        background:#0A0A0A; flex-direction:column;
-        font-family:'Inter',sans-serif;">
-
-        <!-- Barra superior del juego -->
-        <div style="
-            height:52px; background:rgba(10,10,10,0.95);
-            border-bottom:1px solid rgba(196,154,98,0.18);
-            display:flex; align-items:center; justify-content:space-between;
-            padding:0 18px; flex-shrink:0;">
-
-            <div style="display:flex;align-items:center;gap:10px;">
-                <span style="font-family:'Playfair Display',serif;font-style:italic;color:#C49A62;font-size:15px;">☕ Cafetto</span>
-                <span id="game-piece-count" style="font-size:10px;color:rgba(245,245,245,0.3);letter-spacing:.25em;text-transform:uppercase;">0 piezas</span>
-            </div>
-
-            <span style="font-size:11px;color:rgba(196,154,98,0.55);letter-spacing:.2em;text-transform:uppercase;font-style:italic;display:none;" id="game-tagline">
-                juguemos juntos hasta que venga el cafecito
-            </span>
-
-            <button id="game-close" style="
-                background:none; border:1px solid rgba(196,154,98,0.25);
-                color:#C49A62; font-size:10px; font-weight:600;
-                letter-spacing:.2em; text-transform:uppercase;
-                padding:6px 14px; cursor:pointer; transition:all .2s;">
-                ✕ cerrar
-            </button>
-        </div>
-
-        <!-- Mensaje de bienvenida (se oculta al colocar primer tile) -->
-        <div id="game-welcome" style="
-            position:absolute; top:52px; left:0; right:0;
-            display:flex; flex-direction:column; align-items:center;
-            padding-top:18px; gap:4px; pointer-events:none; z-index:10;">
-            <p style="font-family:'Playfair Display',serif;font-style:italic;font-size:22px;color:#C49A62;">
-                "juguemos juntos hasta que venga el cafecito"
-            </p>
-            <p style="font-size:10px;color:rgba(245,245,245,0.3);letter-spacing:.2em;text-transform:uppercase;">
-                dibuja un circuito · ciérralo · presiona 🚂
-            </p>
-        </div>
-
-        <!-- Canvas del juego -->
-        <canvas id="game-canvas" style="flex:1;cursor:crosshair;touch-action:none;display:block;"></canvas>
-
-        <!-- Toast -->
-        <div id="game-toast" style="
-            position:absolute; bottom:84px; left:50%; transform:translateX(-50%) translateY(10px);
-            background:rgba(18,18,18,0.95); border:1px solid rgba(196,154,98,0.3);
-            color:#E4B882; font-size:11px; font-weight:600;
-            letter-spacing:.18em; text-transform:uppercase;
-            padding:9px 20px; border-radius:6px;
-            opacity:0; transition:all .35s; pointer-events:none;
-            backdrop-filter:blur(10px); white-space:nowrap;">
-        </div>
-
-        <!-- Toolbar del juego -->
-        <div style="
-            height:72px; background:rgba(10,10,10,0.97);
-            border-top:1px solid rgba(196,154,98,0.1);
-            display:flex; align-items:center; justify-content:center;
-            gap:4px; padding:0 10px; flex-shrink:0; flex-wrap:nowrap; overflow-x:auto;">
-
-            <!-- Piezas de vía -->
-            <button class="gtool active" data-tool="straight_h" title="Recto horizontal">
-                <span style="font-size:20px;">━</span>
-                <span class="gtool-lbl">H</span>
-            </button>
-            <button class="gtool" data-tool="straight_v" title="Recto vertical">
-                <span style="font-size:20px;">┃</span>
-                <span class="gtool-lbl">V</span>
-            </button>
-            <button class="gtool" data-tool="curve_se" title="Curva ↘">
-                <span style="font-size:20px;">╭</span>
-                <span class="gtool-lbl">↘</span>
-            </button>
-            <button class="gtool" data-tool="curve_sw" title="Curva ↙">
-                <span style="font-size:20px;">╮</span>
-                <span class="gtool-lbl">↙</span>
-            </button>
-            <button class="gtool" data-tool="curve_ne" title="Curva ↗">
-                <span style="font-size:20px;">╰</span>
-                <span class="gtool-lbl">↗</span>
-            </button>
-            <button class="gtool" data-tool="curve_nw" title="Curva ↖">
-                <span style="font-size:20px;">╯</span>
-                <span class="gtool-lbl">↖</span>
-            </button>
-            <button class="gtool" data-tool="erase" title="Borrar">
-                <span style="font-size:18px;">🗑</span>
-                <span class="gtool-lbl">Borrar</span>
-            </button>
-
-            <div style="width:1px;height:36px;background:rgba(255,255,255,0.08);margin:0 4px;flex-shrink:0;"></div>
-
-            <!-- Acciones -->
-            <button id="game-go" class="gtool" style="color:#34c759;" title="Arrancar tren">
-                <span style="font-size:20px;" id="game-go-icon">🚂</span>
-                <span class="gtool-lbl" id="game-go-lbl">Arrancar</span>
-            </button>
-            <button id="game-clear" class="gtool" title="Limpiar todo">
-                <span style="font-size:18px;">✕</span>
-                <span class="gtool-lbl">Limpiar</span>
-            </button>
-        </div>
-    </div>
-
-    <style>
-        .gtool {
-            display:flex; flex-direction:column; align-items:center; gap:3px;
-            padding:7px 9px; border:1px solid transparent; border-radius:10px;
-            background:transparent; color:rgba(245,245,245,0.4);
-            cursor:pointer; transition:all .15s; min-width:46px; flex-shrink:0;
-            font-family:'Inter',sans-serif;
-        }
-        .gtool:hover { color:#F5F5F5; background:rgba(255,255,255,0.06); }
-        .gtool.active { color:#C49A62; border-color:rgba(196,154,98,0.4); background:rgba(196,154,98,0.08); }
-        .gtool-lbl { font-size:8px; font-weight:700; letter-spacing:.25em; text-transform:uppercase; }
-        #game-go.running { color:#ffb300 !important; border-color:rgba(255,179,0,.35); background:rgba(255,179,0,.07); }
-        #game-close:hover { background:#C49A62; color:#000; }
-        @media(min-width:520px){ #game-tagline { display:block !important; } }
-    </style>
-
     <!-- Audio -->
     <audio id="bg-music" loop> 
     </audio>
@@ -247,7 +120,9 @@
         <a href="#" class="w-24 md:w-32 transition-transform hover:scale-105">
             <img src="https://i.ibb.co/nNVVy5pZ/logo-cafetto-dorado.png" alt="Logo Cafetto">
         </a>
-        
+        <button id="open-games" class="lg:hidden mt-1 flex items-center gap-3 px-4 py-1 border border-accent/40 rounded-full bg-accent/5 hover:bg-accent/20 transition-all group active:scale-95">
+    <i class="fas fa-gamepad text-accent text-xl animate-bounce"></i>
+</button>
         <div class="flex items-center gap-6 md:gap-10">
             <!-- Lang Switcher -->
             <div class="flex gap-3 border-r border-white/10 pr-6 mr-2">
@@ -260,7 +135,7 @@
                 <a href="#footer" class="hover:text-white transition-colors" data-i18n="nav_location">Ubicación</a>
                 <a href="https://g.page/r/CQnM1s0yttneEAE/review" target="_blank" class="flex items-center gap-2 px-4 py-2 border border-yellow-400/30 hover:border-yellow-400/70 hover:bg-yellow-400/5 transition-all group" title="Calificanos en Google">
                     <i class="fab fa-google text-yellow-400 text-sm group-hover:scale-110 transition-transform"></i>
-                    <span class="text-yellow-400/80 group-hover:text-yellow-400 transition-colors text-[9px]">Calificanos</span>
+                    <span class="text-yellow-400/80 group-hover:text-yellow-400 transition-colors text-[9px]">Calíficanos</span>
                     <i class="fas fa-star text-yellow-400/60 text-[8px] group-hover:text-yellow-400 transition-colors"></i>
                 </a>
                 <a href="https://wa.me/593998388863" class="px-6 py-2 border border-accent/40 hover:bg-accent hover:text-black transition-all" data-i18n="nav_reserva">Reservas</a>
@@ -280,11 +155,6 @@
         <a href="#footer" class="font-serif text-4xl mobile-link" data-i18n="nav_location">Ubicación</a>
         <a href="https://wa.me/593998388863" class="font-serif text-4xl text-accent mobile-link" data-i18n="nav_reserva">Reservas</a>
         
-        <!-- Botón Juguemos -->
-        <button id="btn-juguemos" class="font-serif text-4xl text-accent italic hover:text-accent-light transition-colors flex items-center gap-3">
-            <i class="fas fa-gamepad text-3xl"></i> juguemos
-        </button>
-
         <!-- Google Review CTA -->
         <a href="https://g.page/r/CQnM1s0yttneEAE/review" target="_blank" class="group flex flex-col items-center gap-2 mt-4 px-6 py-3 border border-accent/20 rounded-sm hover:border-accent/50 transition-all duration-300">
             <div class="flex items-center gap-2">
@@ -299,7 +169,45 @@
                         <a href="https://www.facebook.com/cafetto1918"><i class="fab fa-facebook"></i></a>
                         <a href="https://www.tiktok.com/@cafetto1918"><i class="fab fa-tiktok"></i></a>
                     </div>
+                    <button id="open-games" class="lg:hidden mt-1 flex items-center justify-center gap-3 px-6 py-3 border border-accent/40 rounded-full bg-accent/5 hover:bg-accent/20 transition-all group active:scale-95">
+    <i class="fas fa-gamepad text-accent text-xl animate-bounce"></i>
+    <span class="text-[11px] uppercase tracking-[0.2em] font-bold text-accent-light">¿Jugamos algo?</span>
+</button>
     </div>
+
+<div class="flex justify-center md:justify-start gap-6 text-xl text-gray-500">
+    <a href="https://www.instagram.com/cafetto1918/"><i class="fab fa-instagram"></i></a>
+    <a href="https://www.facebook.com/cafetto1918"><i class="fab fa-facebook"></i></a>
+    <a href="https://www.tiktok.com/@cafetto1918"><i class="fab fa-tiktok"></i></a>
+</div>
+<div id="games-modal" class="fixed inset-0 z-[150] flex items-center justify-center px-6 opacity-0 pointer-events-none transition-all duration-500">
+    <div class="absolute inset-0 bg-black/90 backdrop-blur-md"></div>
+    
+    <div class="relative bg-coffee-medium border border-accent/30 p-8 w-full max-w-sm rounded-sm text-center shadow-2xl transform scale-90 transition-transform duration-500" id="games-content">
+        <button id="close-games" class="absolute -top-12 right-0 text-accent text-2xl">
+            <i class="fas fa-times"></i>
+        </button>
+        
+        <i class="fas fa-mug-hot text-accent text-4xl mb-4"></i>
+        <h3 class="font-serif text-2xl mb-2 text-white">Juguemos mientras esperamos el cafecito</h3>
+        <p class="text-gray-400 text-xs italic mb-8">Selecciona una aventura:</p>
+        
+        <div class="grid gap-4">
+            <a href="snakecafe.html" class="flex items-center justify-between px-6 py-4 bg-accent/10 border border-accent/20 hover:bg-accent hover:text-black transition-all group">
+                <span class="uppercase tracking-widest text-[10px] font-bold">Snake Café</span>
+                <i class="fas fa-chevron-right text-[10px]"></i>
+            </a>
+            <a href="memorycafe.html" class="flex items-center justify-between px-6 py-4 bg-accent/10 border border-accent/20 hover:bg-accent hover:text-black transition-all group">
+                <span class="uppercase tracking-widest text-[10px] font-bold">Memory Café</span>
+                <i class="fas fa-chevron-right text-[10px]"></i>
+            </a>
+            <a href="baristarush.html" class="flex items-center justify-between px-6 py-4 bg-accent/10 border border-accent/20 hover:bg-accent hover:text-black transition-all group">
+                <span class="uppercase tracking-widest text-[10px] font-bold">Barista Rush</span>
+                <i class="fas fa-chevron-right text-[10px]"></i>
+            </a>
+        </div>
+    </div>
+</div>
 
     <!-- Hero Section -->
     <section class="relative h-screen w-full flex items-center justify-center overflow-hidden">
@@ -756,511 +664,45 @@
     });
 }
 
-        // ══════════════════════════════════════════════════════════
-        //  TRENSITO — juego integrado
-        // ══════════════════════════════════════════════════════════
-        (function() {
-
-            // ── Abrir / cerrar overlay ─────────────────────────────
-            const overlay = document.getElementById('game-overlay');
-
-            document.getElementById('btn-juguemos').addEventListener('click', () => {
-                document.getElementById('mobile-menu').style.transform = "translateX(100%)";
-                overlay.style.display = 'flex';
-                requestAnimationFrame(() => { resizeGame(); drawGame(); });
-            });
-
-            document.getElementById('game-close').addEventListener('click', () => {
-                stopTrain();
-                overlay.style.display = 'none';
-            });
-
-            // ── Canvas & constantes ────────────────────────────────
-            const canvas = document.getElementById('game-canvas');
-            const ctx    = canvas.getContext('2d');
-            const CELL   = 54;
-            let COLS, ROWS, offX, offY;
-
-            function resizeGame() {
-                canvas.width  = canvas.offsetWidth  || overlay.offsetWidth;
-                canvas.height = canvas.offsetHeight || (overlay.offsetHeight - 52 - 72);
-                COLS = Math.floor(canvas.width  / CELL);
-                ROWS = Math.floor(canvas.height / CELL);
-                offX = Math.floor((canvas.width  - COLS * CELL) / 2);
-                offY = Math.floor((canvas.height - ROWS * CELL) / 2);
-                drawGame();
-            }
-            window.addEventListener('resize', resizeGame);
-
-            // ── Estado de la grilla ────────────────────────────────
-            const grid = new Map();
-            let currentTool = 'straight_h';
-            let hoverCell   = null;
-            let firstPlace  = false; // para ocultar el mensaje de bienvenida
-
-            // ── Herramientas toolbar ───────────────────────────────
-            document.querySelectorAll('.gtool[data-tool]').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    document.querySelectorAll('.gtool[data-tool]').forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    currentTool = btn.dataset.tool;
-                });
-            });
-
-            // ── Colores ────────────────────────────────────────────
-            const C = {
-                grass:'#0C160A', grassAlt:'#0F1A0D',
-                tie:'#6B4A26',   tieAlt:'#5C3D1E',
-                rail:'#9A7B50',  railHi:'#C9A46B',
-                gold:'#C49A62',  goldLt:'#E4B882',
-            };
-
-            // ── Dibujado ───────────────────────────────────────────
-            function cellPx(c, r) {
-                return { x: offX + c * CELL, y: offY + r * CELL };
-            }
-
-            function drawTie(cx, cy, angle) {
-                ctx.save();
-                ctx.translate(cx, cy);
-                ctx.rotate(angle);
-                ctx.fillStyle = C.tie;
-                ctx.fillRect(-CELL*.36, -3.5, CELL*.72, 7);
-                ctx.fillStyle = C.tieAlt;
-                ctx.fillRect(-CELL*.34, -2.5, CELL*.68, 2);
-                ctx.restore();
-            }
-
-            function drawStraight(col, row, vert) {
-                const { x, y } = cellPx(col, row);
-                const cx = x + CELL/2, cy = y + CELL/2;
-                const ang = vert ? Math.PI/2 : 0;
-
-                ctx.fillStyle = 'rgba(80,60,40,0.18)';
-                if (vert) ctx.fillRect(x + CELL*.28, y, CELL*.44, CELL);
-                else      ctx.fillRect(x, y + CELL*.28, CELL, CELL*.44);
-
-                for (let i = 0; i < 4; i++) {
-                    const t = (i + .5) / 4;
-                    const tx = vert ? cx : x + t*CELL;
-                    const ty = vert ? y + t*CELL : cy;
-                    drawTie(tx, ty, ang);
-                }
-
-                const rg = CELL * .15;
-                [C.rail, C.railHi].forEach((col2, idx) => {
-                    ctx.strokeStyle = col2;
-                    ctx.lineWidth   = idx === 0 ? 3 : 0.9;
-                    if (vert) {
-                        [-rg, rg].forEach(dx => {
-                            ctx.beginPath();
-                            ctx.moveTo(cx+dx, y); ctx.lineTo(cx+dx, y+CELL); ctx.stroke();
-                        });
-                    } else {
-                        [-rg, rg].forEach(dy => {
-                            ctx.beginPath();
-                            ctx.moveTo(x, cy+dy); ctx.lineTo(x+CELL, cy+dy); ctx.stroke();
-                        });
-                    }
-                });
-            }
-
-            function drawCurve(col, row, type) {
-                const { x, y } = cellPx(col, row);
-                const corners  = {
-                    sw:[ x,        y+CELL ],
-                    se:[ x+CELL,   y+CELL ],
-                    nw:[ x,        y      ],
-                    ne:[ x+CELL,   y      ],
-                };
-                const [acx, acy] = corners[type] || corners.sw;
-                const R = CELL;
-
-                const angs = {
-                    sw:{ s:-Math.PI/2, e:0          },
-                    se:{ s:-Math.PI,   e:-Math.PI/2 },
-                    nw:{ s:0,          e:Math.PI/2  },
-                    ne:{ s:Math.PI/2,  e:Math.PI    },
-                };
-                const { s: startA, e: endA } = angs[type] || angs.sw;
-
-                for (let i = 0; i < 4; i++) {
-                    const t = (i+.5)/4;
-                    const a = startA + t*(endA - startA);
-                    drawTie(acx + R*Math.cos(a), acy + R*Math.sin(a), a + Math.PI/2);
-                }
-
-                const rg = CELL * .15;
-                [C.rail, C.railHi].forEach((c2, idx) => {
-                    [-rg, rg].forEach(off => {
-                        ctx.beginPath();
-                        ctx.arc(acx, acy, R + off, startA, endA);
-                        ctx.strokeStyle = c2;
-                        ctx.lineWidth   = idx === 0 ? 3 : 0.9;
-                        ctx.stroke();
-                    });
-                });
-            }
-
-            function drawGame() {
-                if (!canvas.width || !canvas.height) return;
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-                // Fondo cuadriculado estilo pasto
-                for (let r = 0; r < ROWS; r++) {
-                    for (let c = 0; c < COLS; c++) {
-                        const { x, y } = cellPx(c, r);
-                        ctx.fillStyle = (c + r) % 2 === 0 ? C.grass : C.grassAlt;
-                        ctx.fillRect(x, y, CELL, CELL);
-                    }
-                }
-
-                // Grid sutil
-                ctx.strokeStyle = 'rgba(196,154,98,0.05)';
-                ctx.lineWidth = 0.5;
-                for (let c = 0; c <= COLS; c++) {
-                    const x = offX + c*CELL;
-                    ctx.beginPath(); ctx.moveTo(x, offY); ctx.lineTo(x, offY + ROWS*CELL); ctx.stroke();
-                }
-                for (let r = 0; r <= ROWS; r++) {
-                    const y = offY + r*CELL;
-                    ctx.beginPath(); ctx.moveTo(offX, y); ctx.lineTo(offX + COLS*CELL, y); ctx.stroke();
-                }
-
-                // Vías
-                grid.forEach((type, key) => {
-                    const [col, row] = key.split(',').map(Number);
-                    if (type === 'straight_h') drawStraight(col, row, false);
-                    else if (type === 'straight_v') drawStraight(col, row, true);
-                    else drawCurve(col, row, type.replace('curve_', ''));
-                });
-
-                // Hover
-                if (hoverCell && !train.running) {
-                    const { col, row } = hoverCell;
-                    if (col >= 0 && col < COLS && row >= 0 && row < ROWS) {
-                        const { x, y } = cellPx(col, row);
-                        ctx.fillStyle   = currentTool === 'erase' ? 'rgba(255,100,100,0.12)' : 'rgba(196,154,98,0.1)';
-                        ctx.strokeStyle = currentTool === 'erase' ? 'rgba(255,100,100,0.4)' : 'rgba(196,154,98,0.4)';
-                        ctx.lineWidth   = 1;
-                        ctx.fillRect(x, y, CELL, CELL);
-                        ctx.strokeRect(x+.5, y+.5, CELL-1, CELL-1);
-                    }
-                }
-
-                if (train.running) drawTrain();
-            }
-
-            // ── Interacción ────────────────────────────────────────
-            function pointerCell(e) {
-                const rect = canvas.getBoundingClientRect();
-                const src  = e.touches ? e.touches[0] : e;
-                return {
-                    col: Math.floor((src.clientX - rect.left  - offX) / CELL),
-                    row: Math.floor((src.clientY - rect.top   - offY) / CELL),
-                };
-            }
-
-            function placeOrErase(e) {
-                if (train.running) return;
-                const { col, row } = pointerCell(e);
-                if (col < 0 || col >= COLS || row < 0 || row >= ROWS) return;
-                const key = `${col},${row}`;
-                if (currentTool === 'erase') grid.delete(key);
-                else grid.set(key, currentTool);
-                if (!firstPlace) {
-                    firstPlace = true;
-                    document.getElementById('game-welcome').style.display = 'none';
-                }
-                updatePieceCount();
-                drawGame();
-            }
-
-            let isDragging = false;
-            canvas.addEventListener('mousedown',  e => { isDragging = true; placeOrErase(e); });
-            canvas.addEventListener('mousemove',  e => {
-                hoverCell = pointerCell(e);
-                if (isDragging) placeOrErase(e); else drawGame();
-            });
-            canvas.addEventListener('mouseup',    () => isDragging = false);
-            canvas.addEventListener('mouseleave', () => { isDragging = false; hoverCell = null; drawGame(); });
-            canvas.addEventListener('touchstart', e => { e.preventDefault(); isDragging = true; placeOrErase(e); }, { passive: false });
-            canvas.addEventListener('touchmove',  e => { e.preventDefault(); if (isDragging) placeOrErase(e); }, { passive: false });
-            canvas.addEventListener('touchend',   () => isDragging = false);
-
-            // ── Contador de piezas ─────────────────────────────────
-            function updatePieceCount() {
-                const n = grid.size;
-                document.getElementById('game-piece-count').textContent =
-                    n === 0 ? '0 piezas' : `${n} pieza${n > 1 ? 's' : ''}`;
-            }
-
-            // ── Toast ──────────────────────────────────────────────
-            let toastTimer = null;
-            function showToast(msg) {
-                const t = document.getElementById('game-toast');
-                t.textContent = msg;
-                t.style.opacity   = '1';
-                t.style.transform = 'translateX(-50%) translateY(0)';
-                clearTimeout(toastTimer);
-                toastTimer = setTimeout(() => {
-                    t.style.opacity   = '0';
-                    t.style.transform = 'translateX(-50%) translateY(10px)';
-                }, 2600);
-            }
-
-            // ── Lógica del circuito ────────────────────────────────
-            const DIR = { N:[0,-1], S:[0,1], E:[1,0], W:[-1,0] };
-            const OPP = { N:'S', S:'N', E:'W', W:'E' };
-
-            function dName(d) {
-                if (d[0]===0  && d[1]===-1) return 'N';
-                if (d[0]===0  && d[1]===1 ) return 'S';
-                if (d[0]===1  && d[1]===0 ) return 'E';
-                if (d[0]===-1 && d[1]===0 ) return 'W';
-            }
-
-            function pieceConns(type) {
-                const m = {
-                    straight_h:['E','W'], straight_v:['N','S'],
-                    curve_ne:['N','E'],   curve_nw:['N','W'],
-                    curve_se:['S','E'],   curve_sw:['S','W'],
-                };
-                return (m[type] || []).map(n => DIR[n]);
-            }
-
-            function buildPath() {
-                if (grid.size < 4) return null;
-                const startKey  = [...grid.keys()][0];
-                const [sc, sr]  = startKey.split(',').map(Number);
-                const startType = grid.get(startKey);
-
-                function traverse(col0, row0, exitDir0) {
-                    const path = []; const visited = new Set();
-                    let col = col0, row = row0;
-                    let entryDir = [exitDir0[0]*-1, exitDir0[1]*-1];
-
-                    for (let step = 0; step < 300; step++) {
-                        const key  = `${col},${row}`;
-                        if (visited.has(key)) {
-                            return (col === col0 && row === row0 && path.length >= 4) ? path : null;
-                        }
-                        visited.add(key);
-                        const type = grid.get(key);
-                        if (!type) return null;
-                        const conns     = pieceConns(type);
-                        const connNames = conns.map(dName);
-                        const entryName = dName(entryDir);
-                        const entryOpp  = OPP[entryName];
-                        if (!connNames.includes(entryOpp)) return null;
-                        const nextName  = connNames.find(n => n !== entryOpp);
-                        if (!nextName) return null;
-                        const nextDir   = DIR[nextName];
-                        path.push({ col, row, type, entryDir:[...entryDir], exitDir:[...nextDir] });
-                        col += nextDir[0]; row += nextDir[1];
-                        entryDir = [nextDir[0]*-1, nextDir[1]*-1];
-                    }
-                    return null;
-                }
-
-                for (const ed of pieceConns(startType)) {
-                    const p = traverse(sc, sr, ed);
-                    if (p) return p;
-                }
-                return null;
-            }
-
-            // ── Tren ───────────────────────────────────────────────
-            const train = { running:false, path:null, t:0, seg:0, speed:0.016, smoke:[] };
-
-            function trainPos(seg, t) {
-                const piece  = train.path[seg];
-                const { col, row, type, exitDir } = piece;
-                const { x: bx, y: by } = cellPx(col, row);
-                const cx = bx + CELL/2, cy = by + CELL/2;
-
-                if (type === 'straight_h') {
-                    const s = exitDir[0];
-                    return { x: cx + s*CELL*(t-.5), y: cy, a: s>0 ? 0 : Math.PI };
-                }
-                if (type === 'straight_v') {
-                    const s = exitDir[1];
-                    return { x: cx, y: cy + s*CELL*(t-.5), a: s>0 ? Math.PI/2 : -Math.PI/2 };
-                }
-
-                const ct  = type.replace('curve_','');
-                const corners = {
-                    sw:[bx, by+CELL], se:[bx+CELL, by+CELL],
-                    nw:[bx, by],      ne:[bx+CELL, by],
-                };
-                const [acx, acy] = corners[ct];
-                const angs = {
-                    sw:{s:-Math.PI/2, e:0}, se:{s:-Math.PI, e:-Math.PI/2},
-                    nw:{s:0, e:Math.PI/2}, ne:{s:Math.PI/2, e:Math.PI},
-                };
-                const { s: sa, e: ea } = angs[ct];
-                const ang = sa + t*(ea - sa);
-                const tdir = ea > sa ? 1 : -1;
-                return {
-                    x: acx + CELL*Math.cos(ang),
-                    y: acy + CELL*Math.sin(ang),
-                    a: ang + Math.PI/2 * tdir,
-                };
-            }
-
-            function drawTrain() {
-                // Smoke
-                train.smoke.forEach(p => {
-                    ctx.beginPath();
-                    ctx.arc(p.x, p.y, p.sz * p.life, 0, Math.PI*2);
-                    ctx.fillStyle = `rgba(200,175,130,${p.life*.22})`;
-                    ctx.fill();
-                    p.x += p.vx; p.y += p.vy; p.life -= 0.03; p.sz += 0.5;
-                });
-                train.smoke = train.smoke.filter(p => p.life > 0);
-
-                const { x, y, a } = trainPos(train.seg, train.t);
-
-                ctx.save();
-                ctx.translate(x, y);
-                ctx.rotate(a);
-
-                // Sombra
-                ctx.fillStyle = 'rgba(0,0,0,0.25)';
-                ctx.beginPath(); ctx.ellipse(2, 5, 17, 4, 0, 0, Math.PI*2); ctx.fill();
-
-                // Cuerpo
-                const g = ctx.createLinearGradient(-17,-7,17,7);
-                g.addColorStop(0,   '#C49A62');
-                g.addColorStop(0.4, '#E4B882');
-                g.addColorStop(1,   '#8A6840');
-                ctx.fillStyle = g;
-                ctx.beginPath(); ctx.roundRect(-17,-7,34,13,4); ctx.fill();
-
-                // Cabina
-                ctx.fillStyle = '#7A5830';
-                ctx.beginPath(); ctx.roundRect(7,-10,10,14,3); ctx.fill();
-
-                // Ventana cabina
-                ctx.fillStyle = 'rgba(180,220,255,0.65)';
-                ctx.beginPath(); ctx.roundRect(9,-8,6,7,2); ctx.fill();
-
-                // Chimenea
-                ctx.fillStyle = '#5C3D1E';
-                ctx.beginPath(); ctx.roundRect(-13,-12,5,8,2); ctx.fill();
-                ctx.fillStyle = '#3A2510';
-                ctx.beginPath(); ctx.roundRect(-14.5,-14,8,3,1); ctx.fill();
-
-                // Ruedas
-                [-11,-4,4,12].forEach(wx => {
-                    ctx.beginPath(); ctx.arc(wx,5,4.5,0,Math.PI*2);
-                    ctx.fillStyle = '#1E1008'; ctx.fill();
-                    ctx.beginPath(); ctx.arc(wx,5,2.8,0,Math.PI*2);
-                    ctx.fillStyle = C.gold; ctx.fill();
-                    ctx.beginPath(); ctx.arc(wx,5,1,0,Math.PI*2);
-                    ctx.fillStyle = '#0A0500'; ctx.fill();
-                });
-
-                // Faro
-                ctx.beginPath(); ctx.arc(17,-1,2.5,0,Math.PI*2);
-                ctx.fillStyle = 'rgba(255,240,160,0.9)'; ctx.fill();
-                const glow = ctx.createRadialGradient(17,-1,0,17,-1,16);
-                glow.addColorStop(0,'rgba(255,235,120,0.28)');
-                glow.addColorStop(1,'rgba(255,235,120,0)');
-                ctx.beginPath(); ctx.arc(17,-1,16,0,Math.PI*2);
-                ctx.fillStyle = glow; ctx.fill();
-
-                ctx.restore();
-            }
-
-            function tickTrain() {
-                if (!train.running || !train.path) return;
-                train.t += train.speed;
-                if (train.t >= 1) {
-                    train.t  -= 1;
-                    train.seg = (train.seg + 1) % train.path.length;
-                }
-                if (Math.random() < 0.3) {
-                    const { x, y, a } = trainPos(train.seg, train.t);
-                    train.smoke.push({
-                        x: x - Math.cos(a)*13, y: y - Math.sin(a)*13,
-                        vx: (Math.random()-.5)*.7, vy: -.6 - Math.random()*.4,
-                        life: 1, sz: 3 + Math.random()*3,
-                    });
-                    if (train.smoke.length > 45) train.smoke.shift();
-                }
-            }
-
-            function stopTrain() {
-                train.running = false;
-                train.smoke   = [];
-                document.getElementById('game-go-icon').textContent = '🚂';
-                document.getElementById('game-go-lbl').textContent  = 'Arrancar';
-                document.getElementById('game-go').classList.remove('running');
-            }
-
-            // ── Botones de acción ──────────────────────────────────
-            let animId = null;
-            function gameLoop() {
-                if (!train.running) return;
-                tickTrain(); drawGame();
-                animId = requestAnimationFrame(gameLoop);
-            }
-
-            document.getElementById('game-go').addEventListener('click', () => {
-                if (train.running) { stopTrain(); drawGame(); return; }
-                const path = buildPath();
-                if (!path) { showToast('¡cierra el circuito primero! 🛤️'); return; }
-                train.path = path; train.t = 0; train.seg = 0;
-                train.running = true; train.smoke = [];
-                document.getElementById('game-go-icon').textContent = '⏹';
-                document.getElementById('game-go-lbl').textContent  = 'Detener';
-                document.getElementById('game-go').classList.add('running');
-                gameLoop();
-            });
-
-            document.getElementById('game-clear').addEventListener('click', () => {
-                stopTrain();
-                grid.clear();
-                firstPlace = false;
-                document.getElementById('game-welcome').style.display = 'flex';
-                updatePieceCount();
-                drawGame();
-            });
-
-            // ── Circuito de ejemplo al abrir ───────────────────────
-            function placeDefaultCircuit() {
-                const mc = Math.floor(COLS / 2);
-                const mr = Math.floor(ROWS / 2);
-                grid.set(`${mc-2},${mr-1}`, 'curve_se');
-                grid.set(`${mc-1},${mr-1}`, 'straight_h');
-                grid.set(`${mc},${mr-1}`,   'straight_h');
-                grid.set(`${mc+1},${mr-1}`, 'curve_sw');
-                grid.set(`${mc+1},${mr}`,   'straight_v');
-                grid.set(`${mc+1},${mr+1}`, 'curve_nw');
-                grid.set(`${mc},${mr+1}`,   'straight_h');
-                grid.set(`${mc-1},${mr+1}`, 'straight_h');
-                grid.set(`${mc-2},${mr+1}`, 'curve_ne');
-                grid.set(`${mc-2},${mr}`,   'straight_v');
-                updatePieceCount();
-            }
-
-            // Al abrir el overlay se llama resizeGame() → drawGame()
-            // pero el circuito default se pone sólo la primera vez
-            const _origOpen = document.getElementById('btn-juguemos').onclick;
-            let defaultPlaced = false;
-            document.getElementById('btn-juguemos').addEventListener('click', () => {
-                if (!defaultPlaced) {
-                    setTimeout(() => { placeDefaultCircuit(); drawGame(); }, 50);
-                    defaultPlaced = true;
-                }
-            });
-
-        })();
-        // ══════════════════════════════════════════════════════════
-
         const cursor = document.getElementById('custom-cursor');
         document.addEventListener('mousemove', e => gsap.to(cursor, { x: e.clientX - 10, y: e.clientY - 10, duration: 0.2 }));
+        
+        // Lógica para el Modal de Juegos - CORREGIDA
+const openGamesBtn = document.getElementById('open-games');
+const closeGamesBtn = document.getElementById('close-games');
+const gamesModal = document.getElementById('games-modal');
+const gamesContent = document.getElementById('games-content');
+const mobileMenu = document.getElementById('mobile-menu');
+
+openGamesBtn.onclick = (e) => {
+    // Evitamos que el clic se propague a otros elementos del menú
+    e.stopPropagation();
+
+    // 1. Mostramos el modal PRIMERO (ahora tiene z-150, saldrá arriba de todo)
+    gamesModal.classList.remove('opacity-0', 'pointer-events-none');
+    gamesContent.classList.remove('scale-90');
+    gamesContent.classList.add('scale-100');
+
+    // 2. Esperamos un instante y cerramos el menú móvil de fondo
+    // Esto evita que el modal "desaparezca" porque el padre se está moviendo
+    setTimeout(() => {
+        mobileMenu.style.transform = "translateX(100%)";
+    }, 400); 
+};
+
+// Función para cerrar el modal
+const hideModal = () => {
+    gamesModal.classList.add('opacity-0', 'pointer-events-none');
+    gamesContent.classList.remove('scale-100');
+    gamesContent.classList.add('scale-90');
+};
+
+closeGamesBtn.onclick = hideModal;
+
+// Cerrar al hacer clic en el fondo oscuro
+gamesModal.onclick = (e) => {
+    if(e.target === gamesModal) hideModal();
+};
     </script>
 </body>
 </html>

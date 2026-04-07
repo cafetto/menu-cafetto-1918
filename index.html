@@ -111,6 +111,23 @@
 
     <div id="custom-cursor" class="hidden md:block"></div>
 
+    <!-- Diálogo Juguemos -->
+    <div id="juguemos-dialog" class="fixed inset-0 z-[200] flex items-center justify-center pointer-events-none">
+        <div id="juguemos-box" class="bg-coffee-medium border border-accent/30 rounded-sm px-10 py-10 max-w-xs text-center shadow-2xl
+            opacity-0 scale-75 transition-all duration-500 pointer-events-auto">
+            <div class="text-5xl mb-5">🚂</div>
+            <p class="font-serif text-2xl italic text-soft-white leading-snug mb-8">
+                "juguemos juntos<br>hasta que venga<br>el cafecito"
+            </p>
+            <div class="w-16 h-[1px] bg-accent/40 mx-auto mb-8"></div>
+            <button id="juguemos-go"
+                class="px-8 py-3 border border-accent text-accent font-bold text-xs uppercase tracking-[0.3em]
+                       hover:bg-accent hover:text-black transition-all duration-300">
+                ¡Vamos! &nbsp;→
+            </button>
+        </div>
+    </div>
+    
     <!-- Audio -->
     <audio id="bg-music" loop> 
     </audio>
@@ -153,6 +170,10 @@
         <a href="#footer" class="font-serif text-4xl mobile-link" data-i18n="nav_location">Ubicación</a>
         <a href="https://wa.me/593998388863" class="font-serif text-4xl text-accent mobile-link" data-i18n="nav_reserva">Reservas</a>
         
+         <!-- Botón Juguemos -->
+        <button id="btn-juguemos" class="font-serif text-4xl text-accent italic hover:text-accent-light transition-colors flex items-center gap-3">
+            <i class="fas fa-gamepad text-3xl"></i> juguemos
+        </button>
         <!-- Google Review CTA -->
         <a href="https://g.page/r/CQnM1s0yttneEAE/review" target="_blank" class="group flex flex-col items-center gap-2 mt-4 px-6 py-3 border border-accent/20 rounded-sm hover:border-accent/50 transition-all duration-300">
             <div class="flex items-center gap-2">

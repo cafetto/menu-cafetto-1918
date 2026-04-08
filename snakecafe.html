@@ -23,11 +23,10 @@
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 body {
-  /* Tus estilos actuales de body... */
-  touch-action: none; /* Bloquea el scroll y zoom al deslizar */
-  -webkit-tap-highlight-color: transparent;
-  user-select: none;
-  overscroll-behavior: none;
+    touch-action: none; /* Bloquea el scroll del navegador */
+    overflow: hidden;   /* Evita rebotes de pantalla */
+    position: fixed;    /* Fija el fondo */
+    width: 100%;
 }
   body {
     
@@ -701,44 +700,48 @@ document.addEventListener('keydown', e => {
   e.preventDefault();
 });
 
-/// Control Táctil Optimizado: Mezcla de Respuesta Rápida + Dirección Relativa
+// CONTROL TÁCTIL TOTAL (Cualquier parte de la pantalla)
+let touchStartX = 0;
+let touchStartY = 0;
+
 gc.addEventListener('touchstart', e => {
-  // CRÍTICO: e.preventDefault() elimina el retraso de 300ms del navegador
-  e.preventDefault(); 
-  
-  const rect = gc.getBoundingClientRect();
-  const touch = e.touches[0];
+    // 1. Respuesta instantánea
+    e.preventDefault(); 
+    
+    // 2. Registramos dónde empezó el toque
+    touchStartX = e.touches[0].clientX;
+    touchStartY = e.touches[0].clientY;
+}, { passive: false });
 
-  // 1. Calculamos la posición del toque ajustada al escalado del canvas
-  const scaleX = gc.width / rect.width;
-  const scaleY = gc.height / rect.height;
-  const canvasX = (touch.clientX - rect.left) * scaleX;
-  const canvasY = (touch.clientY - rect.top) * scaleY;
+gc.addEventListener('touchmove', e => {
+    e.preventDefault(); // Evita que la pantalla se mueva al jugar
+}, { passive: false });
 
-  // 2. Ubicación exacta de la cabeza de la serpiente
-  const headX = (snake[0].x * CELL) + (CELL / 2);
-  const headY = (snake[0].y * CELL) + (CELL / 2);
+gc.addEventListener('touchend', e => {
+    e.preventDefault();
+    
+    // 3. Calculamos la distancia entre donde tocó y donde soltó
+    const touchEndX = e.changedTouches[0].clientX;
+    const touchEndY = e.changedTouches[0].clientY;
+    
+    const dx = touchEndX - touchStartX;
+    const dy = touchEndY - touchStartY;
+    
+    // Sensibilidad: para que un toque accidental no cambie la dirección
+    const threshold = 15; 
 
-  // 3. Calculamos la distancia (Vector de dirección)
-  const dx = canvasX - headX;
-  const dy = canvasY - headY;
-
-  // 4. Filtro de sensibilidad (evita giros accidentales por toques milimétricos)
-  const sensibilidad = 5; 
-
-  if (Math.abs(dx) > sensibilidad || Math.abs(dy) > sensibilidad) {
-    if (Math.abs(dx) > Math.abs(dy)) {
-      // Intención Horizontal
-      const newDir = dx > 0 ? {x:1, y:0} : {x:-1, y:0};
-      // Evitamos que la serpiente se muerda a sí misma girando 180°
-      if (newDir.x !== -dir.x) nextDir = newDir;
-    } else {
-      // Intención Vertical
-      const newDir = dy > 0 ? {x:0, y:1} : {x:0, y:-1};
-      if (newDir.y !== -dir.y) nextDir = newDir;
+    if (Math.abs(dx) > threshold || Math.abs(dy) > threshold) {
+        if (Math.abs(dx) > Math.abs(dy)) {
+            // Movimiento Horizontal
+            const d = dx > 0 ? {x:1, y:0} : {x:-1, y:0};
+            if (d.x !== -dir.x) nextDir = d;
+        } else {
+            // Movimiento Vertical
+            const d = dy > 0 ? {x:0, y:1} : {x:0, y:-1};
+            if (d.y !== -dir.y) nextDir = d;
+        }
     }
-  }
-}, { passive: false }); // 'passive: false' es vital para la velocidad en móviles
+}, { passive: false });
 
 // ── Buttons ───────────────────────────────────────────────
 document.getElementById('startBtn').addEventListener('click', () => {

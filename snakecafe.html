@@ -26,7 +26,8 @@ body {
     touch-action: none; /* Bloquea el scroll del navegador */
     overflow: hidden;   /* Evita rebotes de pantalla */
     position: fixed;    /* Fija el fondo */
-    width: 98%;
+    overscroll-behavior: none;
+    width: 99%;
 }
   body {
     
@@ -700,43 +701,51 @@ document.addEventListener('keydown', e => {
   e.preventDefault();
 });
 
-// CONTROL TÁCTIL TOTAL (Cualquier parte de la pantalla)
+// CONTROL HÍBRIDO: ZONAS + DESLIZAMIENTO
 let touchStartX = 0;
 let touchStartY = 0;
 
 gc.addEventListener('touchstart', e => {
-    // 1. Respuesta instantánea
-    e.preventDefault(); 
-    
-    // 2. Registramos dónde empezó el toque
-    touchStartX = e.touches[0].clientX;
-    touchStartY = e.touches[0].clientY;
+    e.preventDefault(); // Respuesta instantánea
+    const touch = e.touches[0];
+    touchStartX = touch.clientX;
+    touchStartY = touch.clientY;
+
+    // --- Lógica de Toque (Zonas) ---
+    const rect = gc.getBoundingClientRect();
+    const x = (touch.clientX - rect.left) / rect.width;
+    const y = (touch.clientY - rect.top) / rect.height;
+
+    // Esta parte detecta la dirección al instante según donde toques
+    if (y < x && y < 1 - x) { if (dir.y === 0) nextDir = {x:0, y:-1}; }      // Arriba
+    else if (y > x && y > 1 - x) { if (dir.y === 0) nextDir = {x:0, y:1}; } // Abajo
+    else if (x < 0.5) { if (dir.x === 0) nextDir = {x:-1, y:0}; }            // Izquierda
+    else { if (dir.x === 0) nextDir = {x:1, y:0}; }                         // Derecha
+
 }, { passive: false });
 
 gc.addEventListener('touchmove', e => {
-    e.preventDefault(); // Evita que la pantalla se mueva al jugar
+    e.preventDefault(); // Bloquea el scroll mientras juegas
 }, { passive: false });
 
 gc.addEventListener('touchend', e => {
     e.preventDefault();
     
-    // 3. Calculamos la distancia entre donde tocó y donde soltó
+    // --- Lógica de Deslizamiento (Swipe) ---
     const touchEndX = e.changedTouches[0].clientX;
     const touchEndY = e.changedTouches[0].clientY;
     
     const dx = touchEndX - touchStartX;
     const dy = touchEndY - touchStartY;
     
-    // Sensibilidad: para que un toque accidental no cambie la dirección
-    const threshold = 15; 
+    // Umbral de movimiento: si moviste el dedo más de 20px, manda el deslizamiento
+    const threshold = 20; 
 
     if (Math.abs(dx) > threshold || Math.abs(dy) > threshold) {
         if (Math.abs(dx) > Math.abs(dy)) {
-            // Movimiento Horizontal
             const d = dx > 0 ? {x:1, y:0} : {x:-1, y:0};
             if (d.x !== -dir.x) nextDir = d;
         } else {
-            // Movimiento Vertical
             const d = dy > 0 ? {x:0, y:1} : {x:0, y:-1};
             if (d.y !== -dir.y) nextDir = d;
         }

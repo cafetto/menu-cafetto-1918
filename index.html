@@ -97,17 +97,26 @@
 
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-thumb { background: #C49A62; }
+        .blur-to-clear{animation:blurClear 2s ease-out forwards}
+@keyframes blurClear{0%{filter:blur(20px);opacity:0;transform:translateY(10px)}100%{filter:blur(0);opacity:1;transform:translateY(0)}}
+.text-reveal{opacity:0;transform:translateY(10px);filter:blur(5px);animation:revealAnim 0.8s cubic-bezier(0.4,0,0.2,1) forwards}
     </style>
 </head>
 <body class="bg-coffee-dark text-soft-white font-sans overflow-x-hidden bg-grain">
 
     <!-- Preloader -->
     <div id="loader" class="fixed inset-0 z-[100] bg-coffee-dark flex flex-col items-center justify-center">
-        <img src="https://i.ibb.co/nNVVy5pZ/logo-cafetto-dorado.png" class="w-36 md:w-48 mb-6 opacity-0" id="loader-logo">
-        <div class="w-48 h-[1px] bg-white/10 relative">
-            <div id="loader-bar" class="absolute inset-0 bg-accent w-0"></div>
-        </div>
+    <img src="https://i.ibb.co/nNVVy5pZ/logo-cafetto-dorado.png" class="w-36 md:w-48 mb-6 opacity-0" id="loader-logo">
+    
+    <div class="w-48 h-[1px] bg-white/10 relative" id="loader-bar-container">
+        <div id="loader-bar" class="absolute inset-0 bg-accent w-0"></div>
     </div>
+    
+    <div id="loader-actions" class="mt-8 flex gap-4 opacity-0 hidden">
+        <button id="btn-ver-carta" class="font-serif text-4xl px-6 py-3 border border-accent/40 bg-accent/5 rounded-xl backdrop-blur-sm blur-to-clear text-[16px] uppercase tracking-[0.2em] font-bold text-accent hover:bg-accent hover:text-black transition-all">Ver Carta</button>
+        <button id="btn-eventos" class="px-6 py-3 border border-accent/40 bg-accent/5 rounded-xl backdrop-blur-sm blur-to-clear text-[11px] uppercase tracking-[0.2em] font-bold text-accent hover:bg-accent hover:text-black transition-all w-36 text-center">Eventos</button>
+    </div>
+</div>
 
     <div id="custom-cursor" class="hidden md:block"></div>
 
@@ -116,7 +125,7 @@
     </audio>
 
     <!-- Navigation -->
-    <nav class="fixed top-0 w-full z-50 px-6 py-4 flex justify-between items-center nav-glass">
+    <nav class="fixed top-0 w-full z-50 px-6 py-4 flex justify-between items-center nav-glass bg-coffee-dark/60 backdrop-blur-md">
         <div class="flex-shrink-0">
             <a href="#" class="block w-24 md:w-32 transition-transform hover:scale-105">
                 <img src="https://i.ibb.co/nNVVy5pZ/logo-cafetto-dorado.png" alt="Logo Cafetto">
@@ -138,7 +147,10 @@
             <div class="hidden lg:flex items-center gap-8 text-[10px] uppercase tracking-[0.3em] font-bold text-accent-light">
                 <a href="#menu" class="hover:text-white transition-colors">La Carta</a>
                 <a href="#footer" class="hover:text-white transition-colors">Ubicación</a>
-                <a href="https://wa.me/593998388863" class="px-6 py-2 border border-accent/40 hover:bg-accent hover:text-black transition-all">Reservas</a>
+                <a href="https://wa.me/593998388863" 
+   class="px-8 py-3 border-2 border-white bg-white/5 text-white font-bold uppercase tracking-[0.2em] text-[10px] rounded-2xl transition-all duration-300 hover:bg-white hover:text-black hover:shadow-[0_0_20px_rgba(255,255,255,0.4)] active:scale-95">
+   Reservas
+</a>
             </div>
 
             <button id="nav-toggle" class="lg:hidden text-accent text-3xl p-1">
@@ -148,35 +160,35 @@
     </nav>
 
     <!-- Mobile Menu -->
-    <div id="mobile-menu" class="fixed inset-0 z-[60] bg-coffee-dark translate-x-full transition-transform duration-500 flex flex-col justify-center items-center gap-8 text-center">
+    <div id="mobile-menu" class="fixed inset-0 z-[60] bg-coffee-dark/60 backdrop-blur-md translate-x-full transition-transform duration-500 flex flex-col justify-center items-center gap-8 text-center">
         <button id="nav-close" class="absolute top-8 right-8 text-accent text-3xl"><i class="fas fa-times"></i></button>
         <img src="https://i.ibb.co/nNVVy5pZ/logo-cafetto-dorado.png" class= " relative top-[2px] w-48 md:w-48">
         <a href="#menu" class="font-serif text-4xl mobile-link" data-i18n="nav_menu">La Carta</a>
         <a href="#footer" class="font-serif text-4xl mobile-link" data-i18n="nav_location">Ubicación</a>
         <a href="https://wa.me/593998388863" class="font-serif text-4xl text-accent mobile-link" data-i18n="nav_reserva">Reservas</a>
-        
+         <!-- Social media links -->
+        <div class="flex justify-center md:justify-start gap-6 text-2xl text-gray-500">
+                        <a href="https://www.instagram.com/cafetto1918/"><i class="fab fa-instagram"></i></a>
+                        <a href="https://www.facebook.com/cafetto1918"><i class="fab fa-facebook"></i></a>
+                        <a href="https://www.tiktok.com/@cafetto1918"><i class="fab fa-tiktok"></i></a>
+                    </div>
         <!-- Google Review CTA -->
-        <a href="https://g.page/r/CQnM1s0yttneEAE/review" target="_blank" class="group flex flex-col items-center gap-2 mt-4 px-6 py-3 border border-accent/20 rounded-sm hover:border-accent/50 transition-all duration-300">
-            <div class="flex items-center gap-2">
+        <a href="https://g.page/r/CQnM1s0yttneEAE/review" target="_blank" class="group flex flex-col items-center gap-1 mt-1 px-6 py-1 border border-accent/20 rounded-xl backdrop-blur-sm blur-to-clear hover:border-accent/50 transition-all duration-300">
+            <div class="flex items-center gap-1">
                 <i class="fab fa-google text-accent text-sm animate-pulse"></i>
                 <span class="text-[10px] uppercase tracking-[0.25em] font-bold text-accent" data-i18n="ratego">⭐ Calificanos en Google</span>
                 <i class="fab fa-google text-accent text-sm animate-pulse"></i>
             </div>
             <span class="text-[9px] tracking-[0.15em] text-accent/70 italic"data-i18n="giveopi">y danos tu opinión</span>
         </a>
-        <div class="flex justify-center md:justify-start gap-6 text-xl text-gray-500">
-                        <a href="https://www.instagram.com/cafetto1918/"><i class="fab fa-instagram"></i></a>
-                        <a href="https://www.facebook.com/cafetto1918"><i class="fab fa-facebook"></i></a>
-                        <a href="https://www.tiktok.com/@cafetto1918"><i class="fab fa-tiktok"></i></a>
-                    </div>
-                    
-                    <button class="btn-open-games lg:hidden mt-2 flex items-center justify-center gap-3 px-6 py-3 border border-accent/40 rounded-full bg-accent/5 hover:bg-accent/20 transition-all group active:scale-95">
+               
+                    <button class="btn-open-games lg:hidden mt-1 flex items-center justify-center gap-1 px-6 py-1 border border-accent/40 rounded-full bg-accent/5 hover:bg-accent/20 transition-all group active:scale-95">
     <i class="fas fa-gamepad text-accent text-xl animate-bounce"></i>
     <span class="text-[11px] uppercase tracking-[0.2em] font-bold text-accent-light" data-i18n="wplay">¿Jugamos algo?</span>
 </button>
     </div>
 
-<div class="flex justify-center md:justify-start gap-6 text-xl text-gray-500">
+<div class="flex justify-center md:justify-start gap-6 text-4xl text-gray-500">
     <a href="https://www.instagram.com/cafetto1918/"><i class="fab fa-instagram"></i></a>
     <a href="https://www.facebook.com/cafetto1918"><i class="fab fa-facebook"></i></a>
     <a href="https://www.tiktok.com/@cafetto1918"><i class="fab fa-tiktok"></i></a>
@@ -184,32 +196,32 @@
 <div id="games-modal" class="fixed inset-0 z-[150] flex items-center justify-center px-6 opacity-0 pointer-events-none transition-all duration-500">
     <div class="absolute inset-0 bg-black/90 backdrop-blur-md"></div>
     
-    <div class="relative bg-coffee-medium border border-accent/30 p-8 w-full max-w-sm rounded-sm text-center shadow-2xl transform scale-90 transition-transform duration-500" id="games-content">
+    <div class="relative bg-coffee-medium border border-accent/30 p-8 w-full max-w-sm rounded-xl backdrop-blur-sm blur-to-clear  text-center shadow-2xl transform scale-90 transition-transform duration-500" id="games-content">
         <button id="close-games" class="absolute -top-12 right-0 text-accent text-2xl">
             <i class="fas fa-times"></i>
         </button>
         
-        <i class="fas fa-mug-hot text-accent text-4xl mb-4"></i>
-        <h3 class="font-serif text-2xl mb-2 text-white" data-i18n="w8coffee">Juguemos mientras esperamos el cafecito</h3>
+        <i class="fas fa-mug-hot text-accent text-4xl mb-2"></i>
+        <h3 class="font-serif text-2xl mb-1 text-white" data-i18n="w8coffee">Juguemos mientras esperamos el cafecito.</h3>
         <p class="text-gray-400 text-xs italic mb-8" data-i18n="selectgame">Selecciona una aventura:</p>
         
-        <div class="grid gap-4">
-            <a href="snakecafe.html" class="flex items-center justify-between px-6 py-4 bg-accent/10 border border-accent/20 hover:bg-accent hover:text-black transition-all group">
+        <div class="grid gap-2">
+            <a href="snakecafe.html" class="flex items-center justify-between px-6 py-4 bg-accent/10 border border-accent/20 rounded-xl backdrop-blur-sm blur-to-clear hover:bg-accent hover:text-black transition-all group">
                 <span class="uppercase tracking-widest text-[10px] font-bold">Snake Café</span>
                 <i class="fas fa-chevron-right text-[10px]"></i>
             </a>
-            <a href="memorycafe.html" class="flex items-center justify-between px-6 py-4 bg-accent/10 border border-accent/20 hover:bg-accent hover:text-black transition-all group">
+            <a href="memorycafe.html" class="flex items-center justify-between px-6 py-4 bg-accent/10 border border-accent/20 rounded-xl backdrop-blur-sm blur-to-clear hover:bg-accent hover:text-black transition-all group">
                 <span class="uppercase tracking-widest text-[10px] font-bold">Memory Café</span>
                 <i class="fas fa-chevron-right text-[10px]"></i>
             </a>
-            <a href="baristarush.html" class="flex items-center justify-between px-6 py-4 bg-accent/10 border border-accent/20 hover:bg-accent hover:text-black transition-all group">
+            <a href="baristarush.html" class="flex items-center justify-between px-6 py-4 bg-accent/10 border border-accent/20 rounded-xl backdrop-blur-sm blur-to-clear hover:bg-accent hover:text-black transition-all group">
                 <span class="uppercase tracking-widest text-[10px] font-bold">Barista Rush</span>
                 <i class="fas fa-chevron-right text-[10px]"></i>
             </a>
         </div>
     </div>
+    
 </div>
-
     <!-- Hero Section -->
     <section class="relative h-screen w-full flex items-center justify-center overflow-hidden">
         <div class="absolute inset-0 z-0">
@@ -223,7 +235,7 @@
             <div class="w-32 h-[1px] bg-accent mx-auto mt-10 reveal-text"></div>
         </div>
 
-        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-4">
+        <div class="absolute bottom-20 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-4">
             <span class="text-[10px] uppercase tracking-[0.3em] text-accent" data-i18n="hero_scroll">Desliza para descubrir</span>
             <div class="w-[1px] h-12 bg-gradient-to-b from-accent to-transparent"></div>
         </div>
@@ -570,16 +582,37 @@
         }
 
         function initGSAP() {
-            gsap.registerPlugin(ScrollTrigger);
-            const tl = gsap.timeline();
-            tl.to("#loader-logo", { opacity: 1, scale: 1, duration: 0.8 })
-              .to("#loader-bar", { width: "100%", duration: 1.2, ease: "power2.inOut" })
-              .to("#loader", { yPercent: -100, duration: 1, ease: "expo.inOut" });
+    gsap.registerPlugin(ScrollTrigger);
+    const tl = gsap.timeline();
+    
+    // Anima el logo y la barra, luego oculta la barra y muestra los botones
+    tl.to("#loader-logo", { opacity: 1, scale: 1, duration: 0.8 })
+      .to("#loader-bar", { width: "100%", duration: 1.2, ease: "power2.inOut" })
+      .to("#loader-bar-container", { opacity: 0, duration: 0.3, display: "none" })
+      .to("#loader-actions", { opacity: 1, duration: 0.5, display: "flex" });
 
-            gsap.from(".reveal-text", { y: 60, opacity: 0, stagger: 0.2, duration: 1.5, ease: "power4.out", delay: 2.3 });
-            gsap.to(".hero-img", { scrollTrigger: { trigger: "section", start: "top top", scrub: true }, scale: 1.3, y: 100 });
-            gsap.from("#hook-line", { scrollTrigger: { trigger: "#hook-content", start: "top 80%" }, width: 0, duration: 1.5, ease: "expo.inOut" });
-        }
+    // Acciona la entrada de "Ver Carta"
+    document.getElementById('btn-ver-carta').addEventListener('click', () => {
+        gsap.to("#loader", { yPercent: -100, duration: 1, ease: "expo.inOut" });
+        // Lanzamos las revelaciones de texto recién cuando el usuario hace clic
+        gsap.from(".reveal-text", { y: 60, opacity: 0, stagger: 0.2, duration: 1.5, ease: "power4.out", delay: 0.8 });
+    });
+    
+    // Acción para el botón de Eventos (Mensaje temporal)
+    const btnEventos = document.getElementById('btn-eventos');
+    btnEventos.addEventListener('click', () => {
+        // Cambiamos el texto
+        btnEventos.innerText = "¡MUY PRONTO!";
+        
+        // Lo devolvemos a la normalidad después de 2 segundos (2000 milisegundos)
+        setTimeout(() => {
+            btnEventos.innerText = "EVENTOS";
+        }, 2000);
+    });
+
+    gsap.to(".hero-img", { scrollTrigger: { trigger: "section", start: "top top", scrub: true }, scale: 1.3, y: 100 });
+    gsap.from("#hook-line", { scrollTrigger: { trigger: "#hook-content", start: "top 80%" }, width: 0, duration: 1.5, ease: "expo.inOut" });
+}
 
         function initHookSlider() {
     const slides = document.querySelectorAll('.hook-slide');

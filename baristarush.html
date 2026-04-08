@@ -140,6 +140,14 @@ canvas { display: block; }
 .btn-play:active { transform:scale(.97); }
 
 .hint { font-size:.6rem; color:var(--cream); opacity:.32; letter-spacing:.1em; text-align:center; }
+.btn-back {
+  position: fixed; top: 20px; left: 20px; z-index: 100;
+  background: rgba(13, 10, 7, 0.85); border: 1px solid var(--gold);
+  color: var(--gold-lt); text-decoration: none;
+  padding: 8px 16px; border-radius: 8px; font-weight: bold; font-family: 'DM Mono', monospace;
+  backdrop-filter: blur(5px); transition: transform 0.2s, background 0.2s;
+}
+.btn-back:hover { transform: scale(1.05); background: rgba(200, 146, 42, 0.2); }
 </style>
 </head>
 <body>
@@ -616,4 +624,7 @@ document.getElementById('playBtn').addEventListener('click', () => {
 draw();
 </script>
 </body>
+<a href="CAFETTO_JUEGOS - 6 abril  2026.html" class="btn-back">
+    &larr; Volver
+</a>
 </html>

@@ -25,6 +25,8 @@
 body {
   /* Tus estilos actuales de body... */
   touch-action: none; /* Bloquea el scroll y zoom al deslizar */
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
   overscroll-behavior: none;
 }
   body {
@@ -699,36 +701,44 @@ document.addEventListener('keydown', e => {
   e.preventDefault();
 });
 
-// Toque relativo a la cabeza de la serpiente
+/// Control Táctil Optimizado: Mezcla de Respuesta Rápida + Dirección Relativa
 gc.addEventListener('touchstart', e => {
-  e.preventDefault(); // Evita comportamientos nativos de scroll
+  // CRÍTICO: e.preventDefault() elimina el retraso de 300ms del navegador
+  e.preventDefault(); 
+  
   const rect = gc.getBoundingClientRect();
-  const touchX = e.touches[0].clientX - rect.left;
-  const touchY = e.touches[0].clientY - rect.top;
+  const touch = e.touches[0];
 
-  // Escalar coordenadas por si el canvas cambia de tamaño en pantalla
+  // 1. Calculamos la posición del toque ajustada al escalado del canvas
   const scaleX = gc.width / rect.width;
   const scaleY = gc.height / rect.height;
-  const canvasX = touchX * scaleX;
-  const canvasY = touchY * scaleY;
+  const canvasX = (touch.clientX - rect.left) * scaleX;
+  const canvasY = (touch.clientY - rect.top) * scaleY;
 
-  // Ubicación de la cabeza de la serpiente
+  // 2. Ubicación exacta de la cabeza de la serpiente
   const headX = (snake[0].x * CELL) + (CELL / 2);
   const headY = (snake[0].y * CELL) + (CELL / 2);
 
-  // Distancia del toque respecto a la cabeza
+  // 3. Calculamos la distancia (Vector de dirección)
   const dx = canvasX - headX;
   const dy = canvasY - headY;
 
-  // Determinar la dirección de mayor intención (horizontal vs vertical)
-  if (Math.abs(dx) > Math.abs(dy)) {
-    const newDir = dx > 0 ? {x:1, y:0} : {x:-1, y:0};
-    if (newDir.x !== -dir.x) nextDir = newDir;
-  } else {
-    const newDir = dy > 0 ? {x:0, y:1} : {x:0, y:-1};
-    if (newDir.y !== -dir.y) nextDir = newDir;
+  // 4. Filtro de sensibilidad (evita giros accidentales por toques milimétricos)
+  const sensibilidad = 5; 
+
+  if (Math.abs(dx) > sensibilidad || Math.abs(dy) > sensibilidad) {
+    if (Math.abs(dx) > Math.abs(dy)) {
+      // Intención Horizontal
+      const newDir = dx > 0 ? {x:1, y:0} : {x:-1, y:0};
+      // Evitamos que la serpiente se muerda a sí misma girando 180°
+      if (newDir.x !== -dir.x) nextDir = newDir;
+    } else {
+      // Intención Vertical
+      const newDir = dy > 0 ? {x:0, y:1} : {x:0, y:-1};
+      if (newDir.y !== -dir.y) nextDir = newDir;
+    }
   }
-}, {passive: false});
+}, { passive: false }); // 'passive: false' es vital para la velocidad en móviles
 
 // ── Buttons ───────────────────────────────────────────────
 document.getElementById('startBtn').addEventListener('click', () => {

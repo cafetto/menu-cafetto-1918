@@ -646,6 +646,94 @@ const footerNote = {
 
         let currentLang = 'es';
 
+        // Función para normalizar texto sin acentos
+        function normalizeText(text) {
+            return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+        }
+
+        // Función de búsqueda
+        function performSearch(query) {
+            if (!query.trim()) {
+                document.getElementById('search-results-container').style.opacity = '0';
+                document.getElementById('search-results-container').style.visibility = 'hidden';
+                document.getElementById('search-results-container').style.maxHeight = '0';
+                document.getElementById('search-empty-state').style.display = 'block';
+                return;
+            }
+
+            const normalizedQuery = normalizeText(query);
+            const results = [];
+
+            // Buscar en todas las categorías y platos
+            menuData.forEach(category => {
+                const categoryTitle = normalizeText(category.title[currentLang]);
+                
+                category.items.forEach(item => {
+                    const itemName = normalizeText(item.n[currentLang] || item.n);
+                    const itemDesc = item.d ? normalizeText(item.d[currentLang] || '') : '';
+
+                    // Verificar si la búsqueda coincide
+                    if (itemName.includes(normalizedQuery) || itemDesc.includes(normalizedQuery) || categoryTitle.includes(normalizedQuery)) {
+                        results.push({
+                            category: category.title[currentLang],
+                            name: item.n[currentLang] || item.n,
+                            price: item.p,
+                            description: item.d ? (item.d[currentLang] || '') : '',
+                            matchScore: itemName.startsWith(normalizedQuery) ? 1 : 0
+                        });
+                    }
+                });
+            });
+
+            // Ordenar resultados por relevancia
+            results.sort((a, b) => b.matchScore - a.matchScore);
+
+            // Mostrar resultados
+            const resultsContainer = document.getElementById('search-results');
+            const resultsBox = document.getElementById('search-results-container');
+            
+            if (results.length === 0) {
+                resultsContainer.innerHTML = `
+                    <div class="search-no-results">
+                        <i class="fas fa-search-minus text-2xl mb-3 block text-accent/40"></i>
+                        <p>${translations[currentLang].search_no_results}</p>
+                    </div>
+                `;
+            } else {
+                resultsContainer.innerHTML = results.map(result => `
+                    <div class="search-result-item border-b border-accent/10 last:border-b-0">
+                        <div class="search-result-category">${result.category}</div>
+                        <div class="search-result-name">${result.name}</div>
+                        <div class="search-result-price">${result.price}</div>
+                        ${result.description ? `<p class="text-gray-500 text-xs italic mt-2">${result.description}</p>` : ''}
+                    </div>
+                `).join('');
+            }
+
+            document.getElementById('search-empty-state').style.display = 'none';
+            resultsBox.style.opacity = '1';
+            resultsBox.style.visibility = 'visible';
+            resultsBox.style.maxHeight = '500px';
+        }
+
+        // Event listeners para búsqueda
+        document.getElementById('search-input').addEventListener('input', (e) => {
+            performSearch(e.target.value);
+        });
+
+        // Cerrar resultados al hacer click fuera
+        document.addEventListener('click', (e) => {
+            const searchBox = document.getElementById('search-input');
+            const resultsBox = document.getElementById('search-results-container');
+            if (!searchBox.contains(e.target) && !resultsBox.contains(e.target)) {
+                if (!searchBox.value.trim()) {
+                    resultsBox.style.opacity = '0';
+                    resultsBox.style.visibility = 'hidden';
+                    resultsBox.style.maxHeight = '0';
+                }
+            }
+        });
+
         document.addEventListener('DOMContentLoaded', () => {
             initLenis();
             renderMenu();
@@ -666,8 +754,19 @@ const footerNote = {
                 el.innerHTML = translations[lang][key];
             });
 
+            // Actualizar placeholders
+            const searchInput = document.getElementById('search-input');
+            const placeholderKey = lang === 'es' ? 'data-placeholder-es' : 'data-placeholder-en';
+            searchInput.placeholder = searchInput.getAttribute(placeholderKey);
+
             // Re-renderizar menú con nuevo idioma
             renderMenu();
+            
+            // Limpiar búsqueda si está activa
+            if (searchInput.value.trim()) {
+                performSearch(searchInput.value);
+            }
+            
             setTimeout(() => ScrollTrigger.refresh(), 500);
         }
 

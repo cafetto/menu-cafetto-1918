@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<<meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>☕ Snake Café</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Mono:wght@400;500&display=swap');
@@ -22,15 +22,13 @@
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-body {
+  
+  body {
     touch-action: none; /* Bloquea el scroll del navegador */
     overflow: hidden;   /* Evita rebotes de pantalla */
     position: fixed;    /* Fija el fondo */
     overscroll-behavior: none;
-    width: 99%;
-}
-  body {
-    
+    width: 100%;
     background: var(--bg);
     min-height: 100vh;
     display: flex;
@@ -38,8 +36,6 @@ body {
     align-items: center;
     justify-content: center;
     font-family: 'DM Mono', monospace;
-    overflow: hidden;
-    position: relative;
   }
 
   /* ── Animated background ── */
@@ -100,29 +96,18 @@ body {
   .hud {
     display: flex; gap: 32px; align-items: center;
     background: linear-gradient(135deg, rgba(26,18,11,.9), rgba(13,10,7,.95));
-    border: 1px solid rgba(200,146,42,.3);
+    border: 1px solid rgba(200,146,42,.4);
     border-radius: 12px; padding: 10px 28px;
-    box-shadow: 0 4px 30px rgba(0,0,0,.5), inset 0 1px 0 rgba(200,146,42,.15);
+    box-shadow: 0 8px 32px rgba(0,0,0,.6), inset 0 1px 0 rgba(255,255,255,.05);
   }
   .hud-item { text-align: center; }
-  .hud-label { font-size: .6rem; letter-spacing: .2em; color: var(--gold); opacity: .7; text-transform: uppercase; }
+  .hud-label { font-size: .6rem; letter-spacing: .2em; color: var(--gold); opacity: .8; text-transform: uppercase; }
   .hud-value { font-size: 1.4rem; font-weight: 500; color: var(--cream);
-    text-shadow: 0 0 12px rgba(240,230,208,.4); transition: transform .1s; }
+    text-shadow: 0 0 15px rgba(240,230,208,.5); transition: transform .1s; }
   .hud-value.pop { animation: popAnim .2s ease; }
   @keyframes popAnim { 0%,100%{transform:scale(1)} 50%{transform:scale(1.4)} }
 
-  .hud-sep { width: 1px; height: 30px; background: rgba(200,146,42,.25); }
-
-  /* ── Level badge ── */
-  .level-badge {
-    display: inline-flex; align-items: center; gap: 6px;
-    background: rgba(200,146,42,.12);
-    border: 1px solid rgba(200,146,42,.4);
-    border-radius: 20px; padding: 3px 14px;
-    font-size: .75rem; color: var(--gold-lt); letter-spacing: .1em;
-  }
-  .level-dot { width: 7px; height: 7px; border-radius: 50%;
-    background: var(--gold-lt); box-shadow: 0 0 6px var(--gold-lt); }
+  .hud-sep { width: 1px; height: 30px; background: rgba(200,146,42,.3); }
 
   /* ── Canvas container ── */
   .canvas-wrap {
@@ -133,9 +118,9 @@ body {
     background-size: 300% 300%;
     animation: borderShimmer 4s ease infinite;
     box-shadow:
-      0 0 40px rgba(200,146,42,.35),
-      0 0 80px rgba(200,146,42,.15),
-      0 20px 60px rgba(0,0,0,.7);
+      0 0 40px rgba(200,146,42,.4),
+      0 0 80px rgba(200,146,42,.2),
+      0 20px 60px rgba(0,0,0,.8);
   }
   @keyframes borderShimmer { 0%,100%{background-position:0% 50%} 50%{background-position:100% 50%} }
 
@@ -151,7 +136,7 @@ body {
   .canvas-inner::after {
     content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 2;
     background: radial-gradient(ellipse 80% 80% at 50% 50%,
-      transparent 60%, rgba(13,10,7,.55) 100%);
+      transparent 60%, rgba(13,10,7,.7) 100%);
     border-radius: 14px;
   }
 
@@ -161,13 +146,13 @@ body {
     display: flex; flex-direction: column; align-items: center; justify-content: center;
     gap: 16px;
     border-radius: 14px;
-    backdrop-filter: blur(4px);
-    background: rgba(13,10,7,.82);
+    backdrop-filter: blur(6px);
+    background: rgba(13,10,7,.85);
     transition: opacity .4s;
   }
   .overlay.hidden { opacity: 0; pointer-events: none; }
 
-  .overlay-icon { font-size: 3.5rem; filter: drop-shadow(0 0 20px var(--gold)); animation: floatIcon 2s ease-in-out infinite; }
+  .overlay-icon { font-size: 3.5rem; filter: drop-shadow(0 0 25px var(--gold)); animation: floatIcon 2s ease-in-out infinite; }
   @keyframes floatIcon { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
 
   .overlay-title {
@@ -179,17 +164,18 @@ body {
     text-align: center;
   }
   .overlay-sub {
-    font-size: .8rem; color: var(--cream); opacity: .6;
+    font-size: .8rem; color: var(--cream); opacity: .7;
     letter-spacing: .1em; text-align: center; max-width: 220px;
+    line-height: 1.4;
   }
 
   .btn-start {
-    margin-top: 8px;
+    margin-top: 12px;
     background: linear-gradient(135deg, var(--gold), var(--amber));
     color: var(--bg);
     border: none; outline: none; cursor: pointer;
     font-family: 'DM Mono', monospace;
-    font-size: .85rem; font-weight: 500;
+    font-size: .9rem; font-weight: 500;
     letter-spacing: .15em; text-transform: uppercase;
     padding: 12px 32px; border-radius: 8px;
     box-shadow: 0 4px 20px rgba(200,146,42,.4), 0 0 0 0 rgba(200,146,42,.4);
@@ -201,27 +187,27 @@ body {
     50%    { box-shadow: 0 4px 20px rgba(200,146,42,.6), 0 0 0 12px rgba(200,146,42,0); }
   }
   .btn-start:hover { transform: scale(1.05); animation: none;
-    box-shadow: 0 6px 30px rgba(200,146,42,.6); }
+    box-shadow: 0 6px 30px rgba(200,146,42,.7); }
   .btn-start:active { transform: scale(.97); }
 
   .final-score {
     font-size: 2.5rem; font-weight: 500;
     color: var(--gold-lt);
-    text-shadow: 0 0 20px var(--gold-lt);
+    text-shadow: 0 0 25px rgba(245, 200, 66, 0.8);
   }
-  .final-label { font-size: .7rem; letter-spacing: .2em; color: var(--gold); opacity: .7; margin-top: -8px; }
+  .final-label { font-size: .7rem; letter-spacing: .2em; color: var(--gold); opacity: .8; margin-top: -8px; }
 
   /* ── Controls hint ── */
   .controls {
     display: flex; gap: 12px; align-items: center; flex-wrap: wrap; justify-content: center;
-    font-size: .65rem; color: var(--cream); opacity: .45; letter-spacing: .08em;
+    font-size: .65rem; color: var(--cream); opacity: .6; letter-spacing: .08em;
   }
   .key {
     display: inline-flex; align-items: center; justify-content: center;
     width: 22px; height: 22px; border-radius: 5px;
-    border: 1px solid rgba(200,146,42,.35);
-    background: rgba(200,146,42,.08);
-    color: var(--gold);
+    border: 1px solid rgba(200,146,42,.4);
+    background: rgba(200,146,42,.15);
+    color: var(--gold-lt);
     font-size: .7rem;
   }
 
@@ -233,17 +219,21 @@ body {
     .hud { gap: 16px; padding: 8px 16px; }
     .hud-value { font-size: 1.1rem; }
   }
+  
   .btn-back {
-  position: fixed; top: 20px; left: 20px; z-index: 100;
-  background: rgba(13, 10, 7, 0.85); border: 1px solid var(--gold);
-  color: var(--gold-lt); text-decoration: none;
-  padding: 8px 16px; border-radius: 8px; font-weight: bold; font-family: 'DM Mono', monospace;
-  backdrop-filter: blur(5px); transition: transform 0.2s, background 0.2s;
-}
-.btn-back:hover { transform: scale(1.05); background: rgba(200, 146, 42, 0.2); }
+    position: fixed; top: 20px; left: 20px; z-index: 100;
+    background: rgba(13, 10, 7, 0.85); border: 1px solid var(--gold);
+    color: var(--gold-lt); text-decoration: none;
+    padding: 8px 16px; border-radius: 8px; font-weight: bold; font-family: 'DM Mono', monospace;
+    backdrop-filter: blur(5px); transition: transform 0.2s, background 0.2s;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+  }
+  .btn-back:hover { transform: scale(1.05); background: rgba(200, 146, 42, 0.2); }
 </style>
 </head>
 <body>
+
+<a href="index.html" class="btn-back">&larr; Volver</a>
 
 <canvas id="particles"></canvas>
 <div class="bg-grid"></div>
@@ -279,7 +269,6 @@ body {
     <div class="canvas-inner">
       <canvas id="game"></canvas>
 
-      <!-- Start screen -->
       <div class="overlay" id="startScreen">
         <div class="overlay-icon">☕</div>
         <div class="overlay-title">¡Bienvenido!</div>
@@ -287,7 +276,6 @@ body {
         <button class="btn-start" id="startBtn">Jugar &rarr;</button>
       </div>
 
-      <!-- Game over screen -->
       <div class="overlay hidden" id="overScreen">
         <div class="overlay-icon">😵</div>
         <div class="overlay-title">¡Fin del juego!</div>
@@ -303,7 +291,7 @@ body {
     &nbsp;·&nbsp;
     <span><span class="key">P</span> Pausar</span>
     &nbsp;·&nbsp;
-    <span>Toca la pantalla para mover</span>
+    <span>Desliza la pantalla para mover</span>
   </div>
 </div>
 
@@ -507,7 +495,7 @@ function draw() {
   ctx.fillRect(0,0,W,H);
 
   // subtle grid
-  ctx.strokeStyle = 'rgba(200,146,42,.06)';
+  ctx.strokeStyle = 'rgba(200,146,42,.08)';
   ctx.lineWidth = 1;
   for (let c=0; c<COLS; c++) {
     ctx.beginPath(); ctx.moveTo(c*CELL,0); ctx.lineTo(c*CELL,H); ctx.stroke();
@@ -523,9 +511,9 @@ function draw() {
   // food glow
   const grd = ctx.createRadialGradient(
     food.x*CELL+CELL/2, food.y*CELL+CELL/2, 0,
-    food.x*CELL+CELL/2, food.y*CELL+CELL/2, CELL*(1+fp*.4)
+    food.x*CELL+CELL/2, food.y*CELL+CELL/2, CELL*(1.2+fp*.5)
   );
-  grd.addColorStop(0, 'rgba(46,204,113,.35)');
+  grd.addColorStop(0, 'rgba(46,204,113,.5)');
   grd.addColorStop(1, 'rgba(46,204,113,0)');
   ctx.fillStyle = grd;
   ctx.fillRect(food.x*CELL-CELL, food.y*CELL-CELL, CELL*3, CELL*3);
@@ -543,9 +531,9 @@ function draw() {
     const urgency = specialFood.life/180;
     const sg = ctx.createRadialGradient(
       specialFood.x*CELL+CELL/2, specialFood.y*CELL+CELL/2, 0,
-      specialFood.x*CELL+CELL/2, specialFood.y*CELL+CELL/2, CELL*(1.5+sp*.5)
+      specialFood.x*CELL+CELL/2, specialFood.y*CELL+CELL/2, CELL*(1.8+sp*.5)
     );
-    sg.addColorStop(0, `rgba(245,200,66,${.5*urgency})`);
+    sg.addColorStop(0, `rgba(245,200,66,${.7*urgency})`);
     sg.addColorStop(1, 'rgba(245,200,66,0)');
     ctx.fillStyle = sg;
     ctx.fillRect(specialFood.x*CELL-CELL, specialFood.y*CELL-CELL, CELL*3, CELL*3);
@@ -558,7 +546,7 @@ function draw() {
     ctx.restore();
 
     // urgency bar
-    ctx.fillStyle = `rgba(245,200,66,${.6*urgency})`;
+    ctx.fillStyle = `rgba(245,200,66,${.8*urgency})`;
     ctx.fillRect(specialFood.x*CELL, specialFood.y*CELL+CELL-3, CELL*urgency, 3);
   }
 
@@ -572,26 +560,27 @@ function draw() {
     // body gradient per segment
     const g = ctx.createLinearGradient(s.x*CELL, s.y*CELL, s.x*CELL+CELL, s.y*CELL+CELL);
     if (isHead) {
-      g.addColorStop(0, '#3ef08a');
+      g.addColorStop(0, '#4ff495');
       g.addColorStop(1, '#27ae60');
     } else {
       const bright = 1-t*.55;
-      g.addColorStop(0, `rgba(46,${Math.floor(180*bright+30)},${Math.floor(80*bright)},${1-t*.3})`);
-      g.addColorStop(1, `rgba(30,${Math.floor(130*bright+20)},${Math.floor(50*bright)},${1-t*.3})`);
+      g.addColorStop(0, `rgba(46,${Math.floor(200*bright+30)},${Math.floor(90*bright)},${1-t*.3})`);
+      g.addColorStop(1, `rgba(30,${Math.floor(140*bright+20)},${Math.floor(60*bright)},${1-t*.3})`);
     }
 
+    // Dynamic tail tapering effect (Mejora visual)
     const pad = isHead ? 1 : 2;
-    const rad = isHead ? 7 : (isTail ? 6 : 4);
+    const rad = isHead ? 7 : Math.max(2, 7 - (t * 6)); 
 
     // glow for head
     if (isHead) {
       ctx.shadowColor = '#2ecc71';
-      ctx.shadowBlur  = 18;
+      ctx.shadowBlur  = 22;
     } else {
       ctx.shadowBlur = 0;
     }
 
-    roundRect(ctx, s.x*CELL+pad, s.y*CELL+pad, CELL-pad*2, CELL-pad*2, rad);
+    roundRect(ctx, s.x*CELL+pad + (7-rad), s.y*CELL+pad + (7-rad), CELL-pad*2 - (7-rad)*2, CELL-pad*2 - (7-rad)*2, rad);
     ctx.fillStyle = g;
     ctx.fill();
 
@@ -602,17 +591,17 @@ function draw() {
       const cx2 = s.x*CELL+CELL/2; const cy2 = s.y*CELL+CELL/2;
       // eye offsets perpendicular to direction
       const perp = {x: -dir.y, y: dir.x};
-      const eyeOff = 4;
+      const eyeOff = 4.5;
       const fwd = 3;
       [[1,-1],[1,1]].forEach(([fd, pd]) => {
         const ex2 = cx2 + dir.x*fwd + perp.x*eyeOff*pd;
         const ey2 = cy2 + dir.y*fwd + perp.y*eyeOff*pd;
         ctx.beginPath();
-        ctx.arc(ex2, ey2, 2.5, 0, Math.PI*2);
+        ctx.arc(ex2, ey2, 2.8, 0, Math.PI*2);
         ctx.fillStyle = '#fff';
         ctx.fill();
         ctx.beginPath();
-        ctx.arc(ex2+dir.x*.8, ey2+dir.y*.8, 1.2, 0, Math.PI*2);
+        ctx.arc(ex2+dir.x*.8, ey2+dir.y*.8, 1.4, 0, Math.PI*2);
         ctx.fillStyle = '#0d0a07';
         ctx.fill();
       });
@@ -635,12 +624,15 @@ function draw() {
     ctx.font = `bold ${14}px 'DM Mono', monospace`;
     ctx.fillStyle = '#f5c842';
     ctx.textAlign = 'left';
+    ctx.shadowColor = '#f5c842';
+    ctx.shadowBlur = 10;
     ctx.fillText(`x${comboMult} COMBO!`, 8, 18);
+    ctx.shadowBlur = 0;
   }
 
   // paused
   if (paused) {
-    ctx.fillStyle = 'rgba(13,10,7,.7)';
+    ctx.fillStyle = 'rgba(13,10,7,.75)';
     ctx.fillRect(0,0,W,H);
     ctx.font = `bold 28px 'Playfair Display', serif`;
     ctx.fillStyle = '#f5c842';
@@ -648,12 +640,13 @@ function draw() {
     ctx.textBaseline = 'middle';
     ctx.fillText('☕ Pausa', W/2, H/2);
     ctx.font = `12px 'DM Mono', monospace`;
-    ctx.fillStyle = 'rgba(240,230,208,.5)';
+    ctx.fillStyle = 'rgba(240,230,208,.6)';
     ctx.fillText('Presiona P para continuar', W/2, H/2+30);
   }
 }
 
 function roundRect(ctx, x, y, w, h, r) {
+  if (w < 0) w = 0; if (h < 0) h = 0;
   ctx.beginPath();
   ctx.moveTo(x+r, y);
   ctx.lineTo(x+w-r, y);
@@ -677,7 +670,7 @@ function gameOver() {
   // death flash
   let fl = 0;
   const flashInt = setInterval(() => {
-    ctx.fillStyle = `rgba(192,57,43,${.3*(1-fl/6)})`;
+    ctx.fillStyle = `rgba(192,57,43,${.4*(1-fl/6)})`;
     ctx.fillRect(0,0,W,H);
     if (++fl >= 6) clearInterval(flashInt);
   }, 80);
@@ -701,22 +694,25 @@ document.addEventListener('keydown', e => {
   e.preventDefault();
 });
 
-// CONTROL HÍBRIDO: ZONAS + DESLIZAMIENTO
+// CONTROL GLOBAL: Ahora escucha toques en TODA la pantalla (document)
 let touchStartX = 0;
 let touchStartY = 0;
 
-gc.addEventListener('touchstart', e => {
-    e.preventDefault(); // Respuesta instantánea
+document.addEventListener('touchstart', e => {
+    // Evitar bloquear clics en botones y enlaces
+    if (e.target.tagName === 'BUTTON' || e.target.tagName === 'A') return;
+    
+    e.preventDefault(); 
     const touch = e.touches[0];
     touchStartX = touch.clientX;
     touchStartY = touch.clientY;
 
-    // --- Lógica de Toque (Zonas) ---
-    const rect = gc.getBoundingClientRect();
-    const x = (touch.clientX - rect.left) / rect.width;
-    const y = (touch.clientY - rect.top) / rect.height;
+    // --- Lógica de Toque (Zonas de toda la pantalla) ---
+    const w = window.innerWidth;
+    const h = window.innerHeight;
+    const x = touch.clientX / w;
+    const y = touch.clientY / h;
 
-    // Esta parte detecta la dirección al instante según donde toques
     if (y < x && y < 1 - x) { if (dir.y === 0) nextDir = {x:0, y:-1}; }      // Arriba
     else if (y > x && y > 1 - x) { if (dir.y === 0) nextDir = {x:0, y:1}; } // Abajo
     else if (x < 0.5) { if (dir.x === 0) nextDir = {x:-1, y:0}; }            // Izquierda
@@ -724,22 +720,24 @@ gc.addEventListener('touchstart', e => {
 
 }, { passive: false });
 
-gc.addEventListener('touchmove', e => {
-    e.preventDefault(); // Bloquea el scroll mientras juegas
+document.addEventListener('touchmove', e => {
+    if (e.target.tagName === 'BUTTON' || e.target.tagName === 'A') return;
+    e.preventDefault(); // Bloquea el scroll general mientras juegas
 }, { passive: false });
 
-gc.addEventListener('touchend', e => {
+document.addEventListener('touchend', e => {
+    if (e.target.tagName === 'BUTTON' || e.target.tagName === 'A') return;
     e.preventDefault();
     
-    // --- Lógica de Deslizamiento (Swipe) ---
+    // --- Lógica de Deslizamiento (Swipe global) ---
     const touchEndX = e.changedTouches[0].clientX;
     const touchEndY = e.changedTouches[0].clientY;
     
     const dx = touchEndX - touchStartX;
     const dy = touchEndY - touchStartY;
     
-    // Umbral de movimiento: si moviste el dedo más de 20px, manda el deslizamiento
-    const threshold = 20; 
+    // Umbral de movimiento para toda la pantalla
+    const threshold = 30; 
 
     if (Math.abs(dx) > threshold || Math.abs(dy) > threshold) {
         if (Math.abs(dx) > Math.abs(dy)) {
@@ -775,7 +773,4 @@ window.addEventListener('resize', () => {
 });
 </script>
 </body>
-<a href="index.html" class="btn-back">
-    &larr; Volver
-</a>
 </html>

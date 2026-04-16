@@ -240,7 +240,43 @@
             <div class="w-[1px] h-12 bg-gradient-to-b from-accent to-transparent"></div>
         </div>
     </section>
+<!-- SEARCH SECTION -->
+    <section class="py-24 px-6 bg-coffee-dark border-t border-accent/10">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-12">
+                <h3 class="font-serif text-4xl md:text-5xl text-white mb-4" data-i18n="search_title">Busca tu plato favorito</h3>
+                <p class="text-gray-400 text-sm md:text-base" data-i18n="search_helper">Usa el buscador para localizar platos, bebidas o categorías.</p>
+            </div>
 
+            <!-- Search Input -->
+            <div class="relative mb-8">
+                <div class="search-container rounded-full px-6 py-4 backdrop-blur-sm">
+                    <div class="flex items-center gap-3">
+                        <i class="fas fa-search text-accent text-lg"></i>
+                        <input 
+                            type="text" 
+                            id="search-input" 
+                            class="search-input flex-1 bg-transparent text-soft-white text-base border-none placeholder-accent/50 font-light"
+                            placeholder="Buscar plato o bebida..."
+                            data-placeholder-es="Buscar plato o bebida..."
+                            data-placeholder-en="Search for a dish or drink..."
+                        >
+                    </div>
+                </div>
+
+                <!-- Search Results -->
+                <div id="search-results-container" class="absolute top-full left-0 right-0 mt-2 bg-coffee-medium border border-accent/30 rounded-2xl shadow-2xl opacity-0 invisible transition-all duration-200 z-40" style="max-height: 0; overflow: hidden;">
+                    <div id="search-results" class="search-results"></div>
+                </div>
+            </div>
+
+            <!-- Empty State -->
+            <div id="search-empty-state" class="text-center py-12">
+                <i class="fas fa-search text-accent/30 text-5xl mb-4 block"></i>
+                <p class="text-accent/50 text-sm" data-i18n="search_empty">Comienza a escribir para buscar platos</p>
+            </div>
+        </div>
+    </section>
     <!-- Hook Section con Slider Cinematográfico -->
 <section class="py-32 bg-coffee-medium bg-grain overflow-hidden">
     <div class="container mx-auto px-6 grid md:grid-cols-2 gap-16 items-center">

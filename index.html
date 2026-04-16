@@ -100,6 +100,84 @@
         .blur-to-clear{animation:blurClear 2s ease-out forwards}
 @keyframes blurClear{0%{filter:blur(20px);opacity:0;transform:translateY(10px)}100%{filter:blur(0);opacity:1;transform:translateY(0)}}
 .text-reveal{opacity:0;transform:translateY(10px);filter:blur(5px);animation:revealAnim 0.8s cubic-bezier(0.4,0,0.2,1) forwards}
+
+        /* Estilos del buscador */
+        .search-container {
+            background: linear-gradient(135deg, rgba(196, 154, 98, 0.08) 0%, rgba(196, 154, 98, 0.03) 100%);
+            border: 1px solid rgba(196, 154, 98, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .search-container:hover {
+            border-color: rgba(196, 154, 98, 0.4);
+            background: linear-gradient(135deg, rgba(196, 154, 98, 0.12) 0%, rgba(196, 154, 98, 0.06) 100%);
+        }
+
+        .search-input::placeholder {
+            color: rgba(196, 154, 98, 0.5);
+        }
+
+        .search-input:focus {
+            outline: none;
+            color: #F5F5F5;
+        }
+
+        .search-input:focus::placeholder {
+            color: rgba(196, 154, 98, 0.3);
+        }
+
+        .search-results {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .search-result-item {
+            padding: 1rem;
+            border-left: 3px solid transparent;
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .search-result-item:hover {
+            background: rgba(196, 154, 98, 0.1);
+            border-left-color: #C49A62;
+            padding-left: 1.5rem;
+        }
+
+        .search-result-category {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #C49A62;
+            font-weight: 600;
+        }
+
+        .search-result-name {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #E4B882;
+            margin-top: 0.25rem;
+        }
+
+        .search-result-price {
+            font-size: 0.85rem;
+            color: #C49A62;
+            margin-top: 0.25rem;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .search-no-results {
+            padding: 2rem 1rem;
+            text-align: center;
+            color: rgba(196, 154, 98, 0.6);
+        }
+
+        .search-empty {
+            padding: 2rem 1rem;
+            text-align: center;
+            color: rgba(196, 154, 98, 0.4);
+            font-size: 0.9rem;
+        }
     </style>
 </head>
 <body class="bg-coffee-dark text-soft-white font-sans overflow-x-hidden bg-grain">

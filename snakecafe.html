@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=0.86, maximum-scale=0.86, user-scalable=no">
 <title>☕ Snake Café</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Mono:wght@400;500&display=swap');
@@ -28,7 +28,7 @@
     overflow: hidden;   /* Evita rebotes de pantalla */
     position: fixed;    /* Fija el fondo */
     overscroll-behavior: none;
-    width: 100%;
+    width: 99%;
     background: var(--bg);
     min-height: 100vh;
     display: flex;
@@ -229,12 +229,31 @@
     box-shadow: 0 4px 15px rgba(0,0,0,0.5);
   }
   .btn-back:hover { transform: scale(1.05); background: rgba(200, 146, 42, 0.2); }
+  /* ── Level badge ── */
+  .level-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(200,146,42,.12);
+    border: 1px solid rgba(200,146,42,.4);
+    border-radius: 20px; padding: 3px 14px;
+    font-size: .75rem; color: var(--gold-lt); letter-spacing: .1em;
+  }
+  .level-dot { width: 7px; height: 7px; border-radius: 50%;
+    background: var(--gold-lt); box-shadow: 0 0 6px var(--gold-lt); }
+    .btn-pause {
+  position: fixed; top: 15px; right: 15px; z-index: 100;
+  background: rgba(13, 10, 7, 0.8); border: 1px solid var(--gold);
+  color: var(--gold-lt); width: 40px; height: 40px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 50%; cursor: pointer;
+  backdrop-filter: blur(5px); transition: transform 0.2s;
+  font-size: 1.2rem;
+}
+.btn-pause:active { transform: scale(0.9); }
 </style>
 </head>
 <body>
-
-<a href="index.html" class="btn-back">&larr; Volver</a>
-
+<a href="index.html?showGames=true" class="btn-back">&larr; Volver</a>
+<div class="btn-pause" id="pauseBtn">⏸</div>
 <canvas id="particles"></canvas>
 <div class="bg-grid"></div>
 <div class="bg-glow"></div>
@@ -259,11 +278,12 @@
       <div class="hud-value" id="hiDisplay">0</div>
     </div>
     <div class="hud-sep"></div>
-    <div class="hud-item">
-      <div class="hud-label">Nivel</div>
-      <div class="hud-value" id="lvlDisplay">1</div>
+    
+    <div class="level-badge">
+      <div class="level-dot"></div>
+      <span>Nivel <span id="lvlDisplay">1</span></span>
     </div>
-  </div>
+    </div>
 
   <div class="canvas-wrap">
     <div class="canvas-inner">
@@ -684,14 +704,25 @@ const DIRS = {
   ArrowRight: {x:1,y:0},  d:{x:1,y:0},
 };
 
+// Función única para pausar
+function togglePause() {
+  if (!running) return; // No pausar si el juego no ha empezado
+  paused = !paused;
+}
+
+// Evento para el botón de móvil
+document.getElementById('pauseBtn').onclick = (e) => {
+  e.stopPropagation(); // Evita interferencias con el control táctil
+  togglePause();
+};
+
+// Evento para la tecla P (actualizado)
 document.addEventListener('keydown', e => {
-  if (e.key === 'p' || e.key === 'P') { paused = !paused; return; }
-  const d = DIRS[e.key] || DIRS[e.key.toLowerCase()];
-  if (!d) return;
-  // prevent 180 turn
-  if (d.x === -dir.x && d.y === -dir.y) return;
-  nextDir = d;
-  e.preventDefault();
+  if (e.key.toLowerCase() === 'p') { 
+    togglePause(); 
+    return; 
+  }
+  // ... resto de tu código de dirección ...
 });
 
 // CONTROL GLOBAL: Ahora escucha toques en TODA la pantalla (document)
@@ -771,6 +802,30 @@ window.addEventListener('resize', () => {
   pc.width  = window.innerWidth;
   pc.height = window.innerHeight;
 });
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    // 1. Revisamos si la URL tiene el parámetro que enviamos desde el Snake
+    const urlParams = new URLSearchParams(window.location.search);
+    
+    if (urlParams.get('showGames') === 'true') {
+      const modal = document.getElementById('games-modal');
+      const content = document.getElementById('games-content');
+
+      if (modal && content) {
+        // 2. Quitamos las clases que lo ocultan (Tailwind)
+        modal.classList.remove('opacity-0', 'pointer-events-none');
+        modal.classList.add('opacity-100');
+        
+        // 3. Quitamos el efecto de escala pequeña para que se agrande
+        content.classList.remove('scale-90');
+        content.classList.add('scale-100');
+        
+        // OPCIONAL: Limpia la URL para que si el usuario recarga, no se abra siempre
+        window.history.replaceState({}, document.title, window.location.pathname);
+      }
+    }
+  });
 </script>
 </body>
 </html>
